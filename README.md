@@ -25,7 +25,7 @@ The interface carries the warm, vintage feel of a worn-out journal — comfortin
 - **Language:** Python  
 - **Framework:** Tkinter (GUI)  
 - **Libraries:** `random`, `datetime`  
-- *(Optional)* **Future Integration:** AI APIs for personalization  
+- **Future Integration:** AI APIs for personalization  
 
 ---
 
@@ -44,7 +44,7 @@ This app is my way of keeping her memory alive — in code and kindness.
 3. write, reflect and find comfort in words
 ## Author 
 * Ridhima 
- 12th-Grade Student | Aspiring AI & Data Science Enthusiast 🇦🇺
+ 12th-Grade Student | Aspiring AI & Data Science Enthusiast| preparing for Undergaduate studies 🇦🇺|
 Exploring the intersection of technology and emotion.
 ## Made with Love, Memory , Gratitude and Blessing 
 This project is dedicated to my teacher — the one who made me fall in love with learning.  
