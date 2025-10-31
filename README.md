@@ -1,7 +1,7 @@
 ## 🌿 The Last Bookmark  
 
 > **“The lesson that shall always reside in my life.”**  
-> **A journal-inspired desktop app built with Python, Tkinter, and a touch of AI — dedicated to the day who gifted me wisdom, kindness, and books.**
+> **A journal-inspired desktop app built with Python, Tkinter, and a touch of AI — dedicated to the lady who gifted me wisdom, kindness, and books.**
 
 ---
 
