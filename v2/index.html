@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Last Bookmark — Journal Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=IM+Fell+English:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #f5ede0;
+    --bg2: #ede0cc;
+    --paper: #fdf8f1;
+    --ink: #2c1f12;
+    --ink-light: #5b4636;
+    --ink-faint: #9c836a;
+    --accent: #8b3a2a;
+    --accent2: #c8a97e;
+    --border: #d6c4a8;
+    --shadow: rgba(44,31,18,0.12);
+    --mood-joy: #e8a838;
+    --mood-calm: #4a90a4;
+    --mood-sad: #6b7fa3;
+    --mood-angry: #c0392b;
+    --mood-grateful: #6aaa6a;
+    --mood-anxious: #9b59b6;
+  }
+  [data-theme="dark"] {
+    --bg: #1a1209;
+    --bg2: #221809;
+    --paper: #2a1e10;
+    --ink: #e8d5b8;
+    --ink-light: #c9aa82;
+    --ink-faint: #7d6244;
+    --accent: #c97b5a;
+    --accent2: #8b6840;
+    --border: #3d2e1a;
+    --shadow: rgba(0,0,0,0.4);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    transition: background 0.4s, color 0.4s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--paper);
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 20px var(--shadow);
+  }
+  .logo {
+    font-family: 'IM Fell English', serif;
+    font-size: 1.6rem;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+  .logo span { font-style: italic; color: var(--ink-light); font-size: 0.9rem; display: block; font-family: 'Crimson Pro', serif; letter-spacing: 0.08em; }
+  .header-actions { display: flex; gap: 0.75rem; align-items: center; }
+  .btn-icon {
+    background: none; border: 1px solid var(--border);
+    color: var(--ink-light); cursor: pointer;
+    padding: 0.4rem 0.8rem; border-radius: 4px;
+    font-size: 1rem; transition: all 0.2s;
+    font-family: inherit;
+  }
+  .btn-icon:hover { background: var(--bg2); color: var(--ink); }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex; gap: 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--paper);
+    padding: 0 2.5rem;
+  }
+  .tab {
+    padding: 0.75rem 1.5rem;
+    cursor: pointer; font-family: 'Crimson Pro', serif;
+    font-size: 1rem; color: var(--ink-faint);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s; letter-spacing: 0.05em;
+    background: none; border-top: none; border-left: none; border-right: none;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── MAIN ── */
+  .page { display: none; padding: 2rem 2.5rem; max-width: 900px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* ── QUOTE SECTION ── */
+  .quote-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    box-shadow: 0 4px 30px var(--shadow);
+    min-height: 160px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 1.5rem;
+  }
+  .quote-card::before {
+    content: '\201C';
+    font-family: 'IM Fell English', serif;
+    font-size: 6rem; color: var(--accent2);
+    position: absolute; top: -1rem; left: 1.5rem;
+    opacity: 0.3; line-height: 1;
+  }
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem; font-style: italic;
+    color: var(--ink); line-height: 1.7;
+    max-width: 650px;
+    transition: opacity 0.3s;
+  }
+  .quote-actions { display: flex; gap: 1rem; }
+  .btn {
+    font-family: 'Crimson Pro', serif;
+    padding: 0.5rem 1.4rem; border-radius: 4px;
+    cursor: pointer; font-size: 1rem;
+    transition: all 0.2s; letter-spacing: 0.04em;
+  }
+  .btn-primary {
+    background: var(--accent); color: #fdf8f1;
+    border: none;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-outline {
+    background: none; border: 1px solid var(--border);
+    color: var(--ink-light);
+  }
+  .btn-outline:hover { background: var(--bg2); }
+
+  /* ── ADD QUOTE MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 200;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 8px; padding: 2rem; width: 90%; max-width: 480px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .modal h3 { font-family: 'IM Fell English', serif; font-size: 1.3rem; margin-bottom: 1rem; color: var(--accent); }
+  .modal textarea {
+    width: 100%; min-height: 100px; padding: 0.75rem;
+    font-family: 'Crimson Pro', serif; font-size: 1rem;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 4px; color: var(--ink); resize: vertical;
+  }
+  .modal-actions { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1rem; }
+
+  /* ── JOURNAL ENTRY ── */
+  .journal-section { display: flex; flex-direction: column; gap: 1.5rem; }
+  .entry-composer {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.5rem;
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+  .entry-composer h2 {
+    font-family: 'IM Fell English', serif; font-size: 1.2rem;
+    color: var(--ink-light); margin-bottom: 1rem;
+    font-style: italic;
+  }
+  .mood-picker { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .mood-btn {
+    padding: 0.35rem 0.9rem; border-radius: 20px;
+    border: 1px solid var(--border); cursor: pointer;
+    font-size: 0.85rem; font-family: 'Crimson Pro', serif;
+    background: none; color: var(--ink-light); transition: all 0.2s;
+  }
+  .mood-btn:hover, .mood-btn.selected { color: white; border-color: transparent; }
+  .mood-btn[data-mood="Joyful"].selected { background: var(--mood-joy); }
+  .mood-btn[data-mood="Calm"].selected { background: var(--mood-calm); }
+  .mood-btn[data-mood="Sad"].selected { background: var(--mood-sad); }
+  .mood-btn[data-mood="Angry"].selected { background: var(--mood-angry); }
+  .mood-btn[data-mood="Grateful"].selected { background: var(--mood-grateful); }
+  .mood-btn[data-mood="Anxious"].selected { background: var(--mood-anxious); }
+  .mood-btn[data-mood="Joyful"]:hover { background: var(--mood-joy); }
+  .mood-btn[data-mood="Calm"]:hover { background: var(--mood-calm); }
+  .mood-btn[data-mood="Sad"]:hover { background: var(--mood-sad); }
+  .mood-btn[data-mood="Angry"]:hover { background: var(--mood-angry); }
+  .mood-btn[data-mood="Grateful"]:hover { background: var(--mood-grateful); }
+  .mood-btn[data-mood="Anxious"]:hover { background: var(--mood-anxious); }
+
+  .journal-textarea {
+    width: 100%; min-height: 140px; padding: 1rem;
+    font-family: 'Crimson Pro', serif; font-size: 1.1rem; line-height: 1.8;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 4px; color: var(--ink); resize: vertical;
+    transition: border-color 0.2s;
+  }
+  .journal-textarea:focus { outline: none; border-color: var(--accent2); }
+  .entry-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+  .char-count { font-size: 0.85rem; color: var(--ink-faint); }
+  .entry-actions { display: flex; gap: 0.75rem; }
+
+  /* ── ENTRIES LIST ── */
+  .search-bar {
+    display: flex; gap: 0.75rem; align-items: center;
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.6rem 1rem;
+  }
+  .search-bar input {
+    flex: 1; background: none; border: none; outline: none;
+    font-family: 'Crimson Pro', serif; font-size: 1rem; color: var(--ink);
+  }
+  .search-bar input::placeholder { color: var(--ink-faint); }
+  .filter-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+  .filter-chip {
+    padding: 0.25rem 0.75rem; border-radius: 20px;
+    border: 1px solid var(--border); cursor: pointer;
+    font-size: 0.82rem; font-family: 'Crimson Pro', serif;
+    background: none; color: var(--ink-faint); transition: all 0.2s;
+  }
+  .filter-chip.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+  .entries-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+  .entry-card {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.25rem 1.5rem;
+    box-shadow: 0 2px 12px var(--shadow);
+    transition: box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .entry-card:hover { box-shadow: 0 4px 24px var(--shadow); }
+  .entry-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+  .entry-date { font-size: 0.85rem; color: var(--ink-faint); letter-spacing: 0.05em; }
+  .mood-tag {
+    font-size: 0.78rem; padding: 0.2rem 0.65rem;
+    border-radius: 12px; color: white; font-family: 'Crimson Pro', serif;
+  }
+  .entry-preview {
+    font-size: 1rem; color: var(--ink-light); line-height: 1.6;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .entry-card-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; justify-content: flex-end; }
+  .btn-sm {
+    font-size: 0.82rem; padding: 0.25rem 0.65rem; border-radius: 4px;
+    cursor: pointer; font-family: 'Crimson Pro', serif; transition: all 0.2s;
+  }
+  .btn-danger { background: none; border: 1px solid #c0392b; color: #c0392b; }
+  .btn-danger:hover { background: #c0392b; color: white; }
+  .btn-edit { background: none; border: 1px solid var(--border); color: var(--ink-light); }
+  .btn-edit:hover { background: var(--bg2); }
+
+  /* ── MOOD CHART ── */
+  .mood-page { display: flex; flex-direction: column; gap: 1.5rem; }
+  .mood-chart-card {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.5rem;
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+  .mood-chart-card h2 {
+    font-family: 'IM Fell English', serif; font-size: 1.2rem;
+    color: var(--ink-light); margin-bottom: 1.5rem; font-style: italic;
+  }
+  .mood-bars { display: flex; flex-direction: column; gap: 0.75rem; }
+  .mood-row { display: flex; align-items: center; gap: 1rem; }
+  .mood-label { width: 80px; font-size: 0.9rem; color: var(--ink-light); text-align: right; }
+  .mood-bar-track { flex: 1; height: 20px; background: var(--bg2); border-radius: 10px; overflow: hidden; }
+  .mood-bar-fill { height: 100%; border-radius: 10px; transition: width 0.8s ease; }
+  .mood-count { font-size: 0.85rem; color: var(--ink-faint); width: 30px; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+  .stat-card {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.25rem; text-align: center;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  .stat-number { font-family: 'IM Fell English', serif; font-size: 2.5rem; color: var(--accent); }
+  .stat-label { font-size: 0.85rem; color: var(--ink-faint); margin-top: 0.25rem; }
+
+  /* ── QUOTES PAGE ── */
+  .quotes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem; }
+  .quote-card-mini {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.25rem;
+    font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic;
+    color: var(--ink-light); line-height: 1.6;
+    box-shadow: 0 2px 12px var(--shadow);
+    position: relative;
+  }
+  .quote-card-mini .del-quote {
+    position: absolute; top: 0.5rem; right: 0.5rem;
+    background: none; border: none; cursor: pointer;
+    color: var(--ink-faint); font-size: 0.85rem; opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .quote-card-mini:hover .del-quote { opacity: 1; }
+  .quote-card-mini .del-quote:hover { color: var(--accent); }
+
+  /* ── EXPORT AREA ── */
+  .export-section {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.5rem;
+    box-shadow: 0 4px 20px var(--shadow);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: gap;
+  }
+  .export-section p { color: var(--ink-light); font-size: 1rem; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: var(--ink); color: var(--paper);
+    padding: 0.75rem 1.5rem; border-radius: 6px;
+    font-size: 0.95rem; font-family: 'Crimson Pro', serif;
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.3s; z-index: 999;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    header, .tabs { padding-left: 1rem; padding-right: 1rem; }
+    .page { padding: 1.25rem 1rem; }
+    .logo { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    The Last Bookmark
+    <span>— Journal Edition</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn-icon" id="themeToggle" title="Toggle dark mode">🕯️</button>
+    <button class="btn-icon" onclick="openModal('addQuoteModal')">+ Quote</button>
+  </div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('home')">✦ Home</button>
+  <button class="tab" onclick="showTab('journal')">📖 Journal</button>
+  <button class="tab" onclick="showTab('pages')">My Pages</button>
+  <button class="tab" onclick="showTab('moods')">Mood Tracker</button>
+  <button class="tab" onclick="showTab('quotes')">Quotes</button>
+</div>
+
+<!-- HOME TAB -->
+<div class="page active" id="tab-home">
+  <div class="quote-card">
+    <p class="quote-text" id="quoteText">Click below to reveal a quote...</p>
+    <div class="quote-actions">
+      <button class="btn btn-primary" onclick="showRandomQuote()">Next Quote ✨</button>
+      <button class="btn btn-outline" onclick="saveQuoteFav()">♡ Save</button>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number" id="totalEntries">0</div>
+      <div class="stat-label">Journal Entries</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="totalWords">0</div>
+      <div class="stat-label">Words Written</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="streakDays">0</div>
+      <div class="stat-label">Day Streak</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="topMoodStat">—</div>
+      <div class="stat-label">Most Felt Mood</div>
+    </div>
+  </div>
+</div>
+
+<!-- JOURNAL TAB -->
+<div class="page" id="tab-journal">
+  <div class="journal-section">
+    <div class="entry-composer">
+      <h2>Write Today's Thought</h2>
+      <div class="mood-picker" id="moodPicker">
+        <button class="mood-btn" data-mood="Joyful" onclick="selectMood(this)">😊 Joyful</button>
+        <button class="mood-btn" data-mood="Calm" onclick="selectMood(this)">😌 Calm</button>
+        <button class="mood-btn" data-mood="Sad" onclick="selectMood(this)">😔 Sad</button>
+        <button class="mood-btn" data-mood="Angry" onclick="selectMood(this)">😤 Angry</button>
+        <button class="mood-btn" data-mood="Grateful" onclick="selectMood(this)">🙏 Grateful</button>
+        <button class="mood-btn" data-mood="Anxious" onclick="selectMood(this)">😰 Anxious</button>
+      </div>
+      <textarea class="journal-textarea" id="entryText" placeholder="What's on your mind today..." oninput="updateCharCount()"></textarea>
+      <div class="entry-footer">
+        <span class="char-count" id="charCount">0 words</span>
+        <div class="entry-actions">
+          <button class="btn btn-outline" onclick="clearEntry()">Clear</button>
+          <button class="btn btn-primary" onclick="saveEntry()">Save Entry 🕯️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MY PAGES TAB -->
+<div class="page" id="tab-pages">
+  <div class="search-bar">
+    <span style="color:var(--ink-faint)">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search your entries..." oninput="renderEntries()"/>
+  </div>
+  <div class="filter-row" id="moodFilters">
+    <button class="filter-chip active" data-filter="All" onclick="setFilter(this)">All</button>
+    <button class="filter-chip" data-filter="Joyful" onclick="setFilter(this)">😊 Joyful</button>
+    <button class="filter-chip" data-filter="Calm" onclick="setFilter(this)">😌 Calm</button>
+    <button class="filter-chip" data-filter="Sad" onclick="setFilter(this)">😔 Sad</button>
+    <button class="filter-chip" data-filter="Angry" onclick="setFilter(this)">😤 Angry</button>
+    <button class="filter-chip" data-filter="Grateful" onclick="setFilter(this)">🙏 Grateful</button>
+    <button class="filter-chip" data-filter="Anxious" onclick="setFilter(this)">😰 Anxious</button>
+  </div>
+  <div class="entries-list" id="entriesList"></div>
+
+  <div class="export-section" style="margin-top:1.5rem">
+    <p>Export all your entries as a text file</p>
+    <button class="btn btn-primary" onclick="exportEntries()">Export Journal 📄</button>
+  </div>
+</div>
+
+<!-- MOOD TRACKER TAB -->
+<div class="page" id="tab-moods">
+  <div class="mood-page">
+    <div class="mood-chart-card">
+      <h2>Your Mood Over Time</h2>
+      <div class="mood-bars" id="moodBars"></div>
+    </div>
+    <div class="mood-chart-card">
+      <h2>Recent Mood Timeline</h2>
+      <div id="moodTimeline" style="display:flex;flex-wrap:wrap;gap:0.5rem;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUOTES TAB -->
+<div class="page" id="tab-quotes">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+    <h2 style="font-family:'IM Fell English',serif;font-size:1.3rem;color:var(--ink-light);font-style:italic;">Your Quote Collection</h2>
+    <button class="btn btn-primary" onclick="openModal('addQuoteModal')">+ Add Quote</button>
+  </div>
+  <div class="quotes-grid" id="quotesGrid"></div>
+</div>
+
+<!-- ADD QUOTE MODAL -->
+<div class="modal-overlay" id="addQuoteModal">
+  <div class="modal">
+    <h3>Add Your Own Quote</h3>
+    <textarea id="newQuoteText" placeholder="Write a quote that resonates with you..."></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('addQuoteModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="addQuote()">Save Quote</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ── //
+const MOOD_COLORS = {
+  Joyful: '#e8a838', Calm: '#4a90a4', Sad: '#6b7fa3',
+  Angry: '#c0392b', Grateful: '#6aaa6a', Anxious: '#9b59b6'
+};
+
+let quotes = [
+  "What a privilege it is to feel discomfort in the pursuit of a goal I chose to pursue.",
+  "No reason to stay is a good reason to go.",
+  "What goes around comes back around.",
+  "Always the poet, never the poem.",
+  "What a privilege to be tired from the work you once begged the universe for.",
+  "What a privilege to feel overwhelmed by the growth you used to dream about.",
+  "What a privilege to be challenged by a life you created on purpose.",
+  "How lovely is the silence of growing things.",
+  "In the graveyard of the sea, there is nothing but eternity.",
+  "Everyone you idolize wakes up scared to be themselves sometimes.",
+  "Some people are so poor, all they have is money.",
+  "Whoever gives nothing has nothing.",
+  "The greatest misfortune is not to be unloved, but not to love.",
+  "Can a man possessing consciousness ever really respect himself?",
+  "The habit of despair is worse than despair itself.",
+  "Forgive me for not answering your eyes.",
+  "Everything you love will be gone one day — but love will return in another way.",
+  "We're all broken; that's how the light gets in.",
+  "You don't need revenge. You need faith — God rebuilds you in front of the people who broke you.",
+  "When the roots are deep, there is no reason to fear the wind.",
+  "Where did all the years go?",
+  "Home is where the heart is.",
+  "The deeper the grief, the closer is God.",
+  "A heart rich in goodness will always find contentment."
+];
+
+let entries = [
+  { id: 1, date: "2025-09-12", mood: "Grateful", text: "Started working on PharmEase today. It's finally coming together. There's something deeply satisfying about seeing the database connect properly for the first time." },
+  { id: 2, date: "2025-10-01", mood: "Calm", text: "Autumn feels different this year. I sat by the window for a long time just watching the light change. Some days don't need to be productive to be meaningful." },
+  { id: 3, date: "2025-10-15", mood: "Anxious", text: "Submitted the vice chancellor scholarship application. Not sure if my projects are strong enough. But I've done what I can — the rest isn't mine to control." },
+  { id: 4, date: "2025-11-03", mood: "Joyful", text: "The Last Bookmark finally has the dark mode working. Stayed up till 2am getting the colors right. Worth it. There's a kind of joy that only comes from making something beautiful." },
+  { id: 5, date: "2025-12-20", mood: "Sad", text: "Some goodbyes don't announce themselves. You only realize after the fact that it was the last time." },
+  { id: 6, date: "2026-01-07", mood: "Grateful", text: "New year. New chapter. Grateful for the hard lessons that didn't break me — they just redirected me." },
+  { id: 7, date: "2026-02-14", mood: "Calm", text: "Read for three hours straight today. No phone, no noise. Just me and a book and a cup of tea going cold. I'd forgotten how restorative silence is." },
+  { id: 8, date: "2026-03-02", mood: "Joyful", text: "Got feedback that my code was clean and readable. A small thing, but it meant the world. I'm getting better." }
+];
+
+let selectedMood = '';
+let activeFilter = 'All';
+let currentEditId = null;
+let darkMode = false;
+
+// ── TABS ── //
+function showTab(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'pages') renderEntries();
+  if (name === 'moods') renderMoods();
+  if (name === 'quotes') renderQuotes();
+  if (name === 'home') updateStats();
+}
+
+// ── THEME ── //
+document.getElementById('themeToggle').addEventListener('click', () => {
+  darkMode = !darkMode;
+  document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : '');
+  document.getElementById('themeToggle').textContent = darkMode ? '☀️' : '🕯️';
+});
+
+// ── QUOTES ── //
+function showRandomQuote() {
+  const el = document.getElementById('quoteText');
+  el.style.opacity = 0;
+  setTimeout(() => {
+    el.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+    el.style.opacity = 1;
+  }, 300);
+}
+
+function saveQuoteFav() { toast('Quote saved to your favourites ♡'); }
+
+function renderQuotes() {
+  const grid = document.getElementById('quotesGrid');
+  grid.innerHTML = quotes.map((q, i) => `
+    <div class="quote-card-mini">
+      "${q}"
+      <button class="del-quote" onclick="deleteQuote(${i})">✕</button>
+    </div>
+  `).join('');
+}
+
+function addQuote() {
+  const text = document.getElementById('newQuoteText').value.trim();
+  if (!text) return;
+  quotes.push(text);
+  document.getElementById('newQuoteText').value = '';
+  closeModal('addQuoteModal');
+  renderQuotes();
+  toast('Quote added to your collection ✦');
+}
+
+function deleteQuote(i) {
+  quotes.splice(i, 1);
+  renderQuotes();
+  toast('Quote removed');
+}
+
+// ── JOURNAL ── //
+function selectMood(btn) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedMood = btn.dataset.mood;
+}
+
+function updateCharCount() {
+  const words = document.getElementById('entryText').value.trim().split(/\s+/).filter(Boolean).length;
+  document.getElementById('charCount').textContent = words + ' word' + (words !== 1 ? 's' : '');
+}
+
+function clearEntry() {
+  document.getElementById('entryText').value = '';
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  selectedMood = '';
+  updateCharCount();
+}
+
+function saveEntry() {
+  const text = document.getElementById('entryText').value.trim();
+  if (!text) { toast('Write something first...'); return; }
+  const today = new Date().toISOString().split('T')[0];
+  if (currentEditId) {
+    const e = entries.find(e => e.id === currentEditId);
+    if (e) { e.text = text; e.mood = selectedMood || e.mood; }
+    currentEditId = null;
+  } else {
+    entries.unshift({ id: Date.now(), date: today, mood: selectedMood || 'Calm', text });
+  }
+  clearEntry();
+  updateStats();
+  toast('Entry saved 🕯️');
+}
+
+// ── ENTRIES ── //
+function renderEntries() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  let filtered = entries.filter(e => {
+    const matchFilter = activeFilter === 'All' || e.mood === activeFilter;
+    const matchSearch = e.text.toLowerCase().includes(q) || e.date.includes(q);
+    return matchFilter && matchSearch;
+  });
+  const list = document.getElementById('entriesList');
+  if (!filtered.length) {
+    list.innerHTML = '<p style="color:var(--ink-faint);text-align:center;padding:2rem;">No entries found.</p>';
+    return;
+  }
+  list.innerHTML = filtered.map(e => `
+    <div class="entry-card">
+      <div class="entry-card-header">
+        <span class="entry-date">${formatDate(e.date)}</span>
+        <span class="mood-tag" style="background:${MOOD_COLORS[e.mood] || '#999'}">${e.mood || '—'}</span>
+      </div>
+      <p class="entry-preview">${e.text}</p>
+      <div class="entry-card-actions">
+        <button class="btn-sm btn-edit" onclick="editEntry(${e.id})">Edit</button>
+        <button class="btn-sm btn-danger" onclick="deleteEntry(${e.id})">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function editEntry(id) {
+  const e = entries.find(e => e.id === id);
+  if (!e) return;
+  currentEditId = id;
+  document.getElementById('entryText').value = e.text;
+  selectedMood = e.mood;
+  document.querySelectorAll('.mood-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.mood === e.mood);
+  });
+  showTab('journal'); updateCharCount();
+  document.querySelectorAll('.tab').forEach((t,i) => { if(i===1) t.classList.add('active'); else t.classList.remove('active'); });
+}
+
+function deleteEntry(id) {
+  entries = entries.filter(e => e.id !== id);
+  renderEntries();
+  updateStats();
+  toast('Entry deleted');
+}
+
+function setFilter(btn) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.filter;
+  renderEntries();
+}
+
+function exportEntries() {
+  const content = entries.map(e =>
+    `${formatDate(e.date)} [${e.mood}]\n${e.text}\n`
+  ).join('\n---\n\n');
+  const blob = new Blob([content], { type: 'text/plain' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'my_journal.txt'; a.click();
+  toast('Journal exported 📄');
+}
+
+// ── MOODS ── //
+function renderMoods() {
+  const counts = {};
+  Object.keys(MOOD_COLORS).forEach(m => counts[m] = 0);
+  entries.forEach(e => { if (counts[e.mood] !== undefined) counts[e.mood]++; });
+  const max = Math.max(...Object.values(counts), 1);
+
+  document.getElementById('moodBars').innerHTML = Object.entries(counts).map(([mood, count]) => `
+    <div class="mood-row">
+      <span class="mood-label">${mood}</span>
+      <div class="mood-bar-track">
+        <div class="mood-bar-fill" style="width:${(count/max)*100}%;background:${MOOD_COLORS[mood]}"></div>
+      </div>
+      <span class="mood-count">${count}</span>
+    </div>
+  `).join('');
+
+  const timeline = document.getElementById('moodTimeline');
+  timeline.innerHTML = entries.slice().reverse().map(e => `
+    <div title="${formatDate(e.date)}: ${e.mood}" style="
+      width:36px;height:36px;border-radius:50%;
+      background:${MOOD_COLORS[e.mood] || '#ccc'};
+      display:flex;align-items:center;justify-content:center;
+      font-size:0.7rem;color:white;cursor:default;
+      box-shadow:0 2px 6px rgba(0,0,0,0.2)
+    ">${e.mood.slice(0,2)}</div>
+  `).join('');
+}
+
+// ── STATS ── //
+function updateStats() {
+  document.getElementById('totalEntries').textContent = entries.length;
+  const words = entries.reduce((s, e) => s + e.text.split(/\s+/).filter(Boolean).length, 0);
+  document.getElementById('totalWords').textContent = words;
+  const counts = {};
+  entries.forEach(e => counts[e.mood] = (counts[e.mood] || 0) + 1);
+  const top = Object.entries(counts).sort((a,b) => b[1]-a[1])[0];
+  document.getElementById('topMoodStat').textContent = top ? top[0].slice(0,3) : '—';
+  document.getElementById('streakDays').textContent = calcStreak();
+}
+
+function calcStreak() {
+  const dates = [...new Set(entries.map(e => e.date))].sort().reverse();
+  if (!dates.length) return 0;
+  let streak = 0, d = new Date();
+  for (const date of dates) {
+    const diff = Math.floor((d - new Date(date)) / 86400000);
+    if (diff <= 1) { streak++; d = new Date(date); } else break;
+  }
+  return streak;
+}
+
+// ── HELPERS ── //
+function formatDate(d) {
+  return new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+
+// ── INIT ── //
+showRandomQuote();
+updateStats();
+</script>
+</body>
+</html>
