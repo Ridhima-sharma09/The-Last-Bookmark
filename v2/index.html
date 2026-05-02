@@ -29,6 +29,7 @@
     --mood-angry: #c24b38;
     --mood-grateful: #6da367;
     --mood-anxious: #9564b0;
+    --crisis: #c24b38;
   }
 
   [data-theme="dark"] {
@@ -50,11 +51,7 @@
       linear-gradient(135deg, #1d130d 0%, #24170f 100%);
   }
 
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     min-height: 100vh;
@@ -79,17 +76,8 @@
       radial-gradient(circle at 82% 14%, rgba(152, 81, 51, 0.08), transparent 16%);
   }
 
-  button,
-  input,
-  textarea {
-    font: inherit;
-  }
-
-  button {
-    border: 0;
-    background: none;
-    color: inherit;
-  }
+  button, input, textarea { font: inherit; }
+  button { border: 0; background: none; color: inherit; }
 
   .app-shell {
     width: min(1240px, calc(100% - 2rem));
@@ -108,307 +96,105 @@
   .app-shell::before {
     content: "";
     position: absolute;
-    top: -24px;
-    right: 7%;
-    width: 112px;
-    height: 146px;
+    top: -24px; right: 7%;
+    width: 112px; height: 146px;
     border-radius: 0 0 18px 18px;
     background: linear-gradient(180deg, rgba(152, 81, 51, 0.95), rgba(115, 56, 33, 0.88));
     box-shadow: 0 18px 36px rgba(0, 0, 0, 0.16);
     z-index: 2;
   }
 
-  .app-shell::after {
-    content: "";
-    position: absolute;
-    top: 92px;
-    right: 7%;
-    width: 112px;
-    height: 30px;
-    background: linear-gradient(180deg, rgba(246, 239, 228, 0.94), rgba(246, 239, 228, 0));
-    z-index: 2;
-  }
-
   .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
     padding: 1.1rem 1.45rem;
     border-bottom: 1px solid var(--line);
     background: rgba(255, 249, 241, 0.56);
     backdrop-filter: blur(18px);
   }
 
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
+  .brand { display: flex; align-items: center; gap: 1rem; }
 
   .brand-mark {
-    width: 50px;
-    height: 50px;
-    display: grid;
-    place-items: center;
-    border-radius: 16px;
-    color: #fff9f1;
+    width: 50px; height: 50px;
+    display: grid; place-items: center;
+    border-radius: 16px; color: #fff9f1;
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 12px 22px rgba(115, 56, 33, 0.18);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.24), 0 12px 22px rgba(115,56,33,0.18);
   }
 
-  .brand p {
-    color: var(--ink-faint);
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
+  .brand p { color: var(--ink-faint); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .brand h1 { font-family: "IM Fell English", serif; font-size: 1.65rem; font-weight: 400; letter-spacing: 0.02em; }
 
-  .brand h1 {
-    font-family: "IM Fell English", serif;
-    font-size: 1.65rem;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-  }
+  .topbar-actions { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
 
-  .topbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
+  .badge { padding: 0.48rem 0.9rem; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.26); color: var(--ink-soft); font-size: 0.9rem; }
 
-  .badge {
-    padding: 0.48rem 0.9rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.26);
-    color: var(--ink-soft);
-    font-size: 0.9rem;
-  }
-
-  .btn-icon,
-  .btn,
-  .tab {
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  }
-
-  .btn-icon,
-  .btn {
-    border-radius: 14px;
-  }
-
-  .btn-icon {
-    min-width: 44px;
-    padding: 0.74rem 0.95rem;
-    border: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.28);
-    color: var(--ink-soft);
-  }
-
-  .btn {
-    padding: 0.78rem 1.2rem;
-    letter-spacing: 0.02em;
-  }
-
-  .btn-primary {
-    color: #fff9f1;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
-    box-shadow: 0 12px 22px rgba(115, 56, 33, 0.18);
-  }
-
-  .btn-outline {
-    border: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.24);
-    color: var(--ink-soft);
-  }
-
-  .btn-icon:hover,
-  .btn:hover,
-  .tab:hover,
-  .card-hover:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 14px 24px var(--shadow);
-  }
+  .btn-icon, .btn, .tab { cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
+  .btn-icon, .btn { border-radius: 14px; }
+  .btn-icon { min-width: 44px; padding: 0.74rem 0.95rem; border: 1px solid var(--line); background: rgba(255,255,255,0.28); color: var(--ink-soft); }
+  .btn { padding: 0.78rem 1.2rem; letter-spacing: 0.02em; }
+  .btn-primary { color: #fff9f1; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%); box-shadow: 0 12px 22px rgba(115,56,33,0.18); }
+  .btn-outline { border: 1px solid var(--line); background: rgba(255,255,255,0.24); color: var(--ink-soft); }
+  .btn-anchor { color: #fff; background: linear-gradient(135deg, #7282a7 0%, #4a5a80 100%); box-shadow: 0 12px 22px rgba(74,90,128,0.28); }
+  .btn-icon:hover, .btn:hover, .tab:hover, .card-hover:hover { transform: translateY(-1px); box-shadow: 0 14px 24px var(--shadow); }
 
   .announcement {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap;
     padding: 0.78rem 1.3rem;
     background: linear-gradient(90deg, var(--accent) 0%, #bf8860 100%);
-    color: #fff8f2;
-    font-size: 0.9rem;
-    letter-spacing: 0.03em;
-    text-align: center;
+    color: #fff8f2; font-size: 0.9rem; letter-spacing: 0.03em; text-align: center;
   }
+  .announcement strong { font-weight: 600; }
 
-  .announcement strong {
-    font-weight: 600;
-  }
-
-  .content-grid {
-    display: grid;
-    grid-template-columns: 220px minmax(0, 1fr);
-    min-height: 80vh;
-  }
+  .content-grid { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 80vh; }
 
   .sidebar {
     padding: 1.2rem 1rem 1.35rem 1.2rem;
     border-right: 1px solid var(--line);
-    background: linear-gradient(180deg, rgba(255, 249, 241, 0.42), rgba(255, 249, 241, 0.12));
+    background: linear-gradient(180deg, rgba(255,249,241,0.42), rgba(255,249,241,0.12));
   }
 
-  .tab-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-  }
+  .tab-list { display: flex; flex-direction: column; gap: 0.7rem; }
 
   .tab {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    text-align: left;
-    padding: 0.85rem 0.95rem;
-    border-radius: 16px;
-    border: 1px solid transparent;
-    color: var(--ink-faint);
+    width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    text-align: left; padding: 0.85rem 0.95rem; border-radius: 16px; border: 1px solid transparent; color: var(--ink-faint);
   }
+  .tab strong { display: block; color: var(--ink); font-size: 1rem; font-weight: 500; }
+  .tab span span { display: block; margin-top: 0.12rem; color: var(--ink-faint); font-size: 0.82rem; }
+  .tab.active { color: var(--accent); border-color: rgba(152,81,51,0.16); background: linear-gradient(135deg, rgba(152,81,51,0.11), rgba(216,178,138,0.15)); box-shadow: inset 0 1px 0 rgba(255,255,255,0.22); }
+  .tab-kicker { font-size: 1.2rem; }
 
-  .tab strong {
-    display: block;
-    color: var(--ink);
-    font-size: 1rem;
-    font-weight: 500;
-  }
-
-  .tab span span {
-    display: block;
-    margin-top: 0.12rem;
-    color: var(--ink-faint);
-    font-size: 0.82rem;
-  }
-
-  .tab.active {
-    color: var(--accent);
-    border-color: rgba(152, 81, 51, 0.16);
-    background: linear-gradient(135deg, rgba(152, 81, 51, 0.11), rgba(216, 178, 138, 0.15));
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  }
-
-  .tab-kicker {
-    font-size: 1.2rem;
-  }
-
-  .sidebar-note,
-  .privacy-note {
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    box-shadow: 0 16px 30px var(--shadow);
-  }
-
-  .sidebar-note {
-    margin-top: 1.2rem;
-    padding: 1rem;
-    background: var(--hero);
-  }
-
-  .sidebar-note h2,
-  .privacy-note h3 {
-    font-family: "IM Fell English", serif;
-    font-weight: 400;
-  }
-
-  .sidebar-note h2 {
-    font-size: 1.16rem;
-    margin-bottom: 0.45rem;
-  }
-
-  .sidebar-note p,
-  .privacy-note p {
-    color: var(--ink-soft);
-    line-height: 1.55;
-  }
-
-  .privacy-note {
-    margin-top: 1rem;
-    padding: 0.95rem 1rem;
-    background: rgba(255, 255, 255, 0.22);
-  }
-
-  .privacy-note h3 {
-    margin-bottom: 0.35rem;
-    color: var(--accent);
-    font-size: 0.94rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+  .sidebar-note, .privacy-note { border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 16px 30px var(--shadow); }
+  .sidebar-note { margin-top: 1.2rem; padding: 1rem; background: var(--hero); }
+  .sidebar-note h2, .privacy-note h3 { font-family: "IM Fell English", serif; font-weight: 400; }
+  .sidebar-note h2 { font-size: 1.16rem; margin-bottom: 0.45rem; }
+  .sidebar-note p, .privacy-note p { color: var(--ink-soft); line-height: 1.55; }
+  .privacy-note { margin-top: 1rem; padding: 0.95rem 1rem; background: rgba(255,255,255,0.22); }
+  .privacy-note h3 { margin-bottom: 0.35rem; color: var(--accent); font-size: 0.94rem; letter-spacing: 0.08em; text-transform: uppercase; }
 
   main {
     padding: 1.55rem;
     background:
-      linear-gradient(180deg, rgba(255, 252, 247, 0.16), rgba(255, 252, 247, 0)),
-      radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 22%);
+      linear-gradient(180deg, rgba(255,252,247,0.16), rgba(255,252,247,0)),
+      radial-gradient(circle at top left, rgba(255,255,255,0.12), transparent 22%);
   }
 
-  .page {
-    display: none;
-    animation: fadeSlide 0.35s ease;
-  }
-
-  .page.active {
-    display: block;
-  }
+  .page { display: none; animation: fadeSlide 0.35s ease; }
+  .page.active { display: block; }
 
   @keyframes fadeSlide {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  .section-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
+  .section-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+  .section-header h2 { font-family: "IM Fell English", serif; font-size: 1.58rem; font-weight: 400; }
+  .section-header p { max-width: 540px; color: var(--ink-soft); line-height: 1.55; }
 
-  .section-header h2 {
-    font-family: "IM Fell English", serif;
-    font-size: 1.58rem;
-    font-weight: 400;
-  }
-
-  .section-header p {
-    max-width: 540px;
-    color: var(--ink-soft);
-    line-height: 1.55;
-  }
-
-  .hero-panel,
-  .quote-card,
-  .stat-card,
-  .story-card,
-  .privacy-card,
-  .entry-composer,
-  .prompt-card,
-  .search-bar,
-  .entry-card,
-  .mood-chart-card,
-  .quote-card-mini,
-  .export-section {
+  .hero-panel, .quote-card, .stat-card, .story-card, .privacy-card, .entry-composer,
+  .prompt-card, .search-bar, .entry-card, .mood-chart-card, .quote-card-mini, .export-section,
+  .alone-card, .letter-card, .pressure-card {
     border: 1px solid var(--line);
     background: var(--paper-tint);
     box-shadow: 0 20px 44px var(--shadow);
@@ -416,487 +202,89 @@
   }
 
   .hero-panel {
-    position: relative;
-    overflow: hidden;
-    border-radius: 30px;
-    padding: 2.2rem;
-    margin-bottom: 1.25rem;
-    background: var(--hero);
+    position: relative; overflow: hidden; border-radius: 30px; padding: 2.2rem; margin-bottom: 1.25rem; background: var(--hero);
   }
+  .hero-panel::before { content: ""; position: absolute; inset: 18px; border: 1px solid rgba(152,81,51,0.08); border-radius: 24px; pointer-events: none; }
+  .hero-panel::after { content: ""; position: absolute; inset: auto -70px -80px auto; width: 230px; height: 230px; border-radius: 50%; background: radial-gradient(circle, rgba(255,251,246,0.44) 0%, rgba(255,251,246,0) 70%); }
 
-  .hero-panel::before {
-    content: "";
-    position: absolute;
-    inset: 18px;
-    border: 1px solid rgba(152, 81, 51, 0.08);
-    border-radius: 24px;
-    pointer-events: none;
-  }
-
-  .hero-panel::after {
-    content: "";
-    position: absolute;
-    inset: auto -70px -80px auto;
-    width: 230px;
-    height: 230px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 251, 246, 0.44) 0%, rgba(255, 251, 246, 0) 70%);
-  }
-
-  .hero-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.18fr) minmax(340px, 0.82fr);
-    gap: 1.2rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-copy h2 {
-    font-family: "IM Fell English", serif;
-    font-size: clamp(2rem, 4vw, 3.05rem);
-    font-weight: 400;
-    line-height: 1.04;
-    margin-bottom: 0.9rem;
-  }
-
-  .hero-copy p {
-    max-width: 590px;
-    color: var(--ink-soft);
-    line-height: 1.66;
-    font-size: 1.12rem;
-  }
-
-  .hero-meta {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-top: 1.1rem;
-  }
-
-  .pill {
-    padding: 0.5rem 0.86rem;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.42);
-    background: rgba(255, 255, 255, 0.3);
-    color: var(--ink-soft);
-    font-size: 0.9rem;
-  }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(340px, 0.82fr); gap: 1.2rem; position: relative; z-index: 1; }
+  .hero-copy h2 { font-family: "IM Fell English", serif; font-size: clamp(2rem, 4vw, 3.05rem); font-weight: 400; line-height: 1.04; margin-bottom: 0.9rem; }
+  .hero-copy p { max-width: 590px; color: var(--ink-soft); line-height: 1.66; font-size: 1.12rem; }
+  .hero-meta { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.1rem; }
+  .pill { padding: 0.5rem 0.86rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.42); background: rgba(255,255,255,0.3); color: var(--ink-soft); font-size: 0.9rem; }
 
   .quote-card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 1.2rem;
-    min-height: 100%;
-    border-radius: 26px;
-    padding: 1.8rem;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.34), rgba(255,255,255,0.08)),
-      var(--paper-tint);
+    position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 1.2rem;
+    min-height: 100%; border-radius: 26px; padding: 1.8rem;
+    background: linear-gradient(180deg, rgba(255,255,255,0.34), rgba(255,255,255,0.08)), var(--paper-tint);
   }
+  .quote-card::before { content: "\201C"; position: absolute; top: 0.35rem; left: 1rem; font-family: "IM Fell English", serif; font-size: 5rem; line-height: 1; color: rgba(152,81,51,0.18); }
+  .quote-text { position: relative; z-index: 1; min-height: 120px; margin-top: 1.1rem; font-family: "Cormorant Garamond", serif; font-size: 1.52rem; line-height: 1.56; }
+  .quote-actions, .entry-actions, .modal-actions, .top-row-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 
-  .quote-card::before {
-    content: "\201C";
-    position: absolute;
-    top: 0.35rem;
-    left: 1rem;
-    font-family: "IM Fell English", serif;
-    font-size: 5rem;
-    line-height: 1;
-    color: rgba(152, 81, 51, 0.18);
-  }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 1.15rem; }
+  .stat-card { padding: 1.15rem 1.05rem; background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.08)), var(--paper-tint); border-radius: 24px; }
+  .stat-card p { color: var(--ink-faint); font-size: 0.84rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .stat-number { display: block; margin-top: 0.48rem; font-family: "IM Fell English", serif; font-size: clamp(2rem, 3vw, 2.8rem); color: var(--accent); }
 
-  .quote-text {
-    position: relative;
-    z-index: 1;
-    min-height: 120px;
-    margin-top: 1.1rem;
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.52rem;
-    line-height: 1.56;
-  }
+  .home-story-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(300px, 0.88fr); gap: 1.15rem; margin-top: 1.15rem; }
 
-  .quote-actions,
-  .entry-actions,
-  .modal-actions,
-  .top-row-actions {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
+  .story-card, .privacy-card, .prompt-card { padding: 1.55rem; border-radius: 24px; }
+  .story-card h3, .privacy-card h3, .prompt-card h3, .entry-composer h3, .mood-chart-card h3 { font-family: "IM Fell English", serif; font-size: 1.34rem; font-weight: 400; margin-bottom: 0.6rem; }
+  .story-card p, .privacy-card p, .prompt-card p, .entry-subtitle { color: var(--ink-soft); line-height: 1.62; }
+  .story-card { background: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0.06)), var(--paper-tint); }
 
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
-    margin-top: 1.15rem;
-  }
+  .recent-entry-shell { margin-top: 1rem; padding: 1rem 1.05rem; border-radius: 20px; border: 1px dashed rgba(152,81,51,0.24); background: rgba(255,255,255,0.2); }
+  .recent-entry-meta { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.65rem; }
+  .recent-entry-shell h4 { color: var(--ink-faint); font-size: 0.86rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .recent-entry-shell blockquote { font-family: "Cormorant Garamond", serif; font-size: 1.26rem; line-height: 1.56; }
 
-  .stat-card,
-  .story-card,
-  .privacy-card,
-  .entry-composer,
-  .prompt-card,
-  .entry-card,
-  .mood-chart-card,
-  .quote-card-mini,
-  .export-section {
-    border-radius: 24px;
-  }
+  .privacy-card { background: linear-gradient(180deg, rgba(255,249,241,0.92), rgba(240,229,212,0.95)); }
+  .privacy-list, .prompt-stack { display: grid; gap: 0.8rem; margin-top: 1rem; }
+  .privacy-item, .prompt-fragment { padding: 0.95rem 1rem; border-radius: 18px; background: rgba(255,255,255,0.28); border: 1px solid rgba(152,81,51,0.12); }
+  .privacy-item { display: flex; gap: 0.8rem; align-items: flex-start; }
+  .privacy-item strong, .prompt-fragment strong { display: block; margin-bottom: 0.15rem; color: var(--ink); }
+  .privacy-item span, .prompt-fragment span { color: var(--ink-soft); line-height: 1.45; font-size: 0.96rem; }
 
-  .stat-card {
-    padding: 1.15rem 1.05rem;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.08)),
-      var(--paper-tint);
-  }
+  .ai-panel { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(152,81,51,0.12); }
+  .ai-header { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+  .ai-badge { padding: 0.3rem 0.68rem; border-radius: 999px; border: 1px solid rgba(152,81,51,0.18); background: rgba(152,81,51,0.08); color: var(--accent); font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
 
-  .stat-card p {
-    color: var(--ink-faint);
-    font-size: 0.84rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .stat-number {
-    display: block;
-    margin-top: 0.48rem;
-    font-family: "IM Fell English", serif;
-    font-size: clamp(2rem, 3vw, 2.8rem);
-    color: var(--accent);
-  }
-
-  .home-story-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.12fr) minmax(300px, 0.88fr);
-    gap: 1.15rem;
-    margin-top: 1.15rem;
-  }
-
-  .story-card,
-  .privacy-card,
-  .prompt-card {
-    padding: 1.55rem;
-  }
-
-  .story-card h3,
-  .privacy-card h3,
-  .prompt-card h3,
-  .entry-composer h3,
-  .mood-chart-card h3 {
-    font-family: "IM Fell English", serif;
-    font-size: 1.34rem;
-    font-weight: 400;
-    margin-bottom: 0.6rem;
-  }
-
-  .story-card p,
-  .privacy-card p,
-  .prompt-card p,
-  .entry-subtitle {
-    color: var(--ink-soft);
-    line-height: 1.62;
-  }
-
-  .story-card {
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0.06)),
-      var(--paper-tint);
-  }
-
-  .recent-entry-shell {
-    margin-top: 1rem;
-    padding: 1rem 1.05rem;
-    border-radius: 20px;
-    border: 1px dashed rgba(152, 81, 51, 0.24);
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  .recent-entry-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-bottom: 0.65rem;
-  }
-
-  .recent-entry-shell h4 {
-    color: var(--ink-faint);
-    font-size: 0.86rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .recent-entry-shell blockquote {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.26rem;
-    line-height: 1.56;
-  }
-
-  .privacy-card {
-    background:
-      linear-gradient(180deg, rgba(255, 249, 241, 0.92), rgba(240, 229, 212, 0.95));
-  }
-
-  .privacy-list,
-  .prompt-stack {
-    display: grid;
-    gap: 0.8rem;
-    margin-top: 1rem;
-  }
-
-  .privacy-item,
-  .prompt-fragment {
-    padding: 0.95rem 1rem;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.28);
-    border: 1px solid rgba(152, 81, 51, 0.12);
-  }
-
-  .privacy-item {
-    display: flex;
-    gap: 0.8rem;
-    align-items: flex-start;
-  }
-
-  .privacy-item strong,
-  .prompt-fragment strong {
-    display: block;
-    margin-bottom: 0.15rem;
-    color: var(--ink);
-  }
-
-  .privacy-item span,
-  .prompt-fragment span {
-    color: var(--ink-soft);
-    line-height: 1.45;
-    font-size: 0.96rem;
-  }
-
-  .ai-panel {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(152, 81, 51, 0.12);
-  }
-
-  .ai-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-bottom: 0.8rem;
-  }
-
-  .ai-badge {
-    padding: 0.3rem 0.68rem;
-    border-radius: 999px;
-    border: 1px solid rgba(152, 81, 51, 0.18);
-    background: rgba(152, 81, 51, 0.08);
-    color: var(--accent);
-    font-size: 0.8rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .ai-results {
-    display: grid;
-    gap: 0.75rem;
-    margin-top: 0.8rem;
-  }
-
-  .ai-card {
-    padding: 0.9rem 0.95rem;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.24);
-    border: 1px solid rgba(152, 81, 51, 0.12);
-  }
-
-  .ai-label {
-    display: block;
-    margin-bottom: 0.28rem;
-    color: var(--ink-faint);
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .ai-value {
-    color: var(--ink);
-    line-height: 1.5;
-  }
-
-  .ai-list {
-    display: grid;
-    gap: 0.45rem;
-    color: var(--ink-soft);
-    line-height: 1.45;
-  }
-
-  .journal-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
-    gap: 1.15rem;
-  }
-
+  .journal-layout { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr); gap: 1.15rem; }
   .entry-composer {
-    padding: 1.6rem;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.05)),
-      repeating-linear-gradient(
-        to bottom,
-        transparent 0,
-        transparent 39px,
-        rgba(152, 81, 51, 0.06) 39px,
-        rgba(152, 81, 51, 0.06) 40px
-      ),
+    padding: 1.6rem; border-radius: 24px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.05)),
+      repeating-linear-gradient(to bottom, transparent 0, transparent 39px, rgba(152,81,51,0.06) 39px, rgba(152,81,51,0.06) 40px),
       var(--paper-tint);
   }
 
   .ai-chat-shell {
-    position: sticky;
-    top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1.4rem;
-    min-height: 720px;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.24), rgba(255,255,255,0.08)),
-      var(--paper-tint);
+    position: sticky; top: 1rem; display: flex; flex-direction: column; gap: 1rem; padding: 1.4rem;
+    min-height: 720px; border-radius: 24px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.24), rgba(255,255,255,0.08)), var(--paper-tint);
   }
+  .ai-chat-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; }
+  .ai-chat-top h3 { margin-bottom: 0.2rem; }
+  .ai-chat-top p { margin: 0; }
+  .ai-chat-window { display: flex; flex-direction: column; gap: 0.75rem; padding: 0.25rem 0; }
+  .chat-bubble { max-width: 92%; padding: 0.9rem 1rem; border-radius: 18px; line-height: 1.5; box-shadow: 0 12px 24px rgba(52,33,17,0.08); }
+  .chat-bubble.assistant { align-self: flex-start; border: 1px solid rgba(152,81,51,0.14); background: rgba(255,255,255,0.34); color: var(--ink); }
+  .chat-bubble.user { align-self: flex-end; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%); color: #fff9f1; }
+  .chat-label { display: block; margin-bottom: 0.3rem; font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; }
 
-  .ai-chat-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 0.75rem;
-  }
+  .ai-quick-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
+  .quick-ai-btn { padding: 0.8rem 0.85rem; border-radius: 16px; border: 1px solid rgba(152,81,51,0.16); background: rgba(255,255,255,0.24); color: var(--ink-soft); text-align: left; cursor: pointer; transition: all 0.2s ease; }
+  .quick-ai-btn:hover { transform: translateY(-1px); background: rgba(152,81,51,0.08); border-color: rgba(152,81,51,0.28); }
+  .quick-ai-btn strong { display: block; margin-bottom: 0.18rem; color: var(--ink); font-size: 0.95rem; }
+  .quick-ai-btn span { display: block; font-size: 0.88rem; line-height: 1.35; }
+  .ai-output-stack { display: grid; gap: 0.75rem; }
+  .ai-output-card { padding: 0.95rem 1rem; border-radius: 18px; border: 1px solid rgba(152,81,51,0.12); background: rgba(255,255,255,0.24); }
+  .ai-loading { opacity: 0.6; font-style: italic; }
 
-  .ai-chat-top h3 {
-    margin-bottom: 0.2rem;
-  }
-
-  .ai-chat-top p {
-    margin: 0;
-  }
-
-  .ai-chat-window {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 0.25rem 0;
-  }
-
-  .chat-bubble {
-    max-width: 92%;
-    padding: 0.9rem 1rem;
-    border-radius: 18px;
-    line-height: 1.5;
-    box-shadow: 0 12px 24px rgba(52, 33, 17, 0.08);
-  }
-
-  .chat-bubble.assistant {
-    align-self: flex-start;
-    border: 1px solid rgba(152, 81, 51, 0.14);
-    background: rgba(255, 255, 255, 0.34);
-    color: var(--ink);
-  }
-
-  .chat-bubble.user {
-    align-self: flex-end;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
-    color: #fff9f1;
-  }
-
-  .chat-label {
-    display: block;
-    margin-bottom: 0.3rem;
-    font-size: 0.76rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0.75;
-  }
-
-  .ai-quick-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.6rem;
-  }
-
-  .quick-ai-btn {
-    padding: 0.8rem 0.85rem;
-    border-radius: 16px;
-    border: 1px solid rgba(152, 81, 51, 0.16);
-    background: rgba(255, 255, 255, 0.24);
-    color: var(--ink-soft);
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .quick-ai-btn:hover {
-    transform: translateY(-1px);
-    background: rgba(152, 81, 51, 0.08);
-    border-color: rgba(152, 81, 51, 0.28);
-  }
-
-  .quick-ai-btn strong {
-    display: block;
-    margin-bottom: 0.18rem;
-    color: var(--ink);
-    font-size: 0.95rem;
-  }
-
-  .quick-ai-btn span {
-    display: block;
-    font-size: 0.88rem;
-    line-height: 1.35;
-  }
-
-  .ai-output-stack {
-    display: grid;
-    gap: 0.75rem;
-  }
-
-  .ai-output-card {
-    padding: 0.95rem 1rem;
-    border-radius: 18px;
-    border: 1px solid rgba(152, 81, 51, 0.12);
-    background: rgba(255, 255, 255, 0.24);
-  }
-
-  .mood-picker,
-  .filter-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.55rem;
-  }
-
-  .mood-btn,
-  .filter-chip {
-    padding: 0.5rem 0.92rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.24);
-    color: var(--ink-soft);
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .mood-btn:hover,
-  .filter-chip:hover {
-    background: rgba(152, 81, 51, 0.08);
-    border-color: rgba(152, 81, 51, 0.3);
-  }
-
-  .mood-btn.selected,
-  .filter-chip.active {
-    color: #fff8f2;
-    border-color: transparent;
-  }
-
+  .mood-picker, .filter-row { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+  .mood-btn, .filter-chip { padding: 0.5rem 0.92rem; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,0.24); color: var(--ink-soft); cursor: pointer; transition: all 0.2s ease; }
+  .mood-btn:hover, .filter-chip:hover { background: rgba(152,81,51,0.08); border-color: rgba(152,81,51,0.3); }
+  .mood-btn.selected, .filter-chip.active { color: #fff8f2; border-color: transparent; }
   .mood-btn[data-mood="Joyful"].selected { background: var(--mood-joy); }
   .mood-btn[data-mood="Calm"].selected { background: var(--mood-calm); }
   .mood-btn[data-mood="Sad"].selected { background: var(--mood-sad); }
@@ -904,403 +292,197 @@
   .mood-btn[data-mood="Grateful"].selected { background: var(--mood-grateful); }
   .mood-btn[data-mood="Anxious"].selected { background: var(--mood-anxious); }
 
-  .journal-textarea,
-  .modal textarea,
-  .search-bar input {
-    width: 100%;
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    outline: none;
-    background: rgba(255, 255, 255, 0.22);
-    color: var(--ink);
-  }
+  .journal-textarea, .modal textarea, .search-bar input { width: 100%; border: 1px solid var(--line); border-radius: 18px; outline: none; background: rgba(255,255,255,0.22); color: var(--ink); }
+  .journal-textarea, .modal textarea { min-height: 186px; padding: 1rem 1.06rem; resize: vertical; font-size: 1.05rem; line-height: 1.74; background: rgba(255,255,255,0.08); }
+  .journal-textarea:focus, .modal textarea:focus, .search-bar input:focus { border-color: rgba(152,81,51,0.42); box-shadow: 0 0 0 4px rgba(152,81,51,0.08); }
 
-  .journal-textarea,
-  .modal textarea {
-    min-height: 186px;
-    padding: 1rem 1.06rem;
-    resize: vertical;
-    font-size: 1.05rem;
-    line-height: 1.74;
-    background: rgba(255, 255, 255, 0.08);
-  }
+  .entry-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+  .char-count { color: var(--ink-faint); font-size: 0.92rem; }
+  .search-bar { display: flex; align-items: center; gap: 0.75rem; padding: 0.92rem 1rem; border-radius: 24px; }
+  .search-bar input { border: 0; padding: 0; background: transparent; }
 
-  .journal-textarea:focus,
-  .modal textarea:focus,
-  .search-bar input:focus {
-    border-color: rgba(152, 81, 51, 0.42);
-    box-shadow: 0 0 0 4px rgba(152, 81, 51, 0.08);
-  }
+  .entries-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.1rem; margin-top: 1.05rem; }
+  .entry-card { padding: 1.2rem; border-radius: 24px; background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06)), var(--paper-tint); }
+  .entry-card-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.7rem; }
+  .entry-date { color: var(--ink-faint); font-size: 0.86rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .mood-tag { padding: 0.28rem 0.72rem; border-radius: 999px; color: #fff8f2; font-size: 0.8rem; }
+  .entry-preview { color: var(--ink-soft); line-height: 1.64; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .entry-card-actions { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 1rem; }
+  .btn-sm { padding: 0.45rem 0.8rem; border-radius: 12px; border: 1px solid var(--line); cursor: pointer; transition: all 0.2s ease; }
+  .btn-edit { background: rgba(255,255,255,0.24); color: var(--ink-soft); }
+  .btn-danger { background: rgba(161,56,48,0.05); border-color: rgba(161,56,48,0.28); color: #a13830; }
 
-  .entry-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-top: 1rem;
-  }
+  .mood-page { display: flex; flex-direction: column; gap: 1rem; }
+  .mood-chart-card { padding: 1.45rem; border-radius: 24px; }
+  .mood-bars { display: flex; flex-direction: column; gap: 0.8rem; }
+  .mood-row { display: grid; grid-template-columns: 92px minmax(0, 1fr) 34px; align-items: center; gap: 0.85rem; }
+  .mood-label, .mood-count { color: var(--ink-soft); }
+  .mood-bar-track { height: 16px; border-radius: 999px; background: rgba(0,0,0,0.08); overflow: hidden; }
+  .mood-bar-fill { height: 100%; border-radius: inherit; transition: width 0.72s ease; }
+  .timeline { display: flex; flex-wrap: wrap; gap: 0.56rem; }
+  .timeline-dot { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; color: #fff9f1; font-size: 0.72rem; letter-spacing: 0.03em; box-shadow: 0 8px 18px rgba(0,0,0,0.18); }
 
-  .char-count {
-    color: var(--ink-faint);
-    font-size: 0.92rem;
-  }
+  .quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 1rem; }
+  .quote-card-mini { position: relative; min-height: 170px; padding: 1.25rem; font-family: "Cormorant Garamond", serif; font-size: 1.18rem; line-height: 1.6; color: var(--ink-soft); background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06)), var(--paper-tint); border-radius: 24px; }
+  .del-quote { position: absolute; top: 0.8rem; right: 0.8rem; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,0.32); color: var(--ink-faint); opacity: 0; transition: all 0.2s ease; cursor: pointer; }
+  .quote-card-mini:hover .del-quote { opacity: 1; }
+  .del-quote:hover { color: #a13830; }
 
-  .search-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.92rem 1rem;
-  }
+  .export-section { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1.3rem; padding: 1.25rem 1.35rem; border-radius: 24px; }
+  .export-section p { max-width: 440px; color: var(--ink-soft); }
 
-  .search-bar input {
-    border: 0;
-    padding: 0;
-    background: transparent;
-  }
+  .empty-state { padding: 2rem; border: 1px dashed var(--line); border-radius: 22px; background: rgba(255,255,255,0.18); color: var(--ink-faint); text-align: center; }
 
-  .entries-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.1rem;
-    margin-top: 1.05rem;
+  /* ── ANCHOR MODE ── */
+  .anchor-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #1a1f3a 0%, #0d1024 100%);
+    animation: anchorFade 0.6s ease;
   }
+  .anchor-overlay.open { display: flex; }
+  @keyframes anchorFade { from { opacity: 0; } to { opacity: 1; } }
+  .anchor-inner { text-align: center; max-width: 480px; padding: 2rem; }
+  .anchor-title { font-family: "IM Fell English", serif; font-size: 2.2rem; font-weight: 400; color: #c8d8f0; margin-bottom: 0.6rem; }
+  .anchor-sub { color: #8899bb; line-height: 1.6; margin-bottom: 2rem; font-size: 1.08rem; }
+  .anchor-circle {
+    width: 160px; height: 160px; border-radius: 50%; margin: 0 auto 2rem;
+    border: 3px solid rgba(200, 216, 240, 0.3);
+    display: grid; place-items: center;
+    animation: anchorPulse 4s ease-in-out infinite;
+    background: radial-gradient(circle, rgba(114,130,167,0.2), transparent 70%);
+  }
+  @keyframes anchorPulse {
+    0%, 100% { transform: scale(1); border-color: rgba(200,216,240,0.3); box-shadow: 0 0 0 0 rgba(114,130,167,0.3); }
+    50% { transform: scale(1.08); border-color: rgba(200,216,240,0.6); box-shadow: 0 0 0 20px rgba(114,130,167,0); }
+  }
+  .anchor-breath-text { color: #c8d8f0; font-family: "Cormorant Garamond", serif; font-size: 1.4rem; }
+  .anchor-affirmation { font-family: "Cormorant Garamond", serif; font-size: 1.35rem; color: #a8b8d0; line-height: 1.6; margin-bottom: 2rem; font-style: italic; }
+  .anchor-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-anchor-close { padding: 0.8rem 1.8rem; border-radius: 14px; border: 1px solid rgba(200,216,240,0.3); background: rgba(200,216,240,0.1); color: #c8d8f0; cursor: pointer; transition: all 0.2s; font-size: 1rem; }
+  .btn-anchor-close:hover { background: rgba(200,216,240,0.2); }
+  .crisis-link { color: #f0b8a0; font-size: 0.9rem; margin-top: 1rem; text-decoration: underline; cursor: pointer; }
 
-  .entry-card {
-    padding: 1.2rem;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06)),
-      var(--paper-tint);
-  }
+  /* ── PRESSURE TRACKER ── */
+  .pressure-card { border-radius: 24px; padding: 1.45rem; }
+  .pressure-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+  .pressure-input-group label { display: block; color: var(--ink-faint); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .pressure-input { width: 100%; padding: 0.7rem 1rem; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,0.22); color: var(--ink); outline: none; font-size: 1rem; }
+  .pressure-insight { margin-top: 1rem; padding: 1rem; border-radius: 18px; background: rgba(255,255,255,0.22); border: 1px solid var(--line); color: var(--ink-soft); line-height: 1.55; font-style: italic; min-height: 54px; }
+  .pressure-log { margin-top: 1rem; display: grid; gap: 0.6rem; max-height: 220px; overflow-y: auto; }
+  .pressure-log-row { display: grid; grid-template-columns: 1fr 80px 80px 1fr; gap: 0.5rem; align-items: center; padding: 0.6rem 0.8rem; border-radius: 12px; background: rgba(255,255,255,0.18); font-size: 0.9rem; color: var(--ink-soft); }
+  .pressure-log-row span:first-child { color: var(--ink-faint); font-size: 0.8rem; }
 
-  .entry-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 0.7rem;
-  }
+  /* ── YOU ARE NOT ALONE FEED ── */
+  .alone-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem; }
+  .alone-card { border-radius: 24px; padding: 1.3rem; background: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06)), var(--paper-tint); }
+  .alone-card-meta { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.7rem; }
+  .alone-avatar { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 1.1rem; }
+  .alone-name { color: var(--ink-faint); font-size: 0.84rem; }
+  .alone-text { font-family: "Cormorant Garamond", serif; font-size: 1.18rem; line-height: 1.6; color: var(--ink-soft); }
+  .alone-tag { display: inline-block; margin-top: 0.7rem; padding: 0.25rem 0.65rem; border-radius: 999px; font-size: 0.78rem; border: 1px solid var(--line); color: var(--ink-faint); }
+  .alone-share-form { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem; padding: 1.2rem; border-radius: 20px; border: 1px dashed rgba(152,81,51,0.3); background: rgba(255,255,255,0.14); }
+  .alone-share-form textarea { min-height: 80px; resize: vertical; }
+  .alone-share-form p { color: var(--ink-faint); font-size: 0.88rem; }
 
-  .entry-date {
-    color: var(--ink-faint);
-    font-size: 0.86rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+  /* ── LETTER TO FUTURE ME ── */
+  .letter-card { border-radius: 24px; padding: 1.6rem; background: linear-gradient(180deg, rgba(255,249,241,0.92), rgba(240,229,212,0.95)); }
+  .letter-grid { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(280px,0.8fr); gap: 1.2rem; margin-top: 1rem; }
+  .letter-textarea { min-height: 220px; }
+  .letter-meta { display: flex; flex-direction: column; gap: 0.9rem; }
+  .letter-date-input { width: 100%; padding: 0.7rem 1rem; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,0.22); color: var(--ink); outline: none; }
+  .letter-saved-list { display: grid; gap: 0.7rem; max-height: 300px; overflow-y: auto; }
+  .letter-item { padding: 0.9rem 1rem; border-radius: 16px; border: 1px solid var(--line); background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.2s; }
+  .letter-item:hover { background: rgba(255,255,255,0.5); transform: translateY(-1px); }
+  .letter-item-date { color: var(--accent); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.3rem; }
+  .letter-item-preview { color: var(--ink-soft); font-size: 0.94rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .letter-due { background: rgba(232,164,55,0.15); border-color: rgba(229,164,55,0.4); }
+  .letter-due .letter-item-date { color: #b8820a; }
+  .due-badge { display: inline-block; padding: 0.18rem 0.55rem; border-radius: 999px; background: #e5a437; color: #fff; font-size: 0.74rem; margin-left: 0.4rem; }
 
-  .mood-tag {
-    padding: 0.28rem 0.72rem;
-    border-radius: 999px;
-    color: #fff8f2;
-    font-size: 0.8rem;
+  /* ── CRISIS PANEL ── */
+  .crisis-panel {
+    display: none; margin-top: 0.75rem; padding: 1rem 1.1rem; border-radius: 18px;
+    border: 1px solid rgba(194,75,56,0.35); background: rgba(194,75,56,0.06);
   }
+  .crisis-panel.show { display: block; }
+  .crisis-panel h4 { color: var(--crisis); font-family: "IM Fell English", serif; font-weight: 400; margin-bottom: 0.5rem; font-size: 1.1rem; }
+  .crisis-links { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.6rem; }
+  .crisis-link-btn { padding: 0.45rem 0.9rem; border-radius: 12px; border: 1px solid rgba(194,75,56,0.3); background: rgba(194,75,56,0.08); color: var(--crisis); font-size: 0.88rem; cursor: pointer; text-decoration: none; display: inline-block; }
 
-  .entry-preview {
-    color: var(--ink-soft);
-    line-height: 1.64;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+  /* ── MODAL ── */
+  .modal-overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; padding: 1rem; background: rgba(17,10,6,0.48); backdrop-filter: blur(8px); z-index: 30; }
+  .modal-overlay.open { display: flex; }
+  .modal { width: min(560px, 100%); padding: 1.45rem; border-radius: 24px; border: 1px solid var(--line); background: var(--paper-strong); box-shadow: 0 30px 80px var(--shadow-strong); }
+  .modal h3 { font-family: "IM Fell English", serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 0.5rem; }
+  .modal p { color: var(--ink-soft); margin-bottom: 1rem; }
 
-  .entry-card-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.6rem;
-    margin-top: 1rem;
-  }
+  /* ── LETTER READ MODAL ── */
+  .letter-read-modal { width: min(640px, 100%); }
+  .letter-read-date { color: var(--accent); font-size: 0.88rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1rem; }
+  .letter-read-body { font-family: "Cormorant Garamond", serif; font-size: 1.28rem; line-height: 1.7; color: var(--ink); white-space: pre-wrap; }
 
-  .btn-sm {
-    padding: 0.45rem 0.8rem;
-    border-radius: 12px;
-    border: 1px solid var(--line);
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
+  .toast { position: fixed; right: 1.2rem; bottom: 1.2rem; padding: 0.85rem 1.1rem; border-radius: 16px; background: rgba(28,18,11,0.92); color: #fff8f2; box-shadow: 0 18px 40px rgba(0,0,0,0.28); transform: translateY(120%); opacity: 0; transition: all 0.28s ease; z-index: 50; }
+  .toast.show { transform: translateY(0); opacity: 1; }
 
-  .btn-edit {
-    background: rgba(255, 255, 255, 0.24);
-    color: var(--ink-soft);
-  }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
-  .btn-danger {
-    background: rgba(161, 56, 48, 0.05);
-    border-color: rgba(161, 56, 48, 0.28);
-    color: #a13830;
-  }
-
-  .mood-page {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .mood-chart-card {
-    padding: 1.45rem;
-  }
-
-  .mood-bars {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  .mood-row {
-    display: grid;
-    grid-template-columns: 92px minmax(0, 1fr) 34px;
-    align-items: center;
-    gap: 0.85rem;
-  }
-
-  .mood-label,
-  .mood-count {
-    color: var(--ink-soft);
-  }
-
-  .mood-bar-track {
-    height: 16px;
-    border-radius: 999px;
-    background: rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-  }
-
-  .mood-bar-fill {
-    height: 100%;
-    border-radius: inherit;
-    transition: width 0.72s ease;
-  }
-
-  .timeline {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.56rem;
-  }
-
-  .timeline-dot {
-    width: 42px;
-    height: 42px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    color: #fff9f1;
-    font-size: 0.72rem;
-    letter-spacing: 0.03em;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
-  }
-
-  .quotes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-
-  .quote-card-mini {
-    position: relative;
-    min-height: 170px;
-    padding: 1.25rem;
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.18rem;
-    line-height: 1.6;
-    color: var(--ink-soft);
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06)),
-      var(--paper-tint);
-  }
-
-  .del-quote {
-    position: absolute;
-    top: 0.8rem;
-    right: 0.8rem;
-    width: 32px;
-    height: 32px;
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.32);
-    color: var(--ink-faint);
-    opacity: 0;
-    transition: all 0.2s ease;
-    cursor: pointer;
-  }
-
-  .quote-card-mini:hover .del-quote {
-    opacity: 1;
-  }
-
-  .del-quote:hover {
-    color: #a13830;
-  }
-
-  .export-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-top: 1.3rem;
-    padding: 1.25rem 1.35rem;
-  }
-
-  .export-section p {
-    max-width: 440px;
-    color: var(--ink-soft);
-  }
-
-  .empty-state {
-    padding: 2rem;
-    border: 1px dashed var(--line);
-    border-radius: 22px;
-    background: rgba(255, 255, 255, 0.18);
-    color: var(--ink-faint);
-    text-align: center;
-  }
-
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    background: rgba(17, 10, 6, 0.48);
-    backdrop-filter: blur(8px);
-    z-index: 30;
-  }
-
-  .modal-overlay.open {
-    display: flex;
-  }
-
-  .modal {
-    width: min(560px, 100%);
-    padding: 1.45rem;
-    border-radius: 24px;
-    border: 1px solid var(--line);
-    background: var(--paper-strong);
-    box-shadow: 0 30px 80px var(--shadow-strong);
-  }
-
-  .modal h3 {
-    font-family: "IM Fell English", serif;
-    font-size: 1.4rem;
-    font-weight: 400;
-    margin-bottom: 0.5rem;
-  }
-
-  .modal p {
-    color: var(--ink-soft);
-    margin-bottom: 1rem;
-  }
-
-  .toast {
-    position: fixed;
-    right: 1.2rem;
-    bottom: 1.2rem;
-    padding: 0.85rem 1.1rem;
-    border-radius: 16px;
-    background: rgba(28, 18, 11, 0.92);
-    color: #fff8f2;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
-    transform: translateY(120%);
-    opacity: 0;
-    transition: all 0.28s ease;
-    z-index: 50;
-  }
-
-  .toast.show {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
+  /* ── SPINNER ── */
+  .ai-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(152,81,51,0.3); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   @media (max-width: 980px) {
-    .content-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .sidebar {
-      border-right: 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .tab-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
-    }
-
-    .hero-grid,
-    .stats-grid,
-    .home-story-grid,
-    .journal-layout {
-      grid-template-columns: 1fr;
-    }
+    .content-grid { grid-template-columns: 1fr; }
+    .sidebar { border-right: 0; border-bottom: 1px solid var(--line); }
+    .tab-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); }
+    .hero-grid, .stats-grid, .home-story-grid, .journal-layout, .pressure-grid, .letter-grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 640px) {
-    .app-shell {
-      width: min(100%, calc(100% - 0.8rem));
-      margin: 0.4rem auto;
-      border-radius: 22px;
-    }
-
-    .topbar,
-    .sidebar,
-    main {
-      padding: 1rem;
-    }
-
-    .app-shell::before,
-    .app-shell::after {
-      display: none;
-    }
-
-    .topbar {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .section-header,
-    .entry-footer {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .hero-panel,
-    .quote-card,
-    .stat-card,
-    .story-card,
-    .privacy-card,
-    .entry-composer,
-    .prompt-card,
-    .entry-card,
-    .mood-chart-card,
-    .quote-card-mini,
-    .export-section,
-    .modal {
-      border-radius: 20px;
-    }
-
-    .hero-copy h2 {
-      font-size: 2rem;
-    }
-
-    .mood-row {
-      grid-template-columns: 72px minmax(0, 1fr) 28px;
-    }
+    .app-shell { width: min(100%, calc(100% - 0.8rem)); margin: 0.4rem auto; border-radius: 22px; }
+    .topbar, .sidebar, main { padding: 1rem; }
+    .app-shell::before, .app-shell::after { display: none; }
+    .topbar { flex-direction: column; align-items: flex-start; }
+    .section-header, .entry-footer { flex-direction: column; align-items: flex-start; }
   }
+  /* ── SAMPLE ENTRY BADGE ── */
+  .sample-badge { display:inline-block;padding:0.18rem 0.55rem;border-radius:999px;background:rgba(229,164,55,0.15);border:1px solid rgba(229,164,55,0.3);color:#9a6f00;font-size:0.72rem;letter-spacing:0.06em;text-transform:uppercase;margin-right:0.5rem;vertical-align:middle; }
+  [data-theme="dark"] .sample-badge { background:rgba(229,164,55,0.12);color:#c9a040; }
+  .sample-disclaimer { padding:0.7rem 1rem;border-radius:14px;background:rgba(229,164,55,0.08);border:1px dashed rgba(229,164,55,0.3);color:var(--ink-faint);font-size:0.88rem;margin-bottom:1rem;text-align:center; }
+
+  /* ── SIGNAL CARDS ── */
+  .signal-card { display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:0.85rem;padding:0.85rem 1rem;border-radius:16px;background:rgba(255,255,255,0.22);border:1px solid var(--line); }
+  .signal-dot { width:12px;height:12px;border-radius:50%;flex-shrink:0; }
+  .signal-label { font-weight:500;color:var(--ink);font-size:0.95rem; }
+  .signal-desc { color:var(--ink-faint);font-size:0.84rem;margin-top:0.12rem; }
+  .signal-value { font-family:"IM Fell English",serif;font-size:1.2rem;color:var(--ink-soft); }
+
+  /* ── INTERVENTION CARD ── */
+  .intervention-card { padding:0.95rem 1.05rem;border-radius:16px;background:rgba(255,255,255,0.24);border:1px solid var(--line); }
+  .intervention-card strong { display:block;color:var(--ink);margin-bottom:0.25rem; }
+  .intervention-card span { color:var(--ink-soft);font-size:0.92rem;line-height:1.45; }
+  .intervention-card .int-action { display:inline-block;margin-top:0.55rem;padding:0.35rem 0.75rem;border-radius:999px;background:rgba(152,81,51,0.1);border:1px solid rgba(152,81,51,0.2);color:var(--accent);font-size:0.82rem;cursor:pointer;transition:all 0.2s; }
+  .intervention-card .int-action:hover { background:rgba(152,81,51,0.18); }
+
+  /* ── HEATMAP ── */
+  .heatmap-cell { width:28px;height:28px;border-radius:5px;cursor:default;transition:transform 0.15s; }
+  .heatmap-cell:hover { transform:scale(1.2); }
+
+  /* ── DEADLINE ITEM ── */
+  .deadline-item { display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:0.7rem 0.9rem;border-radius:14px;background:rgba(255,255,255,0.22);border:1px solid var(--line); }
+  .deadline-item strong { color:var(--ink); }
+  .deadline-item span { color:var(--ink-faint);font-size:0.85rem; }
+  .deadline-item .days-left { padding:0.25rem 0.6rem;border-radius:999px;font-size:0.78rem;background:rgba(152,81,51,0.1);color:var(--accent);border:1px solid rgba(152,81,51,0.2); }
+
+  /* ── BURNOUT ZONE ── */
+  .burnout-zone { padding:0.75rem 0.9rem;border-radius:14px;background:rgba(194,75,56,0.08);border:1px solid rgba(194,75,56,0.18);color:var(--ink-soft);font-size:0.9rem;line-height:1.4; }
+  .burnout-zone strong { color:#a13830;display:block;margin-bottom:0.2rem; }
+
+  /* ── FOCUS RECOVERY ── */
+  .focus-step { padding:0.85rem 1rem;border-radius:14px;background:rgba(76,142,158,0.08);border:1px solid rgba(76,142,158,0.2); }
+  .focus-step strong { color:#2a6a7a;display:block;margin-bottom:0.15rem; }
+  .focus-step span { color:var(--ink-soft);font-size:0.9rem; }
+  [data-theme="dark"] .focus-step strong { color:#7dcfdf; }
 </style>
 </head>
 <body>
@@ -1314,66 +496,57 @@
         </div>
       </div>
       <div class="topbar-actions">
-        <div class="badge" id="todayLabel">24 April 2026</div>
-        <button class="btn-icon" id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">🕯️</button>
+        <div class="badge" id="todayLabel">—</div>
+        <button class="btn btn-anchor" id="anchorBtn" type="button" title="Open Anchor Mode — calm space">⚓ Anchor</button>
+        <button class="btn-icon" id="themeToggle" type="button" aria-label="Toggle dark mode">🕯️</button>
         <button class="btn btn-primary" id="quickAddQuoteBtn" type="button">+ Add Quote</button>
       </div>
     </header>
 
     <div class="announcement">
-      <strong>Private by design.</strong> Everything lives in your browser with local storage only. No account, no backend, no user tracking.
+      <strong>Private by design.</strong> Everything lives in your browser only — no account, no backend, no tracking.
     </div>
 
     <div class="content-grid">
       <aside class="sidebar">
         <nav class="tab-list" aria-label="Primary">
-          <button class="tab active" type="button" data-tab="home">
-            <span class="tab-kicker" aria-hidden="true">✦</span>
-            <span><strong>Home</strong><span>Overview and inspiration</span></span>
-          </button>
-          <button class="tab" type="button" data-tab="journal">
-            <span class="tab-kicker" aria-hidden="true">✍</span>
-            <span><strong>Journal</strong><span>Write a fresh entry</span></span>
-          </button>
-          <button class="tab" type="button" data-tab="pages">
-            <span class="tab-kicker" aria-hidden="true">📚</span>
-            <span><strong>My Pages</strong><span>Search and revisit entries</span></span>
-          </button>
-          <button class="tab" type="button" data-tab="moods">
-            <span class="tab-kicker" aria-hidden="true">◐</span>
-            <span><strong>Mood Tracker</strong><span>Patterns over time</span></span>
-          </button>
-          <button class="tab" type="button" data-tab="quotes">
-            <span class="tab-kicker" aria-hidden="true">❞</span>
-            <span><strong>Quotes</strong><span>Your kept lines</span></span>
-          </button>
+          <button class="tab active" type="button" data-tab="home"><span class="tab-kicker">✦</span><span><strong>Home</strong><span>Overview</span></span></button>
+          <button class="tab" type="button" data-tab="journal"><span class="tab-kicker">✍</span><span><strong>Journal</strong><span>Write today</span></span></button>
+          <button class="tab" type="button" data-tab="pages"><span class="tab-kicker">📚</span><span><strong>My Pages</strong><span>All entries</span></span></button>
+          <button class="tab" type="button" data-tab="moods"><span class="tab-kicker">◐</span><span><strong>Mood Tracker</strong><span>Patterns</span></span></button>
+          <button class="tab" type="button" data-tab="pressure"><span class="tab-kicker">📊</span><span><strong>Pressure Log</strong><span>Study vs stress</span></span></button>
+          <button class="tab" type="button" data-tab="alone"><span class="tab-kicker">🫂</span><span><strong>Not Alone</strong><span>Shared stories</span></span></button>
+          <button class="tab" type="button" data-tab="letter"><span class="tab-kicker">✉</span><span><strong>Future Letter</strong><span>Write to yourself</span></span></button>
+          <button class="tab" type="button" data-tab="dropout"><span class="tab-kicker">🛡</span><span><strong>Dropout Shield</strong><span>Risk detection</span></span></button>
+          <button class="tab" type="button" data-tab="pressuremap"><span class="tab-kicker">🗺</span><span><strong>Pressure Map</strong><span>AI burnout zones</span></span></button>
+          <button class="tab" type="button" data-tab="quotes"><span class="tab-kicker">❞</span><span><strong>Quotes</strong><span>Kept lines</span></span></button>
         </nav>
-
         <div class="sidebar-note">
           <h2>Designed To Feel Kept</h2>
-          <p>A literary journal with attic-light warmth, archival texture, and a private-diary intimacy that feels personal instead of productized.</p>
+          <p>A literary journal with attic-light warmth and private-diary intimacy.</p>
         </div>
-
         <div class="privacy-note">
           <h3>On This Device</h3>
-          <p>Your entries, quotes, and theme preference stay in this browser only. Nothing here counts visitors or sends data anywhere.</p>
+          <p>Your entries, quotes, and letters stay in this browser only.</p>
         </div>
       </aside>
 
       <main>
+
+        <!-- HOME -->
         <section class="page active" id="tab-home">
           <div class="hero-panel">
             <div class="hero-grid">
               <div class="hero-copy">
                 <h2>Write what changed you before the day folds shut.</h2>
-                <p>A quiet place for fragments, confessions, weathered thoughts, and lines worth keeping. It feels like a diary, but polished enough to present with confidence.</p>
+                <p>A quiet place for fragments, confessions, weathered thoughts, and lines worth keeping.</p>
                 <div class="hero-meta">
                   <span class="pill">Private local archive</span>
-                  <span class="pill">Editorial journal atmosphere</span>
-                  <span class="pill">Safe client-side rendering</span>
+                  <span class="pill">AI journaling companion</span>
+                  <span class="pill">Anchor mode</span>
+                  <span class="pill">Letters to future self</span>
                 </div>
               </div>
-
               <div class="quote-card card-hover">
                 <p class="quote-text" id="quoteText">Click below to reveal a quote...</p>
                 <div class="quote-actions">
@@ -1383,30 +556,16 @@
               </div>
             </div>
           </div>
-
           <div class="stats-grid">
-            <article class="stat-card card-hover">
-              <p>Journal Entries</p>
-              <span class="stat-number" id="totalEntries">0</span>
-            </article>
-            <article class="stat-card card-hover">
-              <p>Words Written</p>
-              <span class="stat-number" id="totalWords">0</span>
-            </article>
-            <article class="stat-card card-hover">
-              <p>Day Streak</p>
-              <span class="stat-number" id="streakDays">0</span>
-            </article>
-            <article class="stat-card card-hover">
-              <p>Top Mood</p>
-              <span class="stat-number" id="topMoodStat">-</span>
-            </article>
+            <article class="stat-card card-hover"><p>Journal Entries</p><span class="stat-number" id="totalEntries">0</span></article>
+            <article class="stat-card card-hover"><p>Words Written</p><span class="stat-number" id="totalWords">0</span></article>
+            <article class="stat-card card-hover"><p>Day Streak</p><span class="stat-number" id="streakDays">0</span></article>
+            <article class="stat-card card-hover"><p>Top Mood</p><span class="stat-number" id="topMoodStat">-</span></article>
           </div>
-
           <div class="home-story-grid">
             <article class="story-card card-hover">
               <h3>Tonight's Page</h3>
-              <p>Not every diary page needs an event. Sometimes it only needs the light in a room, a sentence that stayed with you, or the quiet shape of a feeling you do not want to lose.</p>
+              <p>Not every diary page needs an event. Sometimes it only needs the light in a room.</p>
               <div class="recent-entry-shell">
                 <div class="recent-entry-meta">
                   <h4>Latest Saved Entry</h4>
@@ -1415,42 +574,31 @@
                 <blockquote id="recentEntryPreview">Your most recent entry will appear here once something is written.</blockquote>
               </div>
             </article>
-
             <article class="privacy-card card-hover">
               <h3>Private Archive</h3>
-              <p>This version remembers your writing between refreshes, but it does so without analytics, logins, or any concept of a user account.</p>
+              <p>This version remembers your writing between refreshes, without analytics, logins, or accounts.</p>
               <div class="privacy-list">
-                <div class="privacy-item">
-                  <div>⟡</div>
-                  <div><strong>Stored locally</strong><span>Entries and quotes persist in your own browser using local storage.</span></div>
-                </div>
-                <div class="privacy-item">
-                  <div>⟡</div>
-                  <div><strong>No audience counter</strong><span>There is no backend, so this app cannot know how many people opened it.</span></div>
-                </div>
-                <div class="privacy-item">
-                  <div>⟡</div>
-                  <div><strong>Exportable anytime</strong><span>Your pages can still be downloaded as plain text whenever you want a keepsake copy.</span></div>
-                </div>
+                <div class="privacy-item"><div>⟡</div><div><strong>Stored locally</strong><span>Entries and quotes persist in your own browser.</span></div></div>
+                <div class="privacy-item"><div>⟡</div><div><strong>No audience counter</strong><span>No backend, no concept of a user account.</span></div></div>
+                <div class="privacy-item"><div>⟡</div><div><strong>Exportable anytime</strong><span>Download your pages as plain text.</span></div></div>
               </div>
             </article>
           </div>
         </section>
 
+        <!-- JOURNAL -->
         <section class="page" id="tab-journal">
           <div class="section-header">
             <div>
               <h2>Write Today's Thought</h2>
-              <p>Capture the part of the day that is still echoing. Editing an entry reuses this same form, so the flow stays simple and consistent.</p>
+              <p>Capture the part of the day that is still echoing.</p>
             </div>
           </div>
-
           <div class="journal-layout">
             <div class="entry-composer card-hover">
               <h3 id="composerTitle">New Entry</h3>
-              <p class="entry-subtitle">Pick a mood, write freely, and save when you're ready.</p>
-
-              <div class="mood-picker">
+              <p class="entry-subtitle" style="margin-bottom:1rem;">Pick a mood, write freely, and save when you're ready.</p>
+              <div class="mood-picker" style="margin-bottom:1rem;">
                 <button class="mood-btn" type="button" data-mood="Joyful">😊 Joyful</button>
                 <button class="mood-btn" type="button" data-mood="Calm">😌 Calm</button>
                 <button class="mood-btn" type="button" data-mood="Sad">😔 Sad</button>
@@ -1458,10 +606,18 @@
                 <button class="mood-btn" type="button" data-mood="Grateful">🙏 Grateful</button>
                 <button class="mood-btn" type="button" data-mood="Anxious">😰 Anxious</button>
               </div>
-
               <label class="sr-only" for="entryText">Journal entry</label>
               <textarea class="journal-textarea" id="entryText" placeholder="What's on your mind today?"></textarea>
-
+              <!-- Crisis Panel -->
+              <div class="crisis-panel" id="crisisPanel">
+                <h4>You don't have to carry this alone.</h4>
+                <p style="color:var(--ink-soft);font-size:0.92rem;line-height:1.5;">It looks like you might be going through something heavy. These resources are here for you:</p>
+                <div class="crisis-links">
+                  <a class="crisis-link-btn" href="tel:iCall">iCall India: 9152987821</a>
+                  <a class="crisis-link-btn" href="tel:Vandrevala">Vandrevala: 1860-2662-345</a>
+                  <a class="crisis-link-btn" href="tel:AASRA">AASRA: 9820466627</a>
+                </div>
+              </div>
               <div class="entry-footer">
                 <span class="char-count" id="charCount">0 words</span>
                 <div class="entry-actions">
@@ -1471,15 +627,14 @@
               </div>
             </div>
 
-            <aside class="prompt-card ai-chat-shell card-hover">
+            <aside class="ai-chat-shell card-hover">
               <div class="ai-chat-top">
                 <div>
-                  <h3>AI Journal Companion</h3>
-                  <p>Your visible journaling copilot for reflection, titles, and deeper prompts.</p>
+                  <h3>Helium AI Companion</h3>
+                  <p class="entry-subtitle">Powered by Helium AI. Reflects patterns, asks deeper questions.</p>
                 </div>
-                <span class="ai-badge">AI vibe</span>
+                <span class="ai-badge">Helium AI</span>
               </div>
-
               <div class="ai-chat-window">
                 <div class="chat-bubble assistant">
                   <span class="chat-label">Companion</span>
@@ -1490,66 +645,31 @@
                   Your current entry preview will appear here as you type.
                 </div>
               </div>
-
               <div class="ai-quick-actions">
-                <button class="quick-ai-btn" type="button" data-ai-action="analyze">
-                  <strong>Analyze</strong>
-                  <span>Read the emotional center of the entry</span>
-                </button>
-                <button class="quick-ai-btn" type="button" data-ai-action="title">
-                  <strong>Title It</strong>
-                  <span>Generate a title for the current page</span>
-                </button>
-                <button class="quick-ai-btn" type="button" data-ai-action="prompts">
-                  <strong>Ask Deeper</strong>
-                  <span>Give reflective follow-up questions</span>
-                </button>
-                <button class="quick-ai-btn" type="button" data-ai-action="rewrite">
-                  <strong>Polish</strong>
-                  <span>Turn the draft into a more literary passage</span>
-                </button>
+                <button class="quick-ai-btn" type="button" data-ai-action="analyze"><strong>Analyze</strong><span>Read the emotional center</span></button>
+                <button class="quick-ai-btn" type="button" data-ai-action="title"><strong>Title It</strong><span>Generate a title</span></button>
+                <button class="quick-ai-btn" type="button" data-ai-action="prompts"><strong>Ask Deeper</strong><span>Reflective follow-up questions</span></button>
+                <button class="quick-ai-btn" type="button" data-ai-action="rewrite"><strong>Polish</strong><span>More literary passage</span></button>
               </div>
-
               <div class="ai-output-stack">
-                <div class="ai-output-card">
-                  <span class="ai-label">Suggested Title</span>
-                  <div class="ai-value" id="aiTitle">Write a few lines, then use the companion to generate a title.</div>
-                </div>
-                <div class="ai-output-card">
-                  <span class="ai-label">Companion Reading</span>
-                  <div class="ai-value" id="aiInsight">The companion will surface the emotional center of your draft here.</div>
-                </div>
-                <div class="ai-output-card">
-                  <span class="ai-label">Follow-up Prompts</span>
-                  <div class="ai-list" id="aiPrompts">
-                    <div>What part of today still lingers with you?</div>
-                    <div>What detail would you want to remember a year from now?</div>
-                  </div>
-                </div>
-                <div class="ai-output-card">
-                  <span class="ai-label">Polished Passage</span>
-                  <div class="ai-value" id="aiRewrite">When you use “Polish”, the companion will reshape your draft into a more literary journal-style paragraph.</div>
-                </div>
+                <div class="ai-output-card"><span class="ai-label">Suggested Title</span><div class="ai-value" id="aiTitle">Write a few lines, then use the companion to generate a title.</div></div>
+                <div class="ai-output-card"><span class="ai-label">Companion Reading</span><div class="ai-value" id="aiInsight">The companion will surface the emotional center of your draft here.</div></div>
+                <div class="ai-output-card"><span class="ai-label">Follow-up Prompts</span><div class="ai-list" id="aiPrompts"><div>What part of today still lingers with you?</div><div>What detail would you want to remember a year from now?</div></div></div>
+                <div class="ai-output-card"><span class="ai-label">Polished Passage</span><div class="ai-value" id="aiRewrite">When you use "Polish", the companion will reshape your draft into a more literary journal-style paragraph.</div></div>
               </div>
             </aside>
           </div>
         </section>
 
+        <!-- MY PAGES -->
         <section class="page" id="tab-pages">
-          <div class="section-header">
-            <div>
-              <h2>Your Pages</h2>
-              <p>Search by text or date, filter by mood, then edit or remove entries without brittle global event handling.</p>
-            </div>
-          </div>
-
+          <div class="section-header"><div><h2>Your Pages</h2><p>Search by text or date, filter by mood.</p></div></div>
           <div class="search-bar card-hover">
             <span aria-hidden="true">🔎</span>
             <label class="sr-only" for="searchInput">Search entries</label>
             <input type="text" id="searchInput" placeholder="Search your entries..." />
           </div>
-
-          <div class="filter-row">
+          <div class="filter-row" style="margin-top:0.75rem;">
             <button class="filter-chip active" type="button" data-filter="All">All</button>
             <button class="filter-chip" type="button" data-filter="Joyful">😊 Joyful</button>
             <button class="filter-chip" type="button" data-filter="Calm">😌 Calm</button>
@@ -1558,62 +678,307 @@
             <button class="filter-chip" type="button" data-filter="Grateful">🙏 Grateful</button>
             <button class="filter-chip" type="button" data-filter="Anxious">😰 Anxious</button>
           </div>
-
           <div class="entries-list" id="entriesList"></div>
-
           <div class="export-section card-hover">
-            <p>Export every journal entry into a clean text file. The download URL is revoked after use to avoid unnecessary object URL leaks.</p>
+            <p>Export every journal entry into a clean text file.</p>
             <button class="btn btn-primary" id="exportBtn" type="button">Export Journal</button>
           </div>
         </section>
 
+        <!-- MOOD TRACKER -->
         <section class="page" id="tab-moods">
+          <div class="section-header"><div><h2>Mood Tracker</h2><p>A visual rollup of how your entries are distributed over time.</p></div></div>
+          <div class="mood-page">
+            <div class="mood-chart-card card-hover"><h3>Your Mood Distribution</h3><div class="mood-bars" id="moodBars"></div></div>
+            <div class="mood-chart-card card-hover"><h3>Recent Mood Timeline</h3><div class="timeline" id="moodTimeline"></div></div>
+          </div>
+        </section>
+
+        <!-- PRESSURE TRACKER -->
+        <section class="page" id="tab-pressure">
           <div class="section-header">
             <div>
-              <h2>Mood Tracker</h2>
-              <p>A simple visual rollup of how your entries are distributed, plus a compact timeline that makes recent emotional rhythms easier to scan.</p>
+              <h2>Pressure Log</h2>
+              <p>Track your study hours vs stress levels. The app finds patterns so you can see yourself clearly.</p>
             </div>
           </div>
-
-          <div class="mood-page">
-            <div class="mood-chart-card card-hover">
-              <h3>Your Mood Distribution</h3>
-              <div class="mood-bars" id="moodBars"></div>
+          <div class="pressure-card card-hover">
+            <h3>Log Today's Session</h3>
+            <div class="pressure-grid">
+              <div class="pressure-input-group">
+                <label for="studyHours">Study Hours Today</label>
+                <input class="pressure-input" type="number" id="studyHours" min="0" max="24" step="0.5" placeholder="e.g. 6" />
+              </div>
+              <div class="pressure-input-group">
+                <label for="stressLevel">Stress Level (1–10)</label>
+                <input class="pressure-input" type="number" id="stressLevel" min="1" max="10" placeholder="e.g. 7" />
+              </div>
             </div>
+            <div class="pressure-input-group" style="margin-top:0.75rem;">
+              <label for="pressureNote">Quick Note (optional)</label>
+              <input class="pressure-input" type="text" id="pressureNote" placeholder="What made today hard or easy?" />
+            </div>
+            <div style="margin-top:0.9rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+              <button class="btn btn-primary" id="logPressureBtn" type="button">Log Session</button>
+              <button class="btn btn-outline" id="analyzePressureBtn" type="button">✦ AI Pattern Analysis</button>
+            </div>
+            <div class="pressure-insight" id="pressureInsight">Log a few sessions and use AI Pattern Analysis to see how study hours affect your stress.</div>
+          </div>
+          <div class="pressure-card card-hover" style="margin-top:1rem;">
+            <h3>Session Log</h3>
+            <div class="pressure-log" id="pressureLog"><div class="empty-state">No sessions logged yet.</div></div>
+          </div>
+        </section>
 
-            <div class="mood-chart-card card-hover">
-              <h3>Recent Mood Timeline</h3>
-              <div class="timeline" id="moodTimeline"></div>
+        <!-- YOU ARE NOT ALONE -->
+        <section class="page" id="tab-alone">
+          <div class="section-header">
+            <div>
+              <h2>You Are Not Alone</h2>
+              <p>Anonymous thoughts from students like you. No names, no ranks, no judgment.</p>
+            </div>
+          </div>
+          <div class="alone-grid" id="aloneGrid"></div>
+          <div class="alone-share-form card-hover" style="margin-top:1rem;">
+            <h3 style="font-family:'IM Fell English',serif;font-weight:400;margin-bottom:0.3rem;">Share Anonymously</h3>
+            <p>Your name will never appear. Only your words.</p>
+            <label class="sr-only" for="aloneInput">Share your thought</label>
+            <textarea class="journal-textarea alone-share-form" id="aloneInput" style="min-height:80px;" placeholder="I feel like I'm the only one who..."></textarea>
+            <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+              <button class="btn btn-primary" id="shareAloneBtn" type="button">Share Anonymously</button>
+              <span style="color:var(--ink-faint);font-size:0.86rem;">Stored locally · Never sent anywhere</span>
             </div>
           </div>
         </section>
 
+        <!-- LETTER TO FUTURE ME -->
+        <section class="page" id="tab-letter">
+          <div class="section-header">
+            <div>
+              <h2>Letter to Future Me</h2>
+              <p>Write something to yourself — to be read on results day, a birthday, or any day that matters.</p>
+            </div>
+          </div>
+          <div class="letter-card card-hover">
+            <h3 style="font-family:'IM Fell English',serif;font-weight:400;">Write Your Letter</h3>
+            <div class="letter-grid">
+              <div>
+                <label class="sr-only" for="letterText">Letter content</label>
+                <textarea class="journal-textarea letter-textarea" id="letterText" placeholder="Dear future me,&#10;&#10;Right now I am feeling..."></textarea>
+              </div>
+              <div class="letter-meta">
+                <div>
+                  <label style="display:block;color:var(--ink-faint);font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.4rem;">Deliver On</label>
+                  <input class="letter-date-input" type="date" id="letterDeliverDate" />
+                </div>
+                <button class="btn btn-primary" id="saveLetterBtn" type="button">Seal & Save Letter</button>
+                <p style="color:var(--ink-faint);font-size:0.86rem;line-height:1.5;">The letter will be marked as ready to read on the date you choose. Stored privately in your browser.</p>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:1rem;">
+            <h3 style="font-family:'IM Fell English',serif;font-weight:400;margin-bottom:0.75rem;">Your Sealed Letters</h3>
+            <div class="letter-saved-list" id="letterList"><div class="empty-state">No letters saved yet. Write one above.</div></div>
+          </div>
+        </section>
+
+        </section>
+
+        <!-- DROPOUT SHIELD -->
+        <section class="page" id="tab-dropout">
+          <div class="section-header">
+            <div>
+              <h2>Dropout Shield</h2>
+              <p>Helium AI monitors behavioral signals — mood decline, reduced activity, rising stress — and flags early dropout risk before it becomes a crisis. Because prevention is always better than intervention.</p>
+            </div>
+          </div>
+
+          <div id="dropoutRiskBanner" style="display:none;margin-bottom:1rem;padding:1.1rem 1.35rem;border-radius:22px;border:1px solid rgba(192,57,43,0.3);background:linear-gradient(135deg,rgba(192,57,43,0.08),rgba(150,30,30,0.04));"></div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.15rem;margin-bottom:1.15rem;">
+            <div class="stat-card card-hover" style="padding:1.35rem;">
+              <p>Dropout Risk Score</p>
+              <span class="stat-number" id="dropoutScore" style="color:var(--mood-angry)">—</span>
+              <p style="margin-top:0.5rem;font-size:0.88rem;line-height:1.5;" id="dropoutScoreDesc">Log entries and pressure data to generate your risk profile.</p>
+            </div>
+            <div class="stat-card card-hover" style="padding:1.35rem;">
+              <p>Mood Trend (7 days)</p>
+              <span class="stat-number" id="moodTrend7" style="font-size:1.8rem;">—</span>
+              <p style="margin-top:0.5rem;font-size:0.88rem;line-height:1.5;" id="moodTrendDesc">Based on your recent journal entries.</p>
+            </div>
+            <div class="stat-card card-hover" style="padding:1.35rem;">
+              <p>Activity Level</p>
+              <span class="stat-number" id="activityLevel" style="font-size:1.8rem;">—</span>
+              <p style="margin-top:0.5rem;font-size:0.88rem;line-height:1.5;" id="activityDesc">Entries written in the past 14 days.</p>
+            </div>
+            <div class="stat-card card-hover" style="padding:1.35rem;">
+              <p>Intervention Needed</p>
+              <span class="stat-number" id="interventionFlag" style="font-size:1.8rem;">—</span>
+              <p style="margin-top:0.5rem;font-size:0.88rem;line-height:1.5;" id="interventionDesc">Based on combined risk signals.</p>
+            </div>
+          </div>
+
+          <!-- Signal Breakdown -->
+          <div class="mood-chart-card card-hover" style="padding:1.45rem;margin-bottom:1.15rem;">
+            <h3>Risk Signal Breakdown</h3>
+            <p style="color:var(--ink-soft);margin-bottom:1.1rem;line-height:1.55;">Each signal is derived from your actual journaling and pressure data. Green = healthy. Amber = watch. Red = act now.</p>
+            <div id="signalBreakdown" style="display:grid;gap:0.75rem;"></div>
+          </div>
+
+          <!-- Micro-Intervention Engine -->
+          <div class="mood-chart-card card-hover" style="padding:1.45rem;margin-bottom:1.15rem;">
+            <h3>⚡ Micro-Intervention Engine</h3>
+            <p style="color:var(--ink-soft);margin-bottom:1rem;line-height:1.55;">Helium AI detects overwork and disengagement patterns and suggests targeted micro-actions — not generic advice, but specific to your pattern right now.</p>
+            <div id="microInterventions" style="display:grid;gap:0.75rem;"></div>
+          </div>
+
+          <!-- Focus Recovery Mode -->
+          <div class="mood-chart-card card-hover" style="padding:1.45rem;">
+            <h3>🎯 Focus Recovery Mode</h3>
+            <p style="color:var(--ink-soft);margin-bottom:1rem;line-height:1.55;">When your pattern signals a focus drop, this mode activates a structured recovery sequence — not a timer, but an actual strategy.</p>
+            <div id="focusRecovery" style="display:grid;gap:0.75rem;"></div>
+            <button class="btn btn-primary" id="activateFocusMode" type="button" style="margin-top:1rem;">Activate Focus Recovery</button>
+          </div>
+        </section>
+
+        <!-- PRESSURE MAP -->
+        <section class="page" id="tab-pressuremap">
+          <div class="section-header">
+            <div>
+              <h2>Academic Pressure Map</h2>
+              <p>A visual map of your workload, stress zones, and burnout risk across time. Your signature Helium AI feature — deadline awareness meets emotional intelligence.</p>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:minmax(0,1.2fr) 320px;gap:1.15rem;">
+            <div>
+              <!-- Map Grid -->
+              <div class="mood-chart-card card-hover" style="padding:1.45rem;margin-bottom:1.15rem;">
+                <h3>Pressure Heatmap — Last 30 Days</h3>
+                <p style="color:var(--ink-soft);margin-bottom:1.1rem;font-size:0.95rem;">Each cell = one day. Color = combined stress + activity signal. Darker = higher pressure.</p>
+                <div id="pressureHeatmap" style="display:flex;flex-wrap:wrap;gap:4px;"></div>
+                <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap;">
+                  <span style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--ink-faint);"><span style="width:14px;height:14px;border-radius:3px;background:#6da367;display:inline-block;"></span>Low pressure</span>
+                  <span style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--ink-faint);"><span style="width:14px;height:14px;border-radius:3px;background:#e5a437;display:inline-block;"></span>Moderate</span>
+                  <span style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--ink-faint);"><span style="width:14px;height:14px;border-radius:3px;background:#c24b38;display:inline-block;"></span>High / Burnout zone</span>
+                  <span style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;color:var(--ink-faint);"><span style="width:14px;height:14px;border-radius:3px;background:rgba(0,0,0,0.08);display:inline-block;"></span>No data</span>
+                </div>
+              </div>
+
+              <!-- Add Deadline -->
+              <div class="mood-chart-card card-hover" style="padding:1.45rem;">
+                <h3>Add Upcoming Deadline / Exam</h3>
+                <p style="color:var(--ink-soft);margin-bottom:1rem;font-size:0.95rem;">Helium AI marks high-risk zones around your exam dates automatically.</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:0.75rem;align-items:end;">
+                  <div>
+                    <label style="display:block;margin-bottom:0.35rem;color:var(--ink-faint);font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;">Event Name</label>
+                    <input type="text" id="deadlineName" placeholder="e.g. JEE Mains Paper 1" style="width:100%;padding:0.6rem 0.9rem;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,0.18);color:var(--ink);outline:none;font-size:0.95rem;" />
+                  </div>
+                  <div>
+                    <label style="display:block;margin-bottom:0.35rem;color:var(--ink-faint);font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;">Date</label>
+                    <input type="date" id="deadlineDate" style="width:100%;padding:0.6rem 0.9rem;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,0.18);color:var(--ink);outline:none;font-size:0.95rem;" />
+                  </div>
+                  <button class="btn btn-primary" id="addDeadlineBtn" type="button" style="white-space:nowrap;">Add Event</button>
+                </div>
+                <div id="deadlineList" style="margin-top:1rem;display:grid;gap:0.65rem;"></div>
+              </div>
+            </div>
+
+            <!-- Right Panel: AI Insights -->
+            <div style="display:flex;flex-direction:column;gap:1rem;">
+              <div class="mood-chart-card card-hover" style="padding:1.35rem;">
+                <h3>Burnout Risk Zones</h3>
+                <p style="color:var(--ink-soft);margin-bottom:1rem;font-size:0.92rem;line-height:1.5;">Helium AI identifies periods of consecutive high-stress days.</p>
+                <div id="burnoutZones" style="display:grid;gap:0.65rem;"></div>
+              </div>
+              <div class="mood-chart-card card-hover" style="padding:1.35rem;">
+                <h3>AI Map Insight</h3>
+                <p style="color:var(--ink-soft);margin-bottom:0.75rem;font-size:0.92rem;" id="mapInsightText">Add pressure logs and deadlines to generate your personalized map insight.</p>
+                <button class="btn btn-outline" id="generateMapInsight" type="button" style="width:100%;margin-top:0.5rem;">Generate Insight</button>
+                <div id="mapInsightResult" style="margin-top:0.85rem;display:none;padding:1rem;border-radius:16px;background:rgba(255,255,255,0.2);border:1px solid var(--line);color:var(--ink-soft);line-height:1.6;font-style:italic;"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- QUOTES -->
         <section class="page" id="tab-quotes">
           <div class="section-header">
-            <div>
-              <h2>Your Quote Collection</h2>
-              <p>Custom quotes are stored locally in your browser and rendered as plain text, so pasted content stays safe and private.</p>
-            </div>
-            <div class="top-row-actions">
-              <button class="btn btn-primary" id="quotesAddBtn" type="button">+ Add Quote</button>
-            </div>
+            <div><h2>Your Quote Collection</h2><p>Kept lines, stored privately in your browser.</p></div>
+            <div class="top-row-actions"><button class="btn btn-primary" id="quotesAddBtn" type="button">+ Add Quote</button></div>
           </div>
-
           <div class="quotes-grid" id="quotesGrid"></div>
         </section>
+
       </main>
     </div>
   </div>
 
-  <div class="modal-overlay" id="addQuoteModal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle">
-      <h3 id="quoteModalTitle">Add Your Own Quote</h3>
-      <p>Paste or write something worth keeping. Quotes are treated as plain text for safer rendering.</p>
+  <!-- ANCHOR MODE OVERLAY -->
+  <div class="anchor-overlay" id="anchorOverlay">
+    <div class="anchor-inner">
+      <h2 class="anchor-title">You are not falling behind.</h2>
+      <p class="anchor-sub">You are exhausted. That is different. Take a breath with me.</p>
+      <div class="anchor-circle">
+        <span class="anchor-breath-text" id="anchorBreathText">Breathe in...</span>
+      </div>
+      <p class="anchor-affirmation" id="anchorAffirmation">"The fact that you're still here, still trying — that is enough."</p>
+      <div class="anchor-actions">
+        <button class="btn-anchor-close" id="anchorClose" type="button">I feel steadier now</button>
+        <button class="btn-anchor-close" id="anchorNewAffirmation" type="button">Another affirmation</button>
+      </div>
+      <p class="crisis-link" id="anchorCrisisLink">I need to talk to someone right now</p>
+    </div>
+  </div>
+
+  <!-- CRISIS HELP MODAL -->
+  <div class="modal-overlay" id="crisisModal">
+    <div class="modal">
+      <h3>You deserve support right now.</h3>
+      <p>These are free, confidential resources available in India. You don't have to explain everything — just reach out.</p>
+      <div class="crisis-links" style="flex-direction:column;gap:0.7rem;">
+        <div style="padding:0.8rem 1rem;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,0.3);">
+          <strong>iCall (Tata Institute)</strong><br>
+          <span style="color:var(--ink-soft);">Mon–Sat, 8am–10pm · <a href="tel:9152987821" style="color:var(--accent);">9152987821</a></span>
+        </div>
+        <div style="padding:0.8rem 1rem;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,0.3);">
+          <strong>Vandrevala Foundation</strong><br>
+          <span style="color:var(--ink-soft);">24/7 · <a href="tel:18602662345" style="color:var(--accent);">1860-2662-345</a></span>
+        </div>
+        <div style="padding:0.8rem 1rem;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,0.3);">
+          <strong>AASRA</strong><br>
+          <span style="color:var(--ink-soft);">24/7 · <a href="tel:9820466627" style="color:var(--accent);">9820466627</a></span>
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top:1rem;">
+        <button class="btn btn-outline" id="closeCrisisModal" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD QUOTE MODAL -->
+  <div class="modal-overlay" id="addQuoteModal">
+    <div class="modal">
+      <h3>Add Your Own Quote</h3>
+      <p>Paste or write something worth keeping.</p>
       <label class="sr-only" for="newQuoteText">New quote</label>
       <textarea id="newQuoteText" placeholder="Write a quote that resonates with you..."></textarea>
-      <div class="modal-actions">
+      <div class="modal-actions" style="margin-top:1rem;">
         <button class="btn btn-outline" id="cancelQuoteBtn" type="button">Cancel</button>
         <button class="btn btn-primary" id="saveQuoteModalBtn" type="button">Save Quote</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LETTER READ MODAL -->
+  <div class="modal-overlay" id="letterReadModal">
+    <div class="modal letter-read-modal">
+      <h3>A letter from your past self</h3>
+      <p class="letter-read-date" id="letterReadDate"></p>
+      <div class="letter-read-body" id="letterReadBody"></div>
+      <div class="modal-actions" style="margin-top:1.2rem;">
+        <button class="btn btn-outline" id="closeLetterModal" type="button">Close</button>
+        <button class="btn btn-danger btn-sm" id="deleteLetterBtn" type="button">Delete Letter</button>
       </div>
     </div>
   </div>
@@ -1621,68 +986,75 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
+  // ── CONSTANTS ──
   const STORAGE_KEY = "last-bookmark-journal";
-  const DRAFT_KEY = "last-bookmark-journal-draft";
-  const MOOD_COLORS = {
-    Joyful: "#e5a437",
-    Calm: "#4c8e9e",
-    Sad: "#7282a7",
-    Angry: "#c24b38",
-    Grateful: "#6da367",
-    Anxious: "#9564b0"
-  };
+  const DRAFT_KEY = "last-bookmark-draft";
+  const MOOD_COLORS = { Joyful:"#e5a437", Calm:"#4c8e9e", Sad:"#7282a7", Angry:"#c24b38", Grateful:"#6da367", Anxious:"#9564b0" };
+
+  const CRISIS_WORDS = ["end my life","kill myself","suicide","want to die","can't go on","no reason to live","give up on life","hurt myself","self harm","don't want to exist"];
+
+  const ANCHOR_AFFIRMATIONS = [
+    "The fact that you're still here, still trying — that is enough.",
+    "You are not behind. You are human. That is allowed.",
+    "One breath. One moment. You don't have to solve everything tonight.",
+    "Rest is not giving up. Rest is how you come back.",
+    "The pressure you feel is real. But so is your capacity to get through it.",
+    "You are more than your rank, your score, your result. You always were.",
+    "It's okay to not be okay. You don't have to perform strength right now.",
+    "This moment will pass. You have survived hard moments before."
+  ];
+
+  const ALONE_STORIES = [
+    { avatar:"🌙", name:"Anonymous · Kota", text:"I cried after my mock test today. Not because of the score — because I can't remember the last time I felt like myself.", tag:"Academic pressure" },
+    { avatar:"📖", name:"Anonymous · Delhi", text:"I feel like I'm the only one who doesn't understand what's happening in class. Everyone else seems fine.", tag:"Isolation" },
+    { avatar:"🌱", name:"Anonymous · Mumbai", text:"My parents think I'm doing great. I haven't told them I failed three mocks in a row.", tag:"Family pressure" },
+    { avatar:"🕯️", name:"Anonymous · Jaipur", text:"Some days I study for 10 hours and still feel like I've done nothing. The guilt never leaves.", tag:"Burnout" },
+    { avatar:"🌊", name:"Anonymous · Kota", text:"I miss who I was before JEE prep. I don't remember the last time I did something just because I enjoyed it.", tag:"Loss of self" },
+    { avatar:"⭐", name:"Anonymous · Pune", text:"I got into a good college but I still feel empty. I don't know what I was running toward.", tag:"After the exam" }
+  ];
 
   const DEFAULT_QUOTES = [
     "What a privilege it is to feel discomfort in the pursuit of a goal I chose to pursue.",
-    "No reason to stay is a good reason to go.",
-    "What goes around comes back around.",
     "Always the poet, never the poem.",
     "What a privilege to be tired from the work you once begged the universe for.",
-    "What a privilege to feel overwhelmed by the growth you used to dream about.",
-    "What a privilege to be challenged by a life you created on purpose.",
     "How lovely is the silence of growing things.",
-    "In the graveyard of the sea, there is nothing but eternity.",
     "Everyone you idolize wakes up scared to be themselves sometimes.",
     "Some people are so poor, all they have is money.",
-    "Whoever gives nothing has nothing.",
     "The greatest misfortune is not to be unloved, but not to love.",
-    "Can a man possessing consciousness ever really respect himself?",
-    "The habit of despair is worse than despair itself.",
-    "Forgive me for not answering your eyes.",
-    "Everything you love will be gone one day, but love will return in another way.",
     "We're all broken; that's how the light gets in.",
-    "You don't need revenge. You need faith. God rebuilds you in front of the people who broke you.",
     "When the roots are deep, there is no reason to fear the wind.",
-    "Where did all the years go?",
-    "Home is where the heart is.",
-    "The deeper the grief, the closer is God.",
-    "A heart rich in goodness will always find contentment."
+    "Where did all the years go?"
   ];
 
   const DEFAULT_ENTRIES = [
-    { id: 1, date: "2025-09-12", mood: "Grateful", text: "Started working on PharmEase today. It's finally coming together. There's something deeply satisfying about seeing the database connect properly for the first time." },
-    { id: 2, date: "2025-10-01", mood: "Calm", text: "Autumn feels different this year. I sat by the window for a long time just watching the light change. Some days don't need to be productive to be meaningful." },
-    { id: 3, date: "2025-10-15", mood: "Anxious", text: "Some days you just have to trust the process and keep going, even when the outcome feels uncertain." },
-    { id: 4, date: "2025-11-03", mood: "Joyful", text: "Stayed up late getting the dark mode just right. There's a kind of joy that only comes from making something beautiful." },
-    { id: 5, date: "2025-12-20", mood: "Sad", text: "Some goodbyes don't announce themselves. You only realize after the fact that it was the last time." },
-    { id: 6, date: "2026-01-07", mood: "Grateful", text: "New year. New chapter. Grateful for the hard lessons that didn't break me. They just redirected me." },
-    { id: 7, date: "2026-02-14", mood: "Calm", text: "Read for three hours straight today. No phone, no noise. Just me and a book and a cup of tea going cold." },
-    { id: 8, date: "2026-03-02", mood: "Joyful", text: "Small wins matter. A kind word, a clean solution, a quiet moment of clarity. These are enough." }
+    { id:1, date:"2025-09-12", mood:"Grateful", text:"[SAMPLE] Started working on PharmEase today. It's finally coming together.", isSample:true },
+    { id:2, date:"2025-10-01", mood:"Calm", text:"[SAMPLE] Autumn feels different this year. Some days don't need to be productive to be meaningful.", isSample:true },
+    { id:3, date:"2025-10-15", mood:"Anxious", text:"[SAMPLE] Some days you just have to trust the process and keep going.", isSample:true },
+    { id:4, date:"2025-11-03", mood:"Joyful", text:"[SAMPLE] Stayed up late getting the dark mode just right. There's a kind of joy that only comes from making something beautiful.", isSample:true },
+    { id:5, date:"2026-01-07", mood:"Grateful", text:"[SAMPLE] New year. New chapter. Grateful for the hard lessons that didn't break me.", isSample:true },
+    { id:6, date:"2026-02-14", mood:"Calm", text:"[SAMPLE] Read for three hours straight today. No phone, no noise. Just me and a book.", isSample:true }
   ];
 
+  // ── STATE ──
   let quotes = [...DEFAULT_QUOTES];
-  let entries = DEFAULT_ENTRIES.map((entry) => ({ ...entry }));
+  let entries = DEFAULT_ENTRIES.map(e => ({...e}));
+  let pressureLogs = [];
+  let aloneStories = [...ALONE_STORIES];
+  let letters = [];
+  let deadlines = [];
+  let focusModeActive = false;
   let selectedMood = "";
   let activeFilter = "All";
   let currentEditId = null;
   let darkMode = false;
+  let anchorInterval = null;
+  let currentLetterViewId = null;
 
+  // ── DOM ──
   const tabs = document.querySelectorAll(".tab");
   const pages = document.querySelectorAll(".page");
   const moodButtons = document.querySelectorAll(".mood-btn");
   const filterButtons = document.querySelectorAll(".filter-chip");
-  const quoteModal = document.getElementById("addQuoteModal");
-  const quoteText = document.getElementById("quoteText");
   const entryText = document.getElementById("entryText");
   const charCount = document.getElementById("charCount");
   const composerTitle = document.getElementById("composerTitle");
@@ -1695,707 +1067,846 @@
   const aiInsight = document.getElementById("aiInsight");
   const aiPrompts = document.getElementById("aiPrompts");
   const aiRewrite = document.getElementById("aiRewrite");
+  const crisisPanel = document.getElementById("crisisPanel");
+  const anchorOverlay = document.getElementById("anchorOverlay");
 
-  function escapeHTML(value) {
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
+  // ── UTILS ──
+  function esc(v){ return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+  function normalizeDate(d){ const n=new Date(d+"T00:00:00"); n.setHours(0,0,0,0); return n; }
+  function daysBetween(a,b){ return Math.round((a-b)/86400000); }
+  function formatDate(v){ return normalizeDate(v).toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"}); }
+  function today(){ return new Date().toISOString().split("T")[0]; }
+
+  let toastTimer;
+  function toast(msg){ clearTimeout(toastTimer); toastEl.textContent=msg; toastEl.classList.add("show"); toastTimer=setTimeout(()=>toastEl.classList.remove("show"),2400); }
+
+  // ── STORAGE ──
+  function persist(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify({quotes,entries,pressureLogs,aloneStories,letters,darkMode,deadlines})); }catch(e){}
+  }
+  function persistDraft(){
+    try{ localStorage.setItem(DRAFT_KEY, JSON.stringify({text:entryText.value,mood:selectedMood})); }catch(e){}
+  }
+  function clearDraft(){ try{ localStorage.removeItem(DRAFT_KEY); }catch(e){} }
+  function loadState(){
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      const s=JSON.parse(raw);
+      if(Array.isArray(s.quotes)) quotes=s.quotes;
+      if(Array.isArray(s.entries) && s.entries.length) entries=s.entries;
+      if(Array.isArray(s.pressureLogs)) pressureLogs=s.pressureLogs;
+      if(Array.isArray(s.aloneStories)) aloneStories=s.aloneStories;
+      if(Array.isArray(s.letters)) letters=s.letters;
+      if(Array.isArray(s.deadlines)) deadlines=s.deadlines;
+      if(typeof s.darkMode==="boolean") darkMode=s.darkMode;
+    }catch(e){}
+  }
+  function loadDraft(){
+    try{
+      const raw=localStorage.getItem(DRAFT_KEY);
+      if(!raw) return;
+      const d=JSON.parse(raw);
+      if(typeof d.text==="string") entryText.value=d.text;
+      if(d.mood && MOOD_COLORS[d.mood]) selectMood(d.mood);
+    }catch(e){}
   }
 
-  function sentenceParts(text) {
-    return text
-      .split(/[.!?]\s+/)
-      .map((part) => part.trim())
-      .filter(Boolean);
+  // ── TABS ──
+  function showTab(name){
+    pages.forEach(p=>p.classList.toggle("active",p.id==="tab-"+name));
+    tabs.forEach(t=>t.classList.toggle("active",t.dataset.tab===name));
+    if(name==="pages") renderEntries();
+    if(name==="moods") renderMoods();
+    if(name==="quotes") renderQuotes();
+    if(name==="home") updateStats();
+    if(name==="pressure") renderPressureLog();
+    if(name==="alone") renderAlone();
+    if(name==="letter") renderLetters();
+    if(name==="dropout") renderDropoutShield();
+    if(name==="pressuremap") renderPressureMap();
   }
 
-  function titleCase(text) {
-    return text.replace(/\w\S*/g, (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+  // ── THEME ──
+  function setTheme(isDark){
+    darkMode=isDark;
+    isDark ? document.documentElement.setAttribute("data-theme","dark") : document.documentElement.removeAttribute("data-theme");
+    themeToggle.textContent=isDark?"☀️":"🕯️";
+    persist();
   }
 
-  function buildSuggestedTitle(text, mood) {
-    const parts = sentenceParts(text);
-    const opening = parts[0] || text.trim();
-    const words = opening.split(/\s+/).filter(Boolean).slice(0, 5).join(" ");
-    if (!words) return "Untitled Reflection";
-    return titleCase((mood ? mood + ": " : "") + words);
+  // ── QUOTES ──
+  function showRandomQuote(){
+    const next=quotes[Math.floor(Math.random()*quotes.length)]||"Keep writing.";
+    const el=document.getElementById("quoteText");
+    el.style.opacity="0";
+    setTimeout(()=>{ el.textContent=next; el.style.opacity="1"; },180);
+  }
+  function renderQuotes(){
+    const grid=document.getElementById("quotesGrid");
+    if(!quotes.length){ grid.innerHTML='<div class="empty-state">No quotes yet.</div>'; return; }
+    grid.innerHTML=quotes.map((q,i)=>`<article class="quote-card-mini card-hover"><button class="del-quote" type="button" data-delete-quote="${i}" aria-label="Delete quote">×</button>"${esc(q)}"</article>`).join("");
+  }
+  function addQuote(){
+    const inp=document.getElementById("newQuoteText");
+    const t=inp.value.trim();
+    if(!t){ toast("Write a quote before saving."); return; }
+    quotes.unshift(t); inp.value="";
+    closeModal("addQuoteModal"); persist(); renderQuotes(); showRandomQuote();
+    toast("Quote added.");
+  }
+  function deleteQuote(i){ quotes.splice(i,1); persist(); renderQuotes(); showRandomQuote(); toast("Quote removed."); }
+
+  // ── MOOD ──
+  function selectMood(mood){
+    selectedMood=mood;
+    moodButtons.forEach(b=>b.classList.toggle("selected",b.dataset.mood===mood));
   }
 
-  function detectTheme(text) {
-    const lower = text.toLowerCase();
-    const themes = [
-      { key: "change", words: ["change", "different", "becoming", "grew", "shift", "new"] },
-      { key: "pressure", words: ["stress", "pressure", "deadline", "anxious", "worried", "overwhelmed"] },
-      { key: "gratitude", words: ["grateful", "thankful", "blessing", "lucky", "enough"] },
-      { key: "memory", words: ["remember", "last time", "before", "used to", "memory"] },
-      { key: "hope", words: ["hope", "future", "dream", "someday", "becoming"] },
-      { key: "rest", words: ["quiet", "still", "rest", "window", "tea", "book", "slow"] }
-    ];
-
-    const match = themes.find((theme) => theme.words.some((word) => lower.includes(word)));
-    return match ? match.key : "reflection";
+  // ── CRISIS DETECTION ──
+  function checkCrisis(text){
+    const lower=text.toLowerCase();
+    const detected=CRISIS_WORDS.some(w=>lower.includes(w));
+    crisisPanel.classList.toggle("show",detected);
   }
 
-  function buildInsight(text, mood) {
-    const theme = detectTheme(text);
-    const moodLead = mood ? mood.toLowerCase() : "reflective";
-    const map = {
-      change: `This reads like a ${moodLead} entry about transition. You seem to be noticing movement in your life even if you are still inside the uncertainty of it.`,
-      pressure: `This feels like a ${moodLead} attempt to steady yourself under pressure. The entry suggests you are trying to hold meaning together while things feel demanding.`,
-      gratitude: `This comes through as a ${moodLead} moment of appreciation. The strongest thread here is not just what happened, but what it meant to you.`,
-      memory: `This reads like a ${moodLead} piece of remembrance. The emotional weight comes from what the moment represents, not only from the event itself.`,
-      hope: `This feels like a ${moodLead} note about what might still be possible. There is uncertainty in the text, but there is also forward motion.`,
-      rest: `This reads like a ${moodLead} pause rather than a plot point. The strength of the entry is in its atmosphere and the details you chose to keep.`,
-      reflection: `This feels like a ${moodLead} personal reflection. The emotional center seems to be the meaning you are making from the day, not just the summary of events.`
-    };
-    return map[theme];
+  // ── JOURNAL ──
+  function syncAiPreview(){
+    const t=entryText.value.trim();
+    aiUserPreview.innerHTML=`<span class="chat-label">You</span>${esc(t||"Your current entry preview will appear here as you type.")}`;
   }
 
-  function buildPrompts(text, mood) {
-    const theme = detectTheme(text);
-    const promptsByTheme = {
-      change: [
-        "What part of you is changing with this moment?",
-        "What are you leaving behind without realizing it?",
-        "What would your older self notice about this version of you?"
-      ],
-      pressure: [
-        "What exactly feels heavy right now?",
-        "What is one thing you can release instead of carrying alone?",
-        "If this week had a headline, what would it be?"
-      ],
-      gratitude: [
-        "Why did this matter more than it first seemed?",
-        "What made this moment feel earned?",
-        "Who or what quietly helped shape this day?"
-      ],
-      memory: [
-        "What detail are you afraid of forgetting?",
-        "Why does this memory return to you now?",
-        "What does this moment say about what you value?"
-      ],
-      hope: [
-        "What are you still hoping will happen next?",
-        "What small sign would tell you that you are on the right path?",
-        "What future version of this story do you want to write?"
-      ],
-      rest: [
-        "What made the quiet feel meaningful today?",
-        "What did the slower pace let you notice?",
-        "Which ordinary detail suddenly felt beautiful?"
-      ],
-      reflection: [
-        "What feeling is underneath the words you wrote?",
-        "What sentence in this entry deserves to be expanded?",
-        "What did today teach you about yourself?"
-      ]
-    };
-
-    const base = promptsByTheme[theme] || promptsByTheme.reflection;
-    if (mood === "Anxious") {
-      return [base[0], "What would calm look like in practical terms tonight?", base[2]];
-    }
-    if (mood === "Grateful") {
-      return [base[0], "What would it look like to carry this gratitude into tomorrow?", base[2]];
-    }
-    return base;
+  function updateWordCount(){
+    const words=entryText.value.trim().split(/\s+/).filter(Boolean).length;
+    const rt=Math.max(1,Math.ceil(words/180));
+    charCount.textContent=`${words} word${words===1?"":"s"} · ${rt} min read`;
+    persistDraft(); syncAiPreview();
+    checkCrisis(entryText.value);
   }
 
-  function buildRewrite(text, mood) {
-    const parts = sentenceParts(text);
-    const opening = parts[0] || text;
-    const next = parts[1] || "";
-    const moodLead = mood ? mood.toLowerCase() : "reflective";
-    const stitched = [opening, next].filter(Boolean).join(". ");
-    return `Written in a more ${moodLead} register: ${stitched}. The feeling underneath this entry is not only what happened, but the quiet meaning you are trying to keep from the day.`;
-  }
-
-  function syncAiPreview() {
-    const text = entryText.value.trim();
-    aiUserPreview.innerHTML = `
-      <span class="chat-label">You</span>
-      ${escapeHTML(text || "Your current entry preview will appear here as you type.")}
-    `;
-  }
-
-  function analyzeEntry(action = "analyze") {
-    const text = entryText.value.trim();
-    if (!text) {
-      toast("Write a little before using the assistant.");
-      return;
-    }
-
-    const mood = selectedMood || "Reflective";
-    syncAiPreview();
-
-    if (action === "title" || action === "analyze") {
-      aiTitle.textContent = buildSuggestedTitle(text, mood);
-    }
-
-    if (action === "analyze") {
-      aiInsight.textContent = buildInsight(text, mood);
-    }
-
-    if (action === "prompts" || action === "analyze") {
-      aiPrompts.innerHTML = buildPrompts(text, mood)
-        .map((prompt) => `<div>${escapeHTML(prompt)}</div>`)
-        .join("");
-    }
-
-    if (action === "rewrite" || action === "analyze") {
-      aiRewrite.textContent = buildRewrite(text, mood);
-    }
-
-    const labels = {
-      analyze: "AI companion updated.",
-      title: "Title suggestion refreshed.",
-      prompts: "New follow-up prompts generated.",
-      rewrite: "Polished journal passage generated."
-    };
-    toast(labels[action] || "AI companion updated.");
-  }
-
-  function normalizeDate(date) {
-    const normalized = new Date(date + "T00:00:00");
-    normalized.setHours(0, 0, 0, 0);
-    return normalized;
-  }
-
-  function daysBetween(later, earlier) {
-    return Math.round((later - earlier) / 86400000);
-  }
-
-  function cloneEntries(items) {
-    return items.map((entry) => ({
-      id: Number(entry.id),
-      date: String(entry.date),
-      mood: String(entry.mood),
-      text: String(entry.text)
-    }));
-  }
-
-  function readStorage() {
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch (error) {
-      return null;
-    }
-  }
-
-  function readDraft() {
-    try {
-      const raw = window.localStorage.getItem(DRAFT_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch (error) {
-      return null;
-    }
-  }
-
-  function persistState(showWarning = false) {
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        quotes,
-        entries,
-        darkMode
-      }));
-    } catch (error) {
-      if (showWarning) {
-        toast("Browser storage is unavailable right now.");
-      }
-    }
-  }
-
-  function persistDraft() {
-    try {
-      window.localStorage.setItem(DRAFT_KEY, JSON.stringify({
-        text: entryText.value,
-        mood: selectedMood
-      }));
-    } catch (error) {
-      return;
-    }
-  }
-
-  function clearDraft() {
-    try {
-      window.localStorage.removeItem(DRAFT_KEY);
-    } catch (error) {
-      return;
-    }
-  }
-
-  function loadState() {
-    const stored = readStorage();
-    if (!stored) return;
-
-    if (Array.isArray(stored.quotes) && stored.quotes.every((item) => typeof item === "string")) {
-      quotes = stored.quotes.slice();
-    }
-
-    if (Array.isArray(stored.entries)) {
-      const validEntries = stored.entries.filter((entry) => (
-        entry &&
-        typeof entry.text === "string" &&
-        typeof entry.date === "string" &&
-        typeof entry.mood === "string" &&
-        Number.isFinite(Number(entry.id))
-      ));
-
-      if (validEntries.length) {
-        entries = cloneEntries(validEntries);
-      }
-    }
-
-    if (typeof stored.darkMode === "boolean") {
-      darkMode = stored.darkMode;
-    }
-  }
-
-  function loadDraft() {
-    const draft = readDraft();
-    if (!draft) return;
-
-    if (typeof draft.text === "string") {
-      entryText.value = draft.text;
-    }
-
-    if (typeof draft.mood === "string" && MOOD_COLORS[draft.mood]) {
-      selectMood(draft.mood);
-    }
-  }
-
-  function showTab(name) {
-    pages.forEach((page) => page.classList.toggle("active", page.id === "tab-" + name));
-    tabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.tab === name));
-
-    if (name === "pages") renderEntries();
-    if (name === "moods") renderMoods();
-    if (name === "quotes") renderQuotes();
-    if (name === "home") updateStats();
-  }
-
-  function setTheme(isDark) {
-    darkMode = isDark;
-
-    if (darkMode) {
-      document.documentElement.setAttribute("data-theme", "dark");
-    } else {
-      document.documentElement.removeAttribute("data-theme");
-    }
-
-    themeToggle.textContent = darkMode ? "☀️" : "🕯️";
-    persistState();
-  }
-
-  function showRandomQuote() {
-    const next = quotes[Math.floor(Math.random() * quotes.length)] || "Keep writing. The page remembers what the day forgets.";
-    quoteText.style.opacity = "0";
-    window.setTimeout(() => {
-      quoteText.textContent = next;
-      quoteText.style.opacity = "1";
-    }, 180);
-  }
-
-  function saveQuoteFav() {
-    toast("Quote marked as favourite.");
-  }
-
-  function renderQuotes() {
-    const grid = document.getElementById("quotesGrid");
-
-    if (!quotes.length) {
-      grid.innerHTML = '<div class="empty-state">No quotes yet. Add one and it will appear here.</div>';
-      return;
-    }
-
-    grid.innerHTML = quotes.map((quote, index) => `
-      <article class="quote-card-mini card-hover">
-        <button class="del-quote" type="button" data-delete-quote="${index}" aria-label="Delete quote">×</button>
-        "${escapeHTML(quote)}"
-      </article>
-    `).join("");
-  }
-
-  function openModal(id) {
-    const modal = document.getElementById(id);
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-  }
-
-  function closeModal(id) {
-    const modal = document.getElementById(id);
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden", "true");
-  }
-
-  function addQuote() {
-    const input = document.getElementById("newQuoteText");
-    const text = input.value.trim();
-
-    if (!text) {
-      toast("Write a quote before saving.");
-      return;
-    }
-
-    quotes.unshift(text);
-    input.value = "";
-    closeModal("addQuoteModal");
-    persistState(true);
-    renderQuotes();
-    showRandomQuote();
-    toast("Quote added to your collection.");
-  }
-
-  function deleteQuote(index) {
-    quotes.splice(index, 1);
-    persistState(true);
-    renderQuotes();
-    showRandomQuote();
-    toast("Quote removed.");
-  }
-
-  function selectMood(mood) {
-    selectedMood = mood;
-    moodButtons.forEach((button) => {
-      button.classList.toggle("selected", button.dataset.mood === mood);
+  // ── AI via Claude API ──
+  async function callClaude(systemPrompt, userMessage){
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: "user", content: userMessage }]
+      })
     });
+    const data = await resp.json();
+    return data.content?.map(c=>c.text||"").join("") || "";
   }
 
-  function resetComposer() {
-    currentEditId = null;
-    selectedMood = "";
-    composerTitle.textContent = "New Entry";
-    entryText.value = "";
-    moodButtons.forEach((button) => button.classList.remove("selected"));
-    clearDraft();
-    updateWordCount();
+  function setAiLoading(el, loading){
+    if(loading){ el.innerHTML=`<span class="ai-spinner"></span><span class="ai-loading">Thinking...</span>`; }
   }
 
-  function updateWordCount() {
-    const words = entryText.value.trim().split(/\s+/).filter(Boolean).length;
-    const readTime = Math.max(1, Math.ceil(words / 180));
-    charCount.textContent = words + " word" + (words === 1 ? "" : "s") + " · " + readTime + " min read";
-    persistDraft();
+  async function analyzeEntry(action="analyze"){
+    const text=entryText.value.trim();
+    if(!text){ toast("Write a little before using the companion."); return; }
+    const mood=selectedMood||"Reflective";
     syncAiPreview();
+
+    if(action==="title"||action==="analyze"){
+      setAiLoading(aiTitle,true);
+      try{
+        const r=await callClaude(
+          "You are a literary journal companion. Generate ONLY a short, evocative journal entry title (5-7 words max). No explanation, no punctuation at end, just the title.",
+          `Mood: ${mood}\n\nEntry: ${text}`
+        );
+        aiTitle.textContent=r.trim()||"Untitled Reflection";
+      }catch(e){ aiTitle.textContent="Could not generate title."; }
+    }
+
+    if(action==="analyze"){
+      setAiLoading(aiInsight,true);
+      try{
+        const r=await callClaude(
+          "You are a warm, literary journal companion for Indian students under academic pressure. In 2-3 sentences, identify the emotional center of this journal entry. Be empathetic, specific, and human. Never clinical.",
+          `Mood selected: ${mood}\n\nJournal entry: ${text}`
+        );
+        aiInsight.textContent=r.trim();
+      }catch(e){ aiInsight.textContent="Could not analyze entry."; }
+    }
+
+    if(action==="prompts"||action==="analyze"){
+      setAiLoading(aiPrompts,true);
+      try{
+        const r=await callClaude(
+          "You are a reflective journal guide for students under pressure. Generate exactly 3 short, thoughtful follow-up questions based on the entry. Return ONLY the 3 questions, one per line, no numbering, no extra text.",
+          `Mood: ${mood}\n\nEntry: ${text}`
+        );
+        const qs=r.trim().split("\n").filter(Boolean).slice(0,3);
+        aiPrompts.innerHTML=qs.map(q=>`<div>${esc(q)}</div>`).join("");
+      }catch(e){ aiPrompts.innerHTML="<div>Could not generate prompts.</div>"; }
+    }
+
+    if(action==="rewrite"||action==="analyze"){
+      setAiLoading(aiRewrite,true);
+      try{
+        const r=await callClaude(
+          "You are a literary editor. Rewrite the following journal entry in a more poetic, literary style — preserve the emotional truth but elevate the language. Keep it to 3-4 sentences.",
+          `Mood: ${mood}\n\nEntry: ${text}`
+        );
+        aiRewrite.textContent=r.trim();
+      }catch(e){ aiRewrite.textContent="Could not polish entry."; }
+    }
+
+    const labels={analyze:"AI companion updated.",title:"Title suggestion ready.",prompts:"Follow-up prompts ready.",rewrite:"Polished passage ready."};
+    toast(labels[action]||"AI companion updated.");
   }
 
-  function saveEntry() {
-    const text = entryText.value.trim();
+  // ── ENTRIES ──
+  function resetComposer(){
+    currentEditId=null; selectedMood="";
+    composerTitle.textContent="New Entry"; entryText.value="";
+    moodButtons.forEach(b=>b.classList.remove("selected"));
+    clearDraft(); updateWordCount(); crisisPanel.classList.remove("show");
+  }
 
-    if (!text) {
-      toast("Write something first.");
-      return;
-    }
-
-    const today = new Date();
-    const date = today.toISOString().split("T")[0];
-    const mood = selectedMood || "Calm";
-
-    if (currentEditId !== null) {
-      const existingEntry = entries.find((entry) => entry.id === currentEditId);
-
-      if (!existingEntry) {
-        toast("That entry could not be found.");
-        resetComposer();
-        return;
-      }
-
-      existingEntry.text = text;
-      existingEntry.mood = mood;
+  function saveEntry(){
+    const text=entryText.value.trim();
+    if(!text){ toast("Write something first."); return; }
+    const d=today(); const mood=selectedMood||"Calm";
+    if(currentEditId!==null){
+      const ex=entries.find(e=>e.id===currentEditId);
+      if(!ex){ toast("Entry not found."); resetComposer(); return; }
+      ex.text=text; ex.mood=mood;
     } else {
-      entries.unshift({
-        id: Date.now(),
-        date,
-        mood,
-        text
-      });
+      entries.unshift({id:Date.now(),date:d,mood,text});
     }
-
-    resetComposer();
-    persistState(true);
-    renderEntries();
-    renderMoods();
-    updateStats();
+    resetComposer(); persist(); renderEntries(); renderMoods(); updateStats();
     toast("Entry saved.");
   }
 
-  function editEntry(id) {
-    const entry = entries.find((item) => item.id === id);
-    if (!entry) return;
-
-    currentEditId = id;
-    composerTitle.textContent = "Edit Entry";
-    entryText.value = entry.text;
-    selectMood(entry.mood);
-    showTab("journal");
-    updateWordCount();
-    entryText.focus();
+  function editEntry(id){
+    const entry=entries.find(e=>e.id===id);
+    if(!entry) return;
+    currentEditId=id; composerTitle.textContent="Edit Entry";
+    entryText.value=entry.text; selectMood(entry.mood);
+    showTab("journal"); updateWordCount(); entryText.focus();
   }
 
-  function deleteEntry(id) {
-    entries = entries.filter((entry) => entry.id !== id);
-
-    if (currentEditId === id) {
-      resetComposer();
-    }
-
-    persistState(true);
-    renderEntries();
-    renderMoods();
-    updateStats();
+  function deleteEntry(id){
+    entries=entries.filter(e=>e.id!==id);
+    if(currentEditId===id) resetComposer();
+    persist(); renderEntries(); renderMoods(); updateStats();
     toast("Entry deleted.");
   }
 
-  function setFilter(filter) {
-    activeFilter = filter;
-    filterButtons.forEach((button) => {
-      button.classList.toggle("active", button.dataset.filter === filter);
-    });
+  function setFilter(f){
+    activeFilter=f;
+    filterButtons.forEach(b=>b.classList.toggle("active",b.dataset.filter===f));
     renderEntries();
   }
 
-  function renderEntries() {
-    const list = document.getElementById("entriesList");
-    const query = document.getElementById("searchInput").value.trim().toLowerCase();
-
-    const filtered = entries.filter((entry) => {
-      const matchesFilter = activeFilter === "All" || entry.mood === activeFilter;
-      const matchesQuery = !query ||
-        entry.text.toLowerCase().includes(query) ||
-        entry.date.includes(query) ||
-        entry.mood.toLowerCase().includes(query);
-
-      return matchesFilter && matchesQuery;
+  function renderEntries(){
+    const list=document.getElementById("entriesList");
+    const query=document.getElementById("searchInput").value.trim().toLowerCase();
+    const filtered=entries.filter(e=>{
+      const mf=activeFilter==="All"||e.mood===activeFilter;
+      const qf=!query||e.text.toLowerCase().includes(query)||e.date.includes(query)||e.mood.toLowerCase().includes(query);
+      return mf&&qf;
     });
-
-    if (!filtered.length) {
-      list.innerHTML = '<div class="empty-state">No entries found for the current search and mood filter.</div>';
-      return;
-    }
-
-    list.innerHTML = filtered.map((entry) => `
+    if(!filtered.length){ list.innerHTML='<div class="empty-state">No entries found.</div>'; return; }
+    const hasSamples = filtered.some(e=>e.isSample);
+    const disclaimer = hasSamples ? '<div class="sample-disclaimer">✦ Some entries below are <strong>sample data</strong> to demonstrate the app. Delete them and write your own — this is your space.</div>' : '';
+    list.innerHTML = disclaimer + filtered.map(e=>`
       <article class="entry-card card-hover">
         <div class="entry-card-header">
-          <span class="entry-date">${escapeHTML(formatDate(entry.date))}</span>
-          <span class="mood-tag" style="background:${MOOD_COLORS[entry.mood] || "#7f7f7f"}">${escapeHTML(entry.mood || "-")}</span>
+          <span class="entry-date">${e.isSample?'<span class="sample-badge">sample</span>':''}${esc(formatDate(e.date))}</span>
+          <span class="mood-tag" style="background:${MOOD_COLORS[e.mood]||"#7f7f7f"}">${esc(e.mood||"-")}</span>
         </div>
-        <p class="entry-preview">${escapeHTML(entry.text)}</p>
+        <p class="entry-preview">${esc(e.text.replace(/^\[SAMPLE\] /,""))}</p>
         <div class="entry-card-actions">
-          <button class="btn-sm btn-edit" type="button" data-edit-entry="${entry.id}">Edit</button>
-          <button class="btn-sm btn-danger" type="button" data-delete-entry="${entry.id}">Delete</button>
+          <button class="btn-sm btn-edit" type="button" data-edit-entry="${e.id}">Edit</button>
+          <button class="btn-sm btn-danger" type="button" data-delete-entry="${e.id}">Delete</button>
         </div>
-      </article>
-    `).join("");
+      </article>`).join("");
   }
 
-  function exportEntries() {
-    const content = entries.map((entry) => `${formatDate(entry.date)} [${entry.mood}]\n${entry.text}`).join("\n\n---\n\n");
-    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.download = "my_journal.txt";
-    link.click();
-
-    window.setTimeout(() => URL.revokeObjectURL(url), 0);
+  function exportEntries(){
+    const content=entries.map(e=>`${formatDate(e.date)} [${e.mood}]\n${e.text}`).join("\n\n---\n\n");
+    const blob=new Blob([content],{type:"text/plain;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a"); a.href=url; a.download="my_journal.txt"; a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),0);
     toast("Journal exported.");
   }
 
-  function renderMoods() {
-    const counts = Object.keys(MOOD_COLORS).reduce((acc, mood) => {
-      acc[mood] = 0;
-      return acc;
-    }, {});
-
-    entries.forEach((entry) => {
-      if (counts[entry.mood] !== undefined) {
-        counts[entry.mood] += 1;
-      }
-    });
-
-    const max = Math.max(...Object.values(counts), 1);
-
-    document.getElementById("moodBars").innerHTML = Object.entries(counts).map(([mood, count]) => `
+  // ── MOOD CHARTS ──
+  function renderMoods(){
+    const counts=Object.keys(MOOD_COLORS).reduce((a,m)=>{a[m]=0;return a},{});
+    entries.forEach(e=>{ if(counts[e.mood]!==undefined) counts[e.mood]++; });
+    const max=Math.max(...Object.values(counts),1);
+    document.getElementById("moodBars").innerHTML=Object.entries(counts).map(([m,c])=>`
       <div class="mood-row">
-        <span class="mood-label">${mood}</span>
-        <div class="mood-bar-track">
-          <div class="mood-bar-fill" style="width:${(count / max) * 100}%; background:${MOOD_COLORS[mood]}"></div>
-        </div>
-        <span class="mood-count">${count}</span>
-      </div>
-    `).join("");
-
-    const timelineEntries = entries.slice().sort((a, b) => normalizeDate(a.date) - normalizeDate(b.date));
-    document.getElementById("moodTimeline").innerHTML = timelineEntries.map((entry) => `
-      <div class="timeline-dot" title="${escapeHTML(formatDate(entry.date))}: ${escapeHTML(entry.mood)}" style="background:${MOOD_COLORS[entry.mood] || "#7f7f7f"}">
-        ${escapeHTML(entry.mood.slice(0, 2))}
-      </div>
-    `).join("");
+        <span class="mood-label">${m}</span>
+        <div class="mood-bar-track"><div class="mood-bar-fill" style="width:${(c/max)*100}%;background:${MOOD_COLORS[m]}"></div></div>
+        <span class="mood-count">${c}</span>
+      </div>`).join("");
+    const tl=[...entries].sort((a,b)=>normalizeDate(a.date)-normalizeDate(b.date));
+    document.getElementById("moodTimeline").innerHTML=tl.map(e=>`
+      <div class="timeline-dot" title="${esc(formatDate(e.date))}: ${esc(e.mood)}" style="background:${MOOD_COLORS[e.mood]||"#7f7f7f"}">${esc(e.mood.slice(0,2))}</div>`).join("");
   }
 
-  function calcStreak() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const uniqueDates = [...new Set(entries.map((entry) => entry.date))]
-      .map(normalizeDate)
-      .filter((date) => date <= today)
-      .sort((a, b) => b - a);
-
-    if (!uniqueDates.length) {
-      return 0;
+  // ── STATS ──
+  function calcStreak(){
+    const d=new Date(); d.setHours(0,0,0,0);
+    const ud=[...new Set(entries.map(e=>e.date))].map(normalizeDate).filter(x=>x<=d).sort((a,b)=>b-a);
+    if(!ud.length) return 0;
+    if(daysBetween(d,ud[0])>1) return 0;
+    let streak=1,prev=ud[0];
+    for(let i=1;i<ud.length;i++){
+      const cur=ud[i];
+      if(daysBetween(prev,cur)===1){ streak++;prev=cur; }
+      else if(daysBetween(prev,cur)===0){ prev=cur; }
+      else break;
     }
-
-    const firstGap = daysBetween(today, uniqueDates[0]);
-    if (firstGap > 1) {
-      return 0;
-    }
-
-    let streak = 1;
-    let previous = uniqueDates[0];
-
-    for (let index = 1; index < uniqueDates.length; index += 1) {
-      const current = uniqueDates[index];
-      if (daysBetween(previous, current) === 1) {
-        streak += 1;
-        previous = current;
-      } else if (daysBetween(previous, current) === 0) {
-        previous = current;
-      } else {
-        break;
-      }
-    }
-
     return streak;
   }
 
-  function updateStats() {
-    document.getElementById("totalEntries").textContent = entries.length;
+  function updateStats(){
+    document.getElementById("totalEntries").textContent=entries.length;
+    const words=entries.reduce((s,e)=>s+e.text.trim().split(/\s+/).filter(Boolean).length,0);
+    document.getElementById("totalWords").textContent=words;
+    document.getElementById("streakDays").textContent=calcStreak();
+    const counts=entries.reduce((a,e)=>{ a[e.mood]=(a[e.mood]||0)+1; return a; },{});
+    const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+    document.getElementById("topMoodStat").textContent=top?top[0].slice(0,3):"-";
+    const newest=[...entries].sort((a,b)=>normalizeDate(b.date)-normalizeDate(a.date))[0];
+    if(!newest){ recentEntryMood.textContent="Quiet"; recentEntryMood.style.background="var(--accent)"; recentEntryPreview.textContent="Your most recent entry will appear here."; return; }
+    recentEntryMood.textContent=newest.mood; recentEntryMood.style.background=MOOD_COLORS[newest.mood]||"var(--accent)";
+    recentEntryPreview.textContent=newest.text;
+  }
 
-    const words = entries.reduce((sum, entry) => sum + entry.text.trim().split(/\s+/).filter(Boolean).length, 0);
-    document.getElementById("totalWords").textContent = words;
-    document.getElementById("streakDays").textContent = calcStreak();
+  // ── ANCHOR MODE ──
+  let breathPhase=0;
+  const breathCycle=["Breathe in...","Hold...","Breathe out...","Rest..."];
+  const breathTimings=[4000,2000,4000,2000];
 
-    const counts = entries.reduce((acc, entry) => {
-      acc[entry.mood] = (acc[entry.mood] || 0) + 1;
-      return acc;
-    }, {});
+  function startBreathCycle(){
+    const el=document.getElementById("anchorBreathText");
+    let idx=0;
+    function step(){ el.textContent=breathCycle[idx]; idx=(idx+1)%breathCycle.length; }
+    step();
+    anchorInterval=setInterval(()=>step(), 3000);
+  }
 
-    const topMood = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
-    document.getElementById("topMoodStat").textContent = topMood ? topMood[0].slice(0, 3) : "-";
+  function openAnchor(){
+    anchorOverlay.classList.add("open");
+    document.body.style.overflow="hidden";
+    const r=Math.floor(Math.random()*ANCHOR_AFFIRMATIONS.length);
+    document.getElementById("anchorAffirmation").textContent=`"${ANCHOR_AFFIRMATIONS[r]}"`;
+    startBreathCycle();
+  }
 
-    const newestEntry = entries.slice().sort((a, b) => normalizeDate(b.date) - normalizeDate(a.date))[0];
+  function closeAnchor(){
+    anchorOverlay.classList.remove("open");
+    document.body.style.overflow="";
+    clearInterval(anchorInterval);
+  }
 
-    if (!newestEntry) {
-      recentEntryMood.textContent = "Quiet";
-      recentEntryMood.style.background = "var(--accent)";
-      recentEntryPreview.textContent = "Your most recent entry will appear here once something is written.";
+  // ── PRESSURE TRACKER ──
+  function logPressure(){
+    const hours=parseFloat(document.getElementById("studyHours").value);
+    const stress=parseInt(document.getElementById("stressLevel").value);
+    const note=document.getElementById("pressureNote").value.trim();
+    if(isNaN(hours)||isNaN(stress)){ toast("Enter both study hours and stress level."); return; }
+    pressureLogs.unshift({ id:Date.now(), date:today(), hours, stress, note });
+    document.getElementById("studyHours").value="";
+    document.getElementById("stressLevel").value="";
+    document.getElementById("pressureNote").value="";
+    persist(); renderPressureLog();
+    toast("Session logged.");
+    // instant local insight
+    updatePressureInsight();
+  }
+
+  function updatePressureInsight(){
+    const el=document.getElementById("pressureInsight");
+    if(pressureLogs.length<2){ el.textContent="Log a few more sessions to see patterns emerge."; return; }
+    const highHours=pressureLogs.filter(l=>l.hours>=6);
+    if(highHours.length){
+      const avgStress=highHours.reduce((s,l)=>s+l.stress,0)/highHours.length;
+      el.textContent=`On days with 6+ study hours, your average stress is ${avgStress.toFixed(1)}/10. Consider building in deliberate rest after long sessions.`;
+    } else {
+      el.textContent="Keep logging — patterns will emerge after a few more sessions.";
+    }
+  }
+
+  async function analyzePressureWithAI(){
+    if(pressureLogs.length<2){ toast("Log at least 2 sessions first."); return; }
+    const el=document.getElementById("pressureInsight");
+    el.innerHTML=`<span class="ai-spinner"></span><span class="ai-loading">Analyzing your patterns...</span>`;
+    const summary=pressureLogs.slice(0,10).map(l=>`${l.date}: ${l.hours}hrs study, stress ${l.stress}/10${l.note?`, note: "${l.note}"`:""}` ).join("\n");
+    try{
+      const r=await callClaude(
+        "You are a compassionate student wellbeing coach. Analyze the study-hour vs stress-level data for a student preparing for competitive Indian exams. In 2-3 sentences, identify the key pattern and give ONE specific, actionable recommendation. Be warm and direct.",
+        `Here is the student's recent session log:\n${summary}`
+      );
+      el.textContent=r.trim();
+    }catch(e){ el.textContent="Could not analyze at this time. Try again."; }
+  }
+
+  function renderPressureLog(){
+    const el=document.getElementById("pressureLog");
+    if(!pressureLogs.length){ el.innerHTML='<div class="empty-state">No sessions logged yet.</div>'; return; }
+    el.innerHTML=pressureLogs.slice(0,20).map(l=>`
+      <div class="pressure-log-row">
+        <span>${formatDate(l.date)}</span>
+        <span>📚 ${l.hours}h</span>
+        <span>🔥 ${l.stress}/10</span>
+        <span style="color:var(--ink-soft)">${esc(l.note||"—")}</span>
+      </div>`).join("");
+  }
+
+  // ── YOU ARE NOT ALONE ──
+  function renderAlone(){
+    const grid=document.getElementById("aloneGrid");
+    grid.innerHTML=aloneStories.map(s=>`
+      <article class="alone-card card-hover">
+        <div class="alone-card-meta">
+          <div class="alone-avatar" style="background:rgba(152,81,51,0.1)">${s.avatar}</div>
+          <span class="alone-name">${esc(s.name)}</span>
+        </div>
+        <p class="alone-text">${esc(s.text)}</p>
+        <span class="alone-tag">${esc(s.tag)}</span>
+      </article>`).join("");
+  }
+
+  function shareAlone(){
+    const text=document.getElementById("aloneInput").value.trim();
+    if(!text){ toast("Write something before sharing."); return; }
+    aloneStories.unshift({ avatar:"✦", name:"Anonymous · Just now", text, tag:"Shared today" });
+    document.getElementById("aloneInput").value="";
+    persist(); renderAlone();
+    toast("Shared anonymously. You are not alone.");
+  }
+
+  // ── LETTERS TO FUTURE ME ──
+  function saveLetter(){
+    const text=document.getElementById("letterText").value.trim();
+    const deliverDate=document.getElementById("letterDeliverDate").value;
+    if(!text){ toast("Write your letter first."); return; }
+    if(!deliverDate){ toast("Choose a delivery date."); return; }
+    letters.unshift({ id:Date.now(), writtenDate:today(), deliverDate, text });
+    document.getElementById("letterText").value="";
+    document.getElementById("letterDeliverDate").value="";
+    persist(); renderLetters();
+    toast("Letter sealed. It will be waiting for you.");
+  }
+
+  function renderLetters(){
+    const el=document.getElementById("letterList");
+    if(!letters.length){ el.innerHTML='<div class="empty-state">No letters saved yet. Write one above.</div>'; return; }
+    const td=today();
+    el.innerHTML=letters.map(l=>{
+      const isDue=l.deliverDate<=td;
+      return `<div class="letter-item ${isDue?"letter-due":""}" data-letter-id="${l.id}">
+        <div class="letter-item-date">
+          To be opened ${esc(formatDate(l.deliverDate))}
+          ${isDue?'<span class="due-badge">Ready to read</span>':""}
+        </div>
+        <div class="letter-item-preview">${esc(l.text)}</div>
+      </div>`;
+    }).join("");
+  }
+
+  function openLetter(id){
+    const letter=letters.find(l=>l.id===id);
+    if(!letter) return;
+    currentLetterViewId=id;
+    document.getElementById("letterReadDate").textContent=`Written on ${formatDate(letter.writtenDate)} · For ${formatDate(letter.deliverDate)}`;
+    document.getElementById("letterReadBody").textContent=letter.text;
+    openModal("letterReadModal");
+  }
+
+  function deleteLetter(){
+    if(!currentLetterViewId) return;
+    letters=letters.filter(l=>l.id!==currentLetterViewId);
+    closeModal("letterReadModal"); currentLetterViewId=null;
+    persist(); renderLetters();
+    toast("Letter deleted.");
+  }
+
+  // ── MODALS ──
+  function openModal(id){ const m=document.getElementById(id); m.classList.add("open"); m.setAttribute("aria-hidden","false"); }
+  function closeModal(id){ const m=document.getElementById(id); m.classList.remove("open"); m.setAttribute("aria-hidden","true"); }
+
+  // ── INIT & EVENTS ──
+  function setupEvents(){
+    tabs.forEach(t=>t.addEventListener("click",()=>showTab(t.dataset.tab)));
+    moodButtons.forEach(b=>b.addEventListener("click",()=>selectMood(b.dataset.mood)));
+    filterButtons.forEach(b=>b.addEventListener("click",()=>setFilter(b.dataset.filter)));
+
+    themeToggle.addEventListener("click",()=>setTheme(!darkMode));
+    document.getElementById("quickAddQuoteBtn").addEventListener("click",()=>openModal("addQuoteModal"));
+    document.getElementById("quotesAddBtn").addEventListener("click",()=>openModal("addQuoteModal"));
+    document.getElementById("cancelQuoteBtn").addEventListener("click",()=>closeModal("addQuoteModal"));
+    document.getElementById("saveQuoteModalBtn").addEventListener("click",addQuote);
+    document.getElementById("nextQuoteBtn").addEventListener("click",showRandomQuote);
+    document.getElementById("saveQuoteBtn").addEventListener("click",()=>toast("Quote noted as favourite."));
+    document.getElementById("clearEntryBtn").addEventListener("click",resetComposer);
+    document.getElementById("saveEntryBtn").addEventListener("click",saveEntry);
+    document.getElementById("exportBtn").addEventListener("click",exportEntries);
+    document.getElementById("searchInput").addEventListener("input",renderEntries);
+    entryText.addEventListener("input",updateWordCount);
+
+    // Anchor
+    document.getElementById("anchorBtn").addEventListener("click",openAnchor);
+    document.getElementById("anchorClose").addEventListener("click",closeAnchor);
+    document.getElementById("anchorNewAffirmation").addEventListener("click",()=>{
+      const r=Math.floor(Math.random()*ANCHOR_AFFIRMATIONS.length);
+      document.getElementById("anchorAffirmation").textContent=`"${ANCHOR_AFFIRMATIONS[r]}"`;
+    });
+    document.getElementById("anchorCrisisLink").addEventListener("click",()=>{ closeAnchor(); openModal("crisisModal"); });
+    document.getElementById("closeCrisisModal").addEventListener("click",()=>closeModal("crisisModal"));
+
+    // Pressure
+    document.getElementById("logPressureBtn").addEventListener("click",logPressure);
+    document.getElementById("analyzePressureBtn").addEventListener("click",analyzePressureWithAI);
+
+    // Alone
+    document.getElementById("shareAloneBtn").addEventListener("click",shareAlone);
+
+    // Letter
+    document.getElementById("saveLetterBtn").addEventListener("click",saveLetter);
+    document.getElementById("closeLetterModal").addEventListener("click",()=>closeModal("letterReadModal"));
+    document.getElementById("deleteLetterBtn").addEventListener("click",deleteLetter);
+    document.getElementById("letterList").addEventListener("click",e=>{
+      const item=e.target.closest("[data-letter-id]");
+      if(item) openLetter(Number(item.dataset.letterId));
+    });
+
+    // AI
+    document.querySelectorAll("[data-ai-action]").forEach(b=>b.addEventListener("click",()=>analyzeEntry(b.dataset.aiAction)));
+
+    // Quotes grid
+    document.getElementById("quotesGrid").addEventListener("click",e=>{
+      const b=e.target.closest("[data-delete-quote]");
+      if(b) deleteQuote(Number(b.dataset.deleteQuote));
+    });
+
+    // Entries list
+    document.getElementById("entriesList").addEventListener("click",e=>{
+      const ed=e.target.closest("[data-edit-entry]");
+      if(ed){ editEntry(Number(ed.dataset.editEntry)); return; }
+      const del=e.target.closest("[data-delete-entry]");
+      if(del) deleteEntry(Number(del.dataset.deleteEntry));
+    });
+
+    // Modals close on overlay click
+    ["addQuoteModal","crisisModal","letterReadModal"].forEach(id=>{
+      document.getElementById(id).addEventListener("click",e=>{ if(e.target===document.getElementById(id)) closeModal(id); });
+    });
+
+    document.addEventListener("keydown",e=>{
+      if(e.key==="Escape"){ closeModal("addQuoteModal"); closeModal("crisisModal"); closeModal("letterReadModal"); closeAnchor(); }
+      if((e.ctrlKey||e.metaKey)&&e.key==="Enter" && document.getElementById("tab-journal").classList.contains("active")) saveEntry();
+    });
+
+    // ── Dropout Shield ──
+    document.getElementById("activateFocusMode").addEventListener("click", () => {
+      focusModeActive = !focusModeActive;
+      renderFocusRecovery();
+      toast(focusModeActive ? "Focus Recovery Mode activated. Follow the steps." : "Focus Recovery Mode deactivated.");
+    });
+    document.getElementById("microInterventions").addEventListener("click", e => {
+      const btn = e.target.closest("[data-int-action]");
+      if (!btn) return;
+      const action = btn.dataset.intAction;
+      if (action === "anchor") { openAnchor(); return; }
+      if (action === "Journal now") { showTab("journal"); return; }
+      if (action === "Go to Not Alone") { showTab("alone"); return; }
+      if (action === "Write a letter") { showTab("letter"); return; }
+    });
+
+    // ── Pressure Map ──
+    document.getElementById("addDeadlineBtn").addEventListener("click", () => {
+      const name = document.getElementById("deadlineName").value.trim();
+      const date = document.getElementById("deadlineDate").value;
+      if (!name || !date) { toast("Enter both a name and date."); return; }
+      deadlines.push({ name, date });
+      document.getElementById("deadlineName").value = "";
+      document.getElementById("deadlineDate").value = "";
+      persist();
+      renderPressureMap();
+      toast("Deadline added to map.");
+    });
+    document.getElementById("deadlineList").addEventListener("click", e => {
+      const btn = e.target.closest("[data-delete-deadline]");
+      if (!btn) return;
+      deadlines.splice(Number(btn.dataset.deleteDeadline), 1);
+      persist(); renderPressureMap(); toast("Deadline removed.");
+    });
+    document.getElementById("generateMapInsight").addEventListener("click", generateMapInsight);
+  }
+
+
+  // ══════════════════════════════════════════
+  // ── DROPOUT SHIELD ──
+  // ══════════════════════════════════════════
+  function calcDropoutRisk() {
+    const now = new Date(); now.setHours(0,0,0,0);
+    const last14 = entries.filter(e => {
+      const d = new Date(e.date + "T00:00:00"); d.setHours(0,0,0,0);
+      return (now - d) / 86400000 <= 14;
+    });
+    const last7Pressure = pressureLogs.filter(l => {
+      const d = new Date(l.date + "T00:00:00"); d.setHours(0,0,0,0);
+      return (now - d) / 86400000 <= 7;
+    });
+
+    // Signal 1: Activity decline (0-3)
+    const activityScore = last14.length === 0 ? 3 : last14.length <= 2 ? 2 : last14.length <= 5 ? 1 : 0;
+
+    // Signal 2: Mood decline — ratio of sad/angry/anxious (0-3)
+    const negMoods = ["Sad","Angry","Anxious"];
+    const negCount = entries.slice(0,10).filter(e => negMoods.includes(e.mood)).length;
+    const moodScore = negCount >= 7 ? 3 : negCount >= 5 ? 2 : negCount >= 3 ? 1 : 0;
+
+    // Signal 3: Consecutive high-stress days (0-3)
+    const highStressDays = last7Pressure.filter(l => l.stress >= 8).length;
+    const stressScore = highStressDays >= 5 ? 3 : highStressDays >= 3 ? 2 : highStressDays >= 1 ? 1 : 0;
+
+    // Signal 4: No journaling for 5+ days (0-1)
+    const latestEntry = entries.slice().sort((a,b) => new Date(b.date)-new Date(a.date))[0];
+    const daysSinceLastEntry = latestEntry ? Math.floor((now - new Date(latestEntry.date+"T00:00:00"))/86400000) : 999;
+    const silenceScore = daysSinceLastEntry >= 5 ? 1 : 0;
+
+    const total = activityScore + moodScore + stressScore + silenceScore;
+    const maxScore = 10;
+    const normalized = Math.min(10, Math.round((total / maxScore) * 10));
+    return { total: normalized, activityScore, moodScore, stressScore, silenceScore, last14, last7Pressure, daysSinceLastEntry };
+  }
+
+  function renderDropoutShield() {
+    const r = calcDropoutRisk();
+    const scoreEl = document.getElementById("dropoutScore");
+    const scoreDesc = document.getElementById("dropoutScoreDesc");
+    const bannerEl = document.getElementById("dropoutRiskBanner");
+    const moodTrendEl = document.getElementById("moodTrend7");
+    const moodTrendDesc = document.getElementById("moodTrendDesc");
+    const activityEl = document.getElementById("activityLevel");
+    const activityDesc = document.getElementById("activityDesc");
+    const interventionFlag = document.getElementById("interventionFlag");
+    const interventionDesc = document.getElementById("interventionDesc");
+
+    // Score
+    scoreEl.textContent = r.total + "/10";
+    scoreEl.style.color = r.total >= 7 ? "var(--mood-angry)" : r.total >= 4 ? "var(--mood-anxious)" : "var(--mood-grateful)";
+    scoreDesc.textContent = r.total >= 7 ? "High risk. Significant behavioral decline detected. Please reach out to someone." :
+      r.total >= 4 ? "Moderate risk. Some warning signals present — take them seriously." :
+      r.total >= 1 ? "Low risk. A few early signals. Keep journaling and monitoring." :
+      "Healthy pattern. No dropout risk signals detected.";
+
+    // Banner
+    if (r.total >= 7) {
+      bannerEl.style.display = "block";
+      bannerEl.innerHTML = `<strong style="color:#a13830;display:block;margin-bottom:0.4rem;">⚠️ High Dropout Risk Detected</strong><p style="color:var(--ink-soft);line-height:1.5;margin:0;">Helium AI has detected a significant pattern of behavioral decline over the past 14 days. Reduced journaling, high stress, and negative mood patterns together are strong early signals. <strong>You are not alone — please talk to someone you trust, or use Anchor Mode right now.</strong></p>`;
+    } else { bannerEl.style.display = "none"; }
+
+    // Mood trend
+    const negMoods = ["Sad","Angry","Anxious"];
+    const recent7Moods = entries.slice(0,7).map(e => e.mood);
+    const negRatio = recent7Moods.length ? recent7Moods.filter(m => negMoods.includes(m)).length / recent7Moods.length : 0;
+    moodTrendEl.textContent = negRatio >= 0.6 ? "📉 Declining" : negRatio >= 0.3 ? "➡️ Mixed" : "📈 Stable";
+    moodTrendEl.style.color = negRatio >= 0.6 ? "var(--mood-angry)" : negRatio >= 0.3 ? "var(--mood-anxious)" : "var(--mood-grateful)";
+    moodTrendDesc.textContent = `${Math.round(negRatio*100)}% of your last ${recent7Moods.length} entries show negative mood.`;
+
+    // Activity
+    activityEl.textContent = r.last14.length + " entries";
+    activityEl.style.color = r.last14.length <= 2 ? "var(--mood-angry)" : r.last14.length <= 5 ? "var(--mood-anxious)" : "var(--mood-grateful)";
+    activityDesc.textContent = r.daysSinceLastEntry < 999 ? `Last entry: ${r.daysSinceLastEntry} day(s) ago.` : "No entries found.";
+
+    // Intervention
+    interventionFlag.textContent = r.total >= 7 ? "🚨 Yes" : r.total >= 4 ? "⚠️ Watch" : "✅ No";
+    interventionFlag.style.color = r.total >= 7 ? "var(--mood-angry)" : r.total >= 4 ? "var(--mood-anxious)" : "var(--mood-grateful)";
+    interventionDesc.textContent = r.total >= 7 ? "Immediate support recommended." : r.total >= 4 ? "Monitor closely and self-care." : "You're doing okay.";
+
+    // Signal Breakdown
+    const signals = [
+      { label:"Activity Level", desc:`${r.last14.length} entries in last 14 days`, score:r.activityScore, max:3 },
+      { label:"Mood Pattern", desc:`Negative mood ratio in recent entries`, score:r.moodScore, max:3 },
+      { label:"Stress Load", desc:`High-stress days in past 7 days`, score:r.stressScore, max:3 },
+      { label:"Silence Signal", desc:`Days since last journal entry: ${r.daysSinceLastEntry === 999 ? "unknown" : r.daysSinceLastEntry}`, score:r.silenceScore, max:1 },
+    ];
+    document.getElementById("signalBreakdown").innerHTML = signals.map(s => {
+      const color = s.score === 0 ? "#6da367" : s.score >= s.max ? "#c24b38" : "#e5a437";
+      return `<div class="signal-card">
+        <div class="signal-dot" style="background:${color};"></div>
+        <div><div class="signal-label">${esc(s.label)}</div><div class="signal-desc">${esc(s.desc)}</div></div>
+        <div class="signal-value" style="color:${color};">${s.score}/${s.max}</div>
+      </div>`;
+    }).join("");
+
+    // Micro-Intervention Engine
+    const interventions = [];
+    if (r.activityScore >= 2) interventions.push({ title:"🖊 Write for 5 minutes — right now", desc:"You haven't journaled much lately. Even one sentence counts. Open the Journal tab and write anything.", action:"Journal now" });
+    if (r.stressScore >= 2) interventions.push({ title:"⚓ Activate Anchor Mode", desc:"Your stress logs show sustained high pressure. Anchor Mode has a guided breathing + grounding sequence designed for this.", action:"Open Anchor Mode", fn:"anchor" });
+    if (r.moodScore >= 2) interventions.push({ title:"🫂 Read the 'Not Alone' feed", desc:"Your mood pattern shows significant negativity. Reading anonymous peer stories can reduce isolation and reframe your situation.", action:"Go to Not Alone" });
+    if (r.silenceScore >= 1) interventions.push({ title:"📬 Write a letter to future you", desc:`You haven't journaled in ${r.daysSinceLastEntry} days. Writing a Future Letter is low-pressure and powerful — no one reads it until your chosen date.`, action:"Write a letter" });
+    if (r.total <= 1) interventions.push({ title:"✅ You're doing well", desc:"No major risk signals detected. Keep the consistent journaling going — it's exactly what keeps burnout away.", action:null });
+
+    document.getElementById("microInterventions").innerHTML = interventions.map(i => `
+      <div class="intervention-card">
+        <strong>${esc(i.title)}</strong>
+        <span>${esc(i.desc)}</span>
+        ${i.action ? `<div class="int-action" data-int-action="${esc(i.fn||i.action)}">${esc(i.action)} →</div>` : ""}
+      </div>`).join("");
+
+    // Focus Recovery Mode
+    renderFocusRecovery();
+  }
+
+  function renderFocusRecovery() {
+    const steps = focusModeActive ? [
+      { title:"🧘 2-min grounding", desc:"Close your eyes. Name 5 things you can feel in your body right now. Just observe, don't judge." },
+      { title:"📝 Write one sentence", desc:"Open your journal and finish this: 'The one thing I actually need to do today is...' Just one." },
+      { title:"⏱ 25-min deep work block", desc:"Put your phone in another room. Work on only one task. No notifications. Set a physical timer if possible." },
+      { title:"🚶 10-min walk", desc:"Not optional. Your brain needs physical reset. Go outside. No phone. Just walk." },
+      { title:"📊 Log your stress level", desc:"Come back and log how you feel after this recovery sequence. Patterns over time are your teacher." },
+    ] : [];
+
+    const btn = document.getElementById("activateFocusMode");
+    if (btn) btn.textContent = focusModeActive ? "Deactivate Focus Recovery" : "Activate Focus Recovery";
+
+    const container = document.getElementById("focusRecovery");
+    if (!focusModeActive) {
+      container.innerHTML = `<div style="color:var(--ink-faint);font-size:0.92rem;line-height:1.55;">When you notice your focus has dropped — you've been staring at the page for 10 minutes, you keep switching apps, nothing is going in — activate this mode. It won't add more pressure. It gives you a reset sequence.</div>`;
       return;
     }
-
-    recentEntryMood.textContent = newestEntry.mood;
-    recentEntryMood.style.background = MOOD_COLORS[newestEntry.mood] || "var(--accent)";
-    recentEntryPreview.textContent = newestEntry.text;
+    container.innerHTML = steps.map((s,i) => `
+      <div class="focus-step">
+        <strong>Step ${i+1}: ${esc(s.title)}</strong>
+        <span>${esc(s.desc)}</span>
+      </div>`).join("");
   }
 
-  function formatDate(value) {
-    return normalizeDate(value).toLocaleDateString("en-IN", {
-      day: "numeric",
-      month: "long",
-      year: "numeric"
-    });
+  // ══════════════════════════════════════════
+  // ── PRESSURE MAP ──
+  // ══════════════════════════════════════════
+  function renderPressureMap() {
+    renderHeatmap();
+    renderBurnoutZones();
+    renderDeadlineList();
   }
 
-  let toastTimer;
-  function toast(message) {
-    window.clearTimeout(toastTimer);
-    toastEl.textContent = message;
-    toastEl.classList.add("show");
-    toastTimer = window.setTimeout(() => toastEl.classList.remove("show"), 2400);
-  }
+  function renderHeatmap() {
+    const container = document.getElementById("pressureHeatmap");
+    const today = new Date(); today.setHours(0,0,0,0);
+    const cells = [];
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split("T")[0];
+      const log = pressureLogs.find(l => l.date === dateStr);
+      const entry = entries.find(e => e.date === dateStr);
+      const deadline = deadlines.find(dl => {
+        const dlDate = new Date(dl.date + "T00:00:00");
+        return Math.abs(dlDate - d) / 86400000 <= 3;
+      });
 
-  function setupEventListeners() {
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", () => showTab(tab.dataset.tab));
-    });
-
-    moodButtons.forEach((button) => {
-      button.addEventListener("click", () => selectMood(button.dataset.mood));
-    });
-
-    filterButtons.forEach((button) => {
-      button.addEventListener("click", () => setFilter(button.dataset.filter));
-    });
-
-    themeToggle.addEventListener("click", () => setTheme(!darkMode));
-    document.getElementById("quickAddQuoteBtn").addEventListener("click", () => openModal("addQuoteModal"));
-    document.getElementById("quotesAddBtn").addEventListener("click", () => openModal("addQuoteModal"));
-    document.getElementById("cancelQuoteBtn").addEventListener("click", () => closeModal("addQuoteModal"));
-    document.getElementById("saveQuoteModalBtn").addEventListener("click", addQuote);
-    document.getElementById("nextQuoteBtn").addEventListener("click", showRandomQuote);
-    document.getElementById("saveQuoteBtn").addEventListener("click", saveQuoteFav);
-    document.getElementById("clearEntryBtn").addEventListener("click", resetComposer);
-    document.getElementById("saveEntryBtn").addEventListener("click", saveEntry);
-    document.getElementById("exportBtn").addEventListener("click", exportEntries);
-    document.getElementById("searchInput").addEventListener("input", renderEntries);
-    entryText.addEventListener("input", updateWordCount);
-
-    quoteModal.addEventListener("click", (event) => {
-      if (event.target === quoteModal) {
-        closeModal("addQuoteModal");
+      let color = "rgba(0,0,0,0.08)";
+      let title = `${dateStr}: No data`;
+      if (log) {
+        const pressure = (log.stress / 10 + (log.hours >= 7 ? 0.3 : 0)) ;
+        color = pressure >= 0.8 ? "#c24b38" : pressure >= 0.6 ? "#e5a437" : pressure >= 0.3 ? "#6da367" : "#4c8e9e";
+        title = `${dateStr}: Stress ${log.stress}/10, ${log.hours}h study`;
+      } else if (entry) {
+        const negMoods = ["Sad","Angry","Anxious"];
+        color = negMoods.includes(entry.mood) ? "#e5a437" : "#4c8e9e";
+        title = `${dateStr}: Mood — ${entry.mood}`;
       }
-    });
+      if (deadline) { color = "#985133"; title += " ⚠️ Near deadline: " + deadline.name; }
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        closeModal("addQuoteModal");
-      }
+      cells.push(`<div class="heatmap-cell" style="background:${color};" title="${esc(title)}"></div>`);
+    }
+    container.innerHTML = cells.join("");
+  }
 
-      if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
-        const journalPage = document.getElementById("tab-journal");
-        if (journalPage.classList.contains("active")) {
-          saveEntry();
+  function renderBurnoutZones() {
+    const container = document.getElementById("burnoutZones");
+    if (pressureLogs.length < 3) { container.innerHTML = `<div style="color:var(--ink-faint);font-size:0.9rem;">Log at least 3 days of pressure data to detect burnout zones.</div>`; return; }
+
+    const sorted = pressureLogs.slice().sort((a,b) => new Date(a.date)-new Date(b.date));
+    const zones = [];
+    let zoneStart = null; let zoneCount = 0;
+    sorted.forEach((l,i) => {
+      if (l.stress >= 7) {
+        if (!zoneStart) zoneStart = l.date;
+        zoneCount++;
+        if (zoneCount >= 3) {
+          if (!zones.find(z => z.start === zoneStart)) zones.push({ start:zoneStart, end:l.date, days:zoneCount });
         }
-      }
+      } else { zoneStart = null; zoneCount = 0; }
     });
 
-    document.getElementById("quotesGrid").addEventListener("click", (event) => {
-      const button = event.target.closest("[data-delete-quote]");
-      if (!button) return;
-      deleteQuote(Number(button.dataset.deleteQuote));
-    });
-
-    document.getElementById("entriesList").addEventListener("click", (event) => {
-      const editButton = event.target.closest("[data-edit-entry]");
-      if (editButton) {
-        editEntry(Number(editButton.dataset.editEntry));
-        return;
-      }
-
-      const deleteButton = event.target.closest("[data-delete-entry]");
-      if (deleteButton) {
-        deleteEntry(Number(deleteButton.dataset.deleteEntry));
-      }
-    });
-
-    document.querySelectorAll("[data-ai-action]").forEach((button) => {
-      button.addEventListener("click", () => analyzeEntry(button.dataset.aiAction));
-    });
+    if (!zones.length) { container.innerHTML = `<div style="color:var(--mood-grateful);font-size:0.9rem;">✅ No burnout zones detected in your logged data.</div>`; return; }
+    container.innerHTML = zones.map(z => `<div class="burnout-zone"><strong>⚠️ ${esc(z.days)}-day burnout zone</strong>${esc(z.start)} → ${esc(z.end)}</div>`).join("");
   }
 
-  function init() {
+  function renderDeadlineList() {
+    const container = document.getElementById("deadlineList");
+    if (!deadlines.length) { container.innerHTML = `<div style="color:var(--ink-faint);font-size:0.88rem;">No deadlines added yet.</div>`; return; }
+    const today = new Date().toISOString().split("T")[0];
+    container.innerHTML = deadlines.map((d,i) => {
+      const daysLeft = Math.ceil((new Date(d.date+"T00:00:00") - new Date(today+"T00:00:00")) / 86400000);
+      const label = daysLeft < 0 ? "Past" : daysLeft === 0 ? "Today!" : daysLeft + "d left";
+      const color = daysLeft <= 3 && daysLeft >= 0 ? "var(--mood-angry)" : daysLeft <= 7 ? "var(--mood-anxious)" : "var(--accent)";
+      return `<div class="deadline-item">
+        <div><strong>${esc(d.name)}</strong><span>${esc(d.date)}</span></div>
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <span class="days-left" style="background:rgba(152,81,51,0.1);color:${color};">${esc(label)}</span>
+          <button class="btn-sm btn-danger" type="button" data-delete-deadline="${i}" style="padding:0.3rem 0.6rem;">×</button>
+        </div>
+      </div>`;
+    }).join("");
+  }
+
+  async function generateMapInsight() {
+    const btn = document.getElementById("generateMapInsight");
+    const result = document.getElementById("mapInsightResult");
+    result.style.display = "block";
+    result.textContent = "Helium AI is reading your pressure map...";
+    btn.textContent = "Generating..."; btn.disabled = true;
+
+    const summary = {
+      totalLogs: pressureLogs.length,
+      avgStress: pressureLogs.length ? (pressureLogs.reduce((s,l)=>s+l.stress,0)/pressureLogs.length).toFixed(1) : "N/A",
+      highStressDays: pressureLogs.filter(l=>l.stress>=7).length,
+      deadlines: deadlines.map(d=>d.name).join(", ") || "none",
+      recentMoods: entries.slice(0,5).map(e=>e.mood).join(", "),
+      entriesCount: entries.filter(e=>!e.isSample).length,
+    };
+
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({
+          model:"claude-sonnet-4-20250514",
+          max_tokens:400,
+          system:"You are Helium AI, a compassionate academic pressure analyst for Indian students. Give a 3-4 sentence personalized insight about the student's pressure map. Be warm, specific, and end with one actionable suggestion. Never be clinical.",
+          messages:[{ role:"user", content:`Student pressure data: ${JSON.stringify(summary)}. Analyze their academic pressure pattern and give a personalized map insight.` }]
+        })
+      });
+      const data = await response.json();
+      result.textContent = data.content.map(c=>c.text||"").join("").trim();
+    } catch {
+      result.textContent = "Could not reach Helium AI. Based on your data: " + (pressureLogs.length < 3 ? "Log more days to see a meaningful pattern." : `Your average stress of ${(pressureLogs.reduce((s,l)=>s+l.stress,0)/pressureLogs.length).toFixed(1)}/10 over ${pressureLogs.length} days suggests ${pressureLogs.filter(l=>l.stress>=7).length >= 3 ? "sustained high pressure — consider a reset day." : "manageable load. Keep logging."}`);
+    }
+    btn.textContent = "Regenerate Insight"; btn.disabled = false;
+  }
+
+  function init(){
     loadState();
-    document.getElementById("todayLabel").textContent = new Date().toLocaleDateString("en-IN", {
-      day: "numeric",
-      month: "long",
-      year: "numeric"
-    });
-    setupEventListeners();
+    document.getElementById("todayLabel").textContent=new Date().toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"});
+    setupEvents();
     setTheme(darkMode);
     loadDraft();
     showRandomQuote();
@@ -2404,6 +1915,13 @@
     renderEntries();
     renderMoods();
     renderQuotes();
+    renderAlone();
+    renderLetters();
+    renderPressureLog();
+    // Check for due letters on load
+    const td=today();
+    const dueLetter=letters.find(l=>l.deliverDate===td);
+    if(dueLetter) setTimeout(()=>toast("📬 A letter from your past self is ready to read — check Future Letters!"),1500);
   }
 
   init();
