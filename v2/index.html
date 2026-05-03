@@ -1,1 +1,2419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Last Bookmark — Journal Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+/* ══════════════════════════════════
+   ROOT — LIGHT THEME
+══════════════════════════════════ */
+:root {
+  --bg:           #f5ede0;
+  --paper:        rgba(255,249,241,0.9);
+  --paper-strong: #fff9f1;
+  --paper-tint:   rgba(255,252,247,0.75);
+  --ink:          #2a1d12;
+  --ink-soft:     #5e4232;
+  --ink-faint:    #9b7a5d;
+  --accent:       #8e4a2e;
+  --accent-deep:  #6b3220;
+  --accent-soft:  #c9a47e;
+  --accent-glow:  rgba(142,74,46,0.14);
+  --line:         rgba(130,90,55,0.18);
+  --shadow:       rgba(45,28,14,0.13);
+  --shadow-md:    rgba(45,28,14,0.20);
+  --shadow-lg:    rgba(36,22,12,0.28);
+  --hero-grad:    radial-gradient(ellipse at 0% 0%,rgba(215,180,140,0.65),transparent 50%),
+                  radial-gradient(ellipse at 100% 100%,rgba(142,74,46,0.12),transparent 45%),
+                  linear-gradient(135deg,#fdf4e8 0%,#ecdcc5 100%);
+  --mood-joy:     #d4922a;
+  --mood-calm:    #3d8494;
+  --mood-sad:     #5f72a0;
+  --mood-angry:   #b84038;
+  --mood-grateful:#5a9460;
+  --mood-anxious: #7d50a8;
+  --crisis:       #b84038;
+  --sidebar-w:    230px;
+  --radius-xl:    28px;
+  --radius-lg:    20px;
+  --radius-md:    14px;
+}
 
+/* ══════════════════════════════════
+   DARK THEME
+══════════════════════════════════ */
+[data-theme="dark"] {
+  --bg:           #130e08;
+  --paper:        rgba(38,24,14,0.92);
+  --paper-strong: #2c1a0e;
+  --paper-tint:   rgba(50,32,18,0.78);
+  --ink:          #f0d8b8;
+  --ink-soft:     #c9a87a;
+  --ink-faint:    #8a6a4a;
+  --accent:       #d4915f;
+  --accent-deep:  #f0b888;
+  --accent-soft:  #6e4030;
+  --accent-glow:  rgba(212,145,95,0.18);
+  --line:         rgba(220,180,140,0.16);
+  --shadow:       rgba(0,0,0,0.38);
+  --shadow-md:    rgba(0,0,0,0.52);
+  --shadow-lg:    rgba(0,0,0,0.64);
+  --hero-grad:    radial-gradient(ellipse at 0% 0%,rgba(212,145,95,0.22),transparent 50%),
+                  radial-gradient(ellipse at 100% 100%,rgba(255,220,170,0.06),transparent 45%),
+                  linear-gradient(135deg,#1c120a 0%,#231508 100%);
+}
+
+/* ══════════════════════════════════
+   RESET & BASE
+══════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body {
+  min-height:100vh;
+  font-family:"Crimson Pro",Georgia,serif;
+  font-size:16px;
+  color:var(--ink);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E"),
+    linear-gradient(160deg,var(--bg) 0%,#e8d5bb 100%);
+  transition:background .35s,color .35s;
+}
+
+button,input,textarea{font:inherit;color:inherit}
+button{border:0;background:none;cursor:pointer}
+a{color:var(--accent);text-decoration:none}
+
+/* ══════════════════════════════════
+   APP SHELL
+══════════════════════════════════ */
+.app-shell {
+  width:min(1300px,calc(100% - 2rem));
+  margin:1rem auto 2rem;
+  border:1px solid var(--line);
+  border-radius:36px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,0.13),rgba(255,255,255,0.03)),
+    var(--paper);
+  box-shadow:0 40px 100px var(--shadow-lg);
+  overflow:hidden;
+  position:relative;
+}
+
+.app-shell::before {
+  content:"";
+  position:absolute;
+  top:-20px; right:11%;
+  width:100px; height:130px;
+  border-radius:0 0 14px 14px;
+  background:linear-gradient(180deg,var(--accent) 0%,var(--accent-deep) 100%);
+  box-shadow:0 16px 32px var(--shadow-md);
+  z-index:1;
+  pointer-events:none;
+}
+.app-shell::after {
+  content:"✦";
+  position:absolute;
+  top:30px; right:calc(11% + 35px);
+  font-size:1.4rem;
+  color:rgba(255,249,241,0.6);
+  z-index:2;
+  pointer-events:none;
+}
+
+/* ══════════════════════════════════
+   TOPBAR
+══════════════════════════════════ */
+.topbar {
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:1rem 1.5rem;
+  border-bottom:1px solid var(--line);
+  background:rgba(255,249,241,0.55);
+  backdrop-filter:blur(20px);
+  position:relative;
+  z-index:10;
+}
+
+.brand{display:flex;align-items:center;gap:0.9rem}
+.brand-mark {
+  width:46px;height:46px;
+  display:grid;place-items:center;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));
+  color:#fff9f1;font-size:1.2rem;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.22),0 10px 20px var(--accent-glow);
+}
+.brand-eyebrow{color:var(--ink-faint);font-size:0.72rem;letter-spacing:.12em;text-transform:uppercase}
+.brand-name{font-family:"IM Fell English",serif;font-size:1.6rem;font-weight:400;letter-spacing:.02em;line-height:1}
+
+.topbar-right{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+#themeToggle{
+  position:relative;z-index:20;
+  min-width:42px;height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.3);
+  color:var(--ink);
+  font-size:1.1rem;
+  transition:all .2s;
+  display:grid;place-items:center;
+}
+#themeToggle:hover{background:rgba(255,255,255,0.5);transform:scale(1.06)}
+
+.today-badge{
+  padding:.42rem .9rem;border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.26);
+  color:var(--ink-soft);font-size:0.85rem;
+  white-space:nowrap;
+}
+
+/* ══════════════════════════════════
+   BUTTONS
+══════════════════════════════════ */
+.btn{
+  padding:.7rem 1.15rem;border-radius:var(--radius-md);
+  font-size:.95rem;letter-spacing:.02em;
+  transition:all .2s;display:inline-flex;align-items:center;gap:.4rem;
+}
+.btn-primary{
+  color:#fff9f1;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));
+  box-shadow:0 10px 22px var(--accent-glow);
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 14px 28px var(--accent-glow)}
+.btn-outline{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.24);
+  color:var(--ink-soft);
+}
+.btn-outline:hover{background:rgba(255,255,255,0.42);transform:translateY(-1px)}
+.btn-anchor{
+  color:#e8f0ff;
+  background:linear-gradient(135deg,#5f72a0,#3d4f7a);
+  box-shadow:0 10px 22px rgba(63,82,130,.28);
+}
+.btn-anchor:hover{transform:translateY(-1px)}
+.btn-sm{padding:.38rem .75rem;border-radius:10px;border:1px solid var(--line);font-size:.88rem;transition:all .2s}
+.btn-edit{background:rgba(255,255,255,0.24);color:var(--ink-soft)}
+.btn-danger{background:rgba(160,50,40,.06);border-color:rgba(160,50,40,.28);color:#a03228}
+.btn-sm:hover{transform:translateY(-1px)}
+
+/* ══════════════════════════════════
+   ANNOUNCEMENT BAR
+══════════════════════════════════ */
+.announcement{
+  display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap;
+  padding:.7rem 1.3rem;
+  background:linear-gradient(90deg,var(--accent),#b87050);
+  color:#fff8f2;font-size:.88rem;letter-spacing:.03em;text-align:center;
+}
+.announcement strong{font-weight:600}
+
+/* ══════════════════════════════════
+   LAYOUT GRID
+══════════════════════════════════ */
+.content-grid{display:grid;grid-template-columns:var(--sidebar-w) minmax(0,1fr);min-height:82vh}
+
+/* ══════════════════════════════════
+   SIDEBAR
+══════════════════════════════════ */
+.sidebar{
+  padding:1.1rem .9rem 1.4rem 1.1rem;
+  border-right:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,249,241,.45),rgba(255,249,241,.1));
+  display:flex;flex-direction:column;gap:.6rem;
+}
+.sidebar-section-label{
+  font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-faint);padding:.2rem .5rem;margin-top:.4rem;
+}
+.tab-list{display:flex;flex-direction:column;gap:.32rem}
+.tab{
+  width:100%;display:flex;align-items:center;gap:.75rem;
+  text-align:left;padding:.72rem .85rem;
+  border-radius:var(--radius-md);border:1px solid transparent;
+  color:var(--ink-faint);transition:all .2s;
+}
+.tab:hover{background:rgba(255,255,255,.22);color:var(--ink-soft)}
+.tab strong{display:block;color:var(--ink);font-size:.94rem;font-weight:500}
+.tab em{display:block;margin-top:.06rem;color:var(--ink-faint);font-size:.76rem;font-style:normal}
+.tab-icon{font-size:1.1rem;width:22px;text-align:center;flex-shrink:0}
+.tab.active{
+  color:var(--accent);
+  border-color:rgba(142,74,46,.18);
+  background:linear-gradient(135deg,rgba(142,74,46,.1),rgba(201,164,126,.12));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22);
+}
+.tab.active strong{color:var(--accent)}
+
+.sidebar-quote{
+  margin-top:auto;padding:1rem;
+  border:1px solid var(--line);border-radius:var(--radius-lg);
+  background:var(--hero-grad);
+  font-family:"Cormorant Garamond",serif;font-size:1.02rem;
+  line-height:1.5;color:var(--ink-soft);font-style:italic;
+}
+.sidebar-quote-label{
+  font-family:"Crimson Pro",serif;font-style:normal;
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:.45rem;
+}
+.sidebar-privacy{
+  padding:.8rem .9rem;border-radius:var(--radius-md);
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.18);
+  font-size:.8rem;color:var(--ink-soft);line-height:1.5;
+}
+.sidebar-privacy span{color:var(--accent);font-weight:600}
+
+/* ══════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════ */
+main{
+  padding:1.5rem;
+  background:
+    radial-gradient(ellipse at top left,rgba(255,255,255,.12),transparent 30%),
+    linear-gradient(180deg,rgba(255,252,247,.12),rgba(255,252,247,0));
+}
+
+/* ══════════════════════════════════
+   PAGES
+══════════════════════════════════ */
+.page{display:none;animation:fadeSlide .32s ease}
+.page.active{display:block}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:1.1rem}
+.section-header h2{font-family:"IM Fell English",serif;font-size:1.55rem;font-weight:400;line-height:1.1}
+.section-header p{color:var(--ink-soft);line-height:1.56;max-width:540px}
+
+/* ══════════════════════════════════
+   SHARED CARD STYLES
+══════════════════════════════════ */
+.card{
+  border:1px solid var(--line);
+  border-radius:var(--radius-xl);
+  background:var(--paper-tint);
+  box-shadow:0 18px 42px var(--shadow);
+  backdrop-filter:blur(16px);
+}
+.card-hover{transition:transform .2s,box-shadow .2s}
+.card-hover:hover{transform:translateY(-2px);box-shadow:0 24px 52px var(--shadow-md)}
+
+/* ══════════════════════════════════
+   HOME PAGE
+══════════════════════════════════ */
+.hero-panel{
+  position:relative;overflow:hidden;
+  border-radius:var(--radius-xl);padding:2rem 2.2rem;margin-bottom:1.2rem;
+  background:var(--hero-grad);
+  border:1px solid var(--line);
+  box-shadow:0 22px 50px var(--shadow);
+}
+.hero-panel::before{
+  content:"";position:absolute;inset:14px;
+  border:1px solid rgba(142,74,46,.1);border-radius:22px;pointer-events:none;
+}
+.hero-panel::after{
+  content:"";position:absolute;right:-60px;bottom:-60px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,249,240,.42),transparent 70%);
+  pointer-events:none;
+}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr);gap:1.2rem;position:relative;z-index:1}
+.hero-copy h2{
+  font-family:"IM Fell English",serif;
+  font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;line-height:1.06;
+  margin-bottom:.8rem;color:var(--ink);
+}
+.hero-copy p{color:var(--ink-soft);line-height:1.68;font-size:1.08rem;max-width:520px}
+.hero-pills{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}
+.pill{
+  padding:.42rem .82rem;border-radius:999px;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(255,255,255,.3);
+  color:var(--ink-soft);font-size:.85rem;
+}
+
+.quote-card{
+  position:relative;display:flex;flex-direction:column;justify-content:space-between;gap:1rem;
+  min-height:100%;border-radius:22px;padding:1.6rem;
+  background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,.1));
+  border:1px solid rgba(255,255,255,.4);
+  box-shadow:0 16px 36px var(--shadow);
+}
+.quote-card::before{
+  content:"\201C";position:absolute;top:.3rem;left:.9rem;
+  font-family:"IM Fell English",serif;font-size:4.5rem;line-height:1;
+  color:rgba(142,74,46,.2);
+}
+.quote-text{
+  position:relative;z-index:1;min-height:110px;margin-top:1rem;
+  font-family:"Cormorant Garamond",serif;font-size:1.45rem;line-height:1.58;
+  color:var(--ink);transition:opacity .2s;
+}
+.quote-actions{display:flex;gap:.65rem;flex-wrap:wrap}
+
+/* ══════════════════════════════════
+   COMMUNITY STAT CARDS (NEW)
+══════════════════════════════════ */
+.community-stats-row{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.9rem;
+  margin-bottom:1.1rem;
+}
+.community-stat-card{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:1.35rem 1rem 1.2rem;border-radius:22px;
+  border:1px solid var(--line);
+  background:linear-gradient(160deg,rgba(255,255,255,.32),rgba(255,255,255,.1));
+  box-shadow:0 14px 32px var(--shadow);
+  transition:transform .22s,box-shadow .22s;
+}
+.community-stat-card:hover{transform:translateY(-3px);box-shadow:0 22px 44px var(--shadow-md)}
+.csc-icon{font-size:1.55rem;margin-bottom:.4rem;line-height:1}
+.csc-num{
+  font-family:"IM Fell English",serif;
+  font-size:clamp(2rem,3.5vw,2.8rem);
+  line-height:1;color:var(--accent);
+  margin-bottom:.3rem;
+  text-shadow:0 2px 8px var(--accent-glow);
+}
+.csc-label{color:var(--ink-soft);font-size:.85rem;line-height:1.5}
+.csc-creator{
+  background:linear-gradient(160deg,rgba(142,74,46,.12),rgba(201,164,126,.07));
+  border-color:rgba(142,74,46,.22);
+}
+.csc-creator-link{
+  display:inline-block;margin-top:.5rem;
+  font-family:"IM Fell English",serif;font-size:1.1rem;
+  color:var(--accent);
+  border-bottom:1px solid rgba(142,74,46,.35);
+  padding-bottom:.06rem;
+  transition:opacity .2s,border-color .2s;
+}
+.csc-creator-link:hover{opacity:.72;border-color:transparent}
+[data-theme="dark"] .community-stat-card{
+  background:linear-gradient(160deg,rgba(55,35,18,.65),rgba(40,25,12,.45));
+}
+[data-theme="dark"] .csc-creator{
+  background:linear-gradient(160deg,rgba(212,145,95,.12),rgba(201,164,126,.06));
+}
+
+/* Stats grid */
+.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.9rem;margin-bottom:1.1rem}
+.stat-card{
+  padding:1.1rem 1rem;border-radius:22px;
+  background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.08));
+  border:1px solid var(--line);
+  box-shadow:0 14px 30px var(--shadow);
+}
+.stat-card p{color:var(--ink-faint);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.stat-number{
+  display:block;margin-top:.4rem;
+  font-family:"IM Fell English",serif;
+  font-size:clamp(1.8rem,2.8vw,2.5rem);
+  color:var(--accent);line-height:1;
+}
+.stat-sub{display:block;font-size:.78rem;color:var(--ink-faint);margin-top:.25rem;line-height:1.3}
+
+.home-bottom{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(290px,.9fr);gap:1.1rem;margin-top:1.1rem}
+
+.tonight-card{padding:1.4rem;border-radius:var(--radius-xl)}
+.tonight-card h3{font-family:"IM Fell English",serif;font-size:1.28rem;font-weight:400;margin-bottom:.5rem}
+.tonight-card p{color:var(--ink-soft);line-height:1.58;margin-bottom:.9rem}
+.recent-entry-shell{
+  padding:.9rem 1rem;border-radius:var(--radius-lg);
+  border:1px dashed rgba(142,74,46,.22);
+  background:rgba(255,255,255,.2);
+}
+.recent-entry-meta{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-bottom:.5rem}
+.recent-entry-meta h4{color:var(--ink-faint);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.recent-entry-shell blockquote{
+  font-family:"Cormorant Garamond",serif;font-size:1.18rem;line-height:1.56;
+  color:var(--ink-soft);
+}
+
+.vision-card{padding:1.4rem;border-radius:var(--radius-xl)}
+.vision-card h3{font-family:"IM Fell English",serif;font-size:1.28rem;font-weight:400;margin-bottom:.5rem}
+.vision-card p{color:var(--ink-soft);line-height:1.6;font-size:.97rem}
+.vision-list{display:grid;gap:.65rem;margin-top:.9rem}
+.vision-item{
+  display:flex;gap:.8rem;align-items:flex-start;
+  padding:.8rem .9rem;border-radius:var(--radius-md);
+  background:rgba(255,255,255,.25);border:1px solid var(--line);
+}
+.vision-item-icon{font-size:1.1rem;flex-shrink:0;margin-top:.05rem}
+.vision-item strong{display:block;color:var(--ink);font-size:.95rem;margin-bottom:.12rem}
+.vision-item span{color:var(--ink-soft);font-size:.88rem;line-height:1.45}
+.vision-link{
+  display:inline-flex;align-items:center;gap:.4rem;
+  margin-top:.9rem;padding:.5rem .95rem;border-radius:999px;
+  background:rgba(142,74,46,.1);border:1px solid rgba(142,74,46,.22);
+  color:var(--accent);font-size:.88rem;transition:all .2s;
+}
+.vision-link:hover{background:rgba(142,74,46,.18)}
+
+/* ══════════════════════════════════
+   TESTIMONIALS (UPDATED)
+══════════════════════════════════ */
+.testimonials{margin-top:1.2rem}
+.testimonials-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem}
+.testimonials-header h3{font-family:"IM Fell English",serif;font-size:1.28rem;font-weight:400}
+.testimonials-divider{flex:1;height:1px;background:var(--line)}
+.testimonial-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.85rem}
+.testimonial-card{
+  padding:1.1rem 1.1rem 1rem;border-radius:var(--radius-lg);
+  background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,.08));
+  border:1px solid var(--line);
+  position:relative;
+  display:flex;flex-direction:column;
+}
+.testimonial-card::before{
+  content:"\201C";position:absolute;top:.3rem;right:.9rem;
+  font-family:"Cormorant Garamond",serif;font-size:3rem;line-height:1;
+  color:rgba(142,74,46,.15);
+}
+/* Avatar circle */
+.testimonial-avatar{
+  width:38px;height:38px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));
+  color:#fff9f1;font-size:.74rem;font-weight:700;letter-spacing:.04em;
+  display:grid;place-items:center;
+  margin-bottom:.65rem;
+  box-shadow:0 4px 12px var(--accent-glow);
+}
+.testimonial-text{
+  font-family:"Cormorant Garamond",serif;font-size:1.08rem;
+  line-height:1.62;color:var(--ink-soft);margin-bottom:.7rem;font-style:italic;
+  flex:1;
+}
+.testimonial-author{font-size:.8rem;color:var(--ink-faint);letter-spacing:.04em;margin-top:auto}
+.testimonial-author strong{color:var(--ink-soft);font-style:normal}
+
+/* ══════════════════════════════════
+   DAILY PROMPT
+══════════════════════════════════ */
+.daily-prompt-bar{
+  margin-bottom:1.1rem;padding:1.1rem 1.3rem;
+  border-radius:var(--radius-lg);
+  background:linear-gradient(135deg,rgba(142,74,46,.08),rgba(201,164,126,.05));
+  border:1px solid rgba(142,74,46,.18);
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+}
+.daily-prompt-bar .dp-label{
+  font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);white-space:nowrap;flex-shrink:0;
+}
+.daily-prompt-bar .dp-text{
+  flex:1;font-family:"Cormorant Garamond",serif;font-size:1.12rem;
+  color:var(--ink);line-height:1.4;font-style:italic;
+}
+.daily-prompt-bar .dp-actions{display:flex;gap:.5rem;flex-shrink:0}
+
+/* ══════════════════════════════════
+   JOURNAL PAGE
+══════════════════════════════════ */
+.journal-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);gap:1.1rem}
+
+.entry-composer{
+  padding:1.5rem;border-radius:var(--radius-xl);
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.04)),
+    repeating-linear-gradient(to bottom,transparent 0,transparent 39px,rgba(142,74,46,.055) 39px,rgba(142,74,46,.055) 40px),
+    var(--paper-tint);
+}
+.entry-composer h3{font-family:"IM Fell English",serif;font-size:1.3rem;font-weight:400;margin-bottom:.4rem}
+.entry-subtitle{color:var(--ink-soft);line-height:1.5;font-size:.95rem}
+
+.mood-picker{display:flex;flex-wrap:wrap;gap:.45rem;margin:.9rem 0}
+.mood-btn{
+  padding:.44rem .88rem;border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.24);color:var(--ink-soft);
+  transition:all .2s;font-size:.92rem;
+}
+.mood-btn:hover{background:rgba(142,74,46,.08);border-color:rgba(142,74,46,.3)}
+.mood-btn.selected{color:#fff8f2;border-color:transparent}
+.mood-btn[data-mood="Joyful"].selected{background:var(--mood-joy)}
+.mood-btn[data-mood="Calm"].selected{background:var(--mood-calm)}
+.mood-btn[data-mood="Sad"].selected{background:var(--mood-sad)}
+.mood-btn[data-mood="Angry"].selected{background:var(--mood-angry)}
+.mood-btn[data-mood="Grateful"].selected{background:var(--mood-grateful)}
+.mood-btn[data-mood="Anxious"].selected{background:var(--mood-anxious)}
+
+.journal-textarea,.modal textarea,.search-bar input{
+  width:100%;border:1px solid var(--line);border-radius:var(--radius-md);
+  outline:none;background:rgba(255,255,255,.18);color:var(--ink);
+  transition:border-color .2s,box-shadow .2s;
+}
+.journal-textarea,.modal textarea{
+  min-height:190px;padding:.9rem 1rem;resize:vertical;
+  font-size:1.02rem;line-height:1.76;
+}
+.journal-textarea:focus,.modal textarea:focus,.search-bar input:focus{
+  border-color:rgba(142,74,46,.4);
+  box-shadow:0 0 0 4px rgba(142,74,46,.09);
+}
+
+.entry-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;flex-wrap:wrap;margin-top:.9rem;
+}
+.char-count{color:var(--ink-faint);font-size:.88rem}
+.entry-actions{display:flex;gap:.6rem}
+
+.crisis-panel{
+  display:none;margin-top:.7rem;padding:.95rem 1.05rem;border-radius:var(--radius-md);
+  border:1px solid rgba(184,64,56,.32);background:rgba(184,64,56,.06);
+}
+.crisis-panel.show{display:block}
+.crisis-panel h4{color:var(--crisis);font-family:"IM Fell English",serif;font-weight:400;margin-bottom:.4rem}
+.crisis-panel p{color:var(--ink-soft);font-size:.9rem;line-height:1.5;margin-bottom:.5rem}
+.crisis-links{display:flex;flex-wrap:wrap;gap:.5rem}
+.crisis-link-btn{
+  padding:.4rem .85rem;border-radius:10px;
+  border:1px solid rgba(184,64,56,.28);background:rgba(184,64,56,.08);
+  color:var(--crisis);font-size:.86rem;text-decoration:none;display:inline-block;
+}
+
+/* ══════════════════════════════════
+   AI CHAT SHELL — HELIUM
+══════════════════════════════════ */
+.ai-chat-shell{
+  position:sticky;top:1rem;display:flex;flex-direction:column;gap:.9rem;
+  padding:1.3rem;min-height:700px;border-radius:var(--radius-xl);
+  background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.07)),var(--paper-tint);
+  border:1px solid var(--line);box-shadow:0 18px 42px var(--shadow);
+}
+.ai-chat-header{display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem}
+.ai-chat-header h3{font-family:"IM Fell English",serif;font-size:1.22rem;font-weight:400}
+.ai-badge{
+  padding:.28rem .65rem;border-radius:999px;
+  border:1px solid rgba(142,74,46,.2);background:rgba(142,74,46,.08);
+  color:var(--accent);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;
+  white-space:nowrap;
+}
+.ai-chat-window{display:flex;flex-direction:column;gap:.65rem;padding:.15rem 0}
+.chat-bubble{
+  max-width:93%;padding:.8rem .95rem;border-radius:16px;
+  line-height:1.5;box-shadow:0 8px 20px rgba(45,28,14,.08);
+}
+.chat-bubble.assistant{
+  align-self:flex-start;border:1px solid rgba(142,74,46,.14);
+  background:rgba(255,255,255,.34);color:var(--ink);
+}
+.chat-bubble.user{
+  align-self:flex-end;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));
+  color:#fff9f1;
+}
+.chat-label{display:block;margin-bottom:.25rem;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+
+.ai-quick-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+.quick-ai-btn{
+  padding:.72rem .8rem;border-radius:14px;
+  border:1px solid rgba(142,74,46,.16);background:rgba(255,255,255,.22);
+  color:var(--ink-soft);text-align:left;transition:all .2s;
+}
+.quick-ai-btn:hover{transform:translateY(-1px);background:rgba(142,74,46,.08);border-color:rgba(142,74,46,.28)}
+.quick-ai-btn strong{display:block;margin-bottom:.14rem;color:var(--ink);font-size:.92rem}
+.quick-ai-btn span{display:block;font-size:.84rem;line-height:1.3}
+
+.ai-output-stack{display:grid;gap:.65rem}
+.ai-output-card{
+  padding:.85rem .95rem;border-radius:16px;
+  border:1px solid rgba(142,74,46,.12);background:rgba(255,255,255,.22);
+}
+.ai-label{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.3rem}
+.ai-value,.ai-list{color:var(--ink-soft);line-height:1.56;font-size:.96rem}
+.ai-list{display:grid;gap:.3rem}
+.ai-loading{opacity:.6;font-style:italic}
+.ai-spinner{
+  display:inline-block;width:13px;height:13px;
+  border:2px solid rgba(142,74,46,.25);border-top-color:var(--accent);
+  border-radius:50%;animation:spin .7s linear infinite;
+  vertical-align:middle;margin-right:5px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ══════════════════════════════════
+   MY PAGES
+══════════════════════════════════ */
+.search-bar{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.85rem 1rem;border-radius:22px;
+  border:1px solid var(--line);background:rgba(255,255,255,.26);
+  box-shadow:0 14px 30px var(--shadow);
+  backdrop-filter:blur(14px);
+}
+.search-bar input{border:0;padding:0;background:transparent;font-size:1rem}
+
+.filter-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.65rem}
+.filter-chip{
+  padding:.42rem .88rem;border-radius:999px;
+  border:1px solid var(--line);background:rgba(255,255,255,.22);
+  color:var(--ink-soft);transition:all .2s;font-size:.88rem;
+}
+.filter-chip:hover{background:rgba(142,74,46,.08);border-color:rgba(142,74,46,.28)}
+.filter-chip.active{color:#fff8f2;background:var(--accent);border-color:transparent}
+
+.entries-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-top:.95rem}
+.entry-card{
+  padding:1.15rem;border-radius:22px;
+  background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06)),var(--paper-tint);
+  border:1px solid var(--line);box-shadow:0 16px 34px var(--shadow);
+}
+.entry-card-header{display:flex;align-items:center;justify-content:space-between;gap:.8rem;margin-bottom:.65rem}
+.entry-date{color:var(--ink-faint);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+.mood-tag{padding:.24rem .68rem;border-radius:999px;color:#fff8f2;font-size:.78rem}
+.entry-preview{
+  color:var(--ink-soft);line-height:1.62;
+  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
+}
+.entry-card-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:.9rem}
+.export-section{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  margin-top:1.2rem;padding:1.1rem 1.25rem;border-radius:22px;
+  border:1px solid var(--line);background:var(--paper-tint);
+  box-shadow:0 16px 34px var(--shadow);
+}
+.export-section p{color:var(--ink-soft);font-size:.96rem}
+.sample-badge{
+  display:inline-block;padding:.14rem .5rem;border-radius:999px;
+  background:rgba(212,146,42,.15);border:1px solid rgba(212,146,42,.28);
+  color:#8a6000;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;margin-right:.4rem;
+}
+[data-theme="dark"] .sample-badge{color:#c9a040}
+.sample-disclaimer{
+  padding:.65rem .95rem;border-radius:12px;
+  background:rgba(212,146,42,.08);border:1px dashed rgba(212,146,42,.28);
+  color:var(--ink-faint);font-size:.85rem;margin-bottom:.9rem;text-align:center;
+}
+
+/* ══════════════════════════════════
+   MOOD TRACKER
+══════════════════════════════════ */
+.mood-page{display:flex;flex-direction:column;gap:1rem}
+.mood-chart-card{
+  padding:1.35rem;border-radius:var(--radius-xl);
+  border:1px solid var(--line);background:var(--paper-tint);
+  box-shadow:0 16px 34px var(--shadow);
+}
+.mood-chart-card h3{font-family:"IM Fell English",serif;font-size:1.26rem;font-weight:400;margin-bottom:.8rem;color:var(--ink)}
+.mood-bars{display:flex;flex-direction:column;gap:.75rem}
+.mood-row{display:grid;grid-template-columns:90px minmax(0,1fr) 32px;align-items:center;gap:.8rem}
+.mood-label,.mood-count{color:var(--ink-soft)}
+.mood-bar-track{height:14px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden}
+.mood-bar-fill{height:100%;border-radius:inherit;transition:width .72s ease}
+.timeline{display:flex;flex-wrap:wrap;gap:.5rem}
+.timeline-dot{
+  width:40px;height:40px;display:grid;place-items:center;border-radius:50%;
+  color:#fff9f1;font-size:.7rem;box-shadow:0 6px 16px rgba(0,0,0,.18);
+}
+
+/* ══════════════════════════════════
+   PRESSURE LOG
+══════════════════════════════════ */
+.pressure-card{
+  border-radius:var(--radius-xl);padding:1.35rem;
+  border:1px solid var(--line);background:var(--paper-tint);
+  box-shadow:0 16px 34px var(--shadow);
+}
+.pressure-card h3{font-family:"IM Fell English",serif;font-size:1.22rem;font-weight:400;margin-bottom:.2rem;color:var(--ink)}
+.pressure-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:.9rem}
+.pressure-input-group label{
+  display:block;color:var(--ink-faint);font-size:.78rem;
+  letter-spacing:.08em;text-transform:uppercase;margin-bottom:.35rem;
+}
+.pressure-input{
+  width:100%;padding:.65rem .95rem;border-radius:12px;
+  border:1px solid var(--line);background:rgba(255,255,255,.22);
+  color:var(--ink);outline:none;font-size:.98rem;transition:border-color .2s;
+}
+.pressure-input:focus{border-color:rgba(142,74,46,.38);box-shadow:0 0 0 4px rgba(142,74,46,.08)}
+.pressure-insight{
+  margin-top:.9rem;padding:.95rem;border-radius:var(--radius-md);
+  background:rgba(255,255,255,.22);border:1px solid var(--line);
+  color:var(--ink-soft);line-height:1.55;font-style:italic;min-height:50px;
+}
+.pressure-log{margin-top:.9rem;display:grid;gap:.5rem;max-height:220px;overflow-y:auto}
+.pressure-log-row{
+  display:grid;grid-template-columns:1fr 80px 80px 1fr;gap:.5rem;align-items:center;
+  padding:.55rem .8rem;border-radius:10px;background:rgba(255,255,255,.18);
+  font-size:.88rem;color:var(--ink-soft);
+}
+.pressure-log-row span:first-child{color:var(--ink-faint);font-size:.78rem}
+
+/* ══════════════════════════════════
+   YOU ARE NOT ALONE
+══════════════════════════════════ */
+.alone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.9rem;margin-top:.9rem}
+.alone-card{
+  border-radius:var(--radius-lg);padding:1.2rem;
+  background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06)),var(--paper-tint);
+  border:1px solid var(--line);box-shadow:0 12px 28px var(--shadow);
+}
+.alone-card-meta{display:flex;align-items:center;gap:.55rem;margin-bottom:.6rem}
+.alone-avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:1rem}
+.alone-name{color:var(--ink-faint);font-size:.8rem}
+.alone-text{font-family:"Cormorant Garamond",serif;font-size:1.14rem;line-height:1.6;color:var(--ink-soft)}
+.alone-tag{
+  display:inline-block;margin-top:.6rem;padding:.22rem .62rem;
+  border-radius:999px;font-size:.76rem;border:1px solid var(--line);color:var(--ink-faint);
+}
+.alone-share-form{
+  margin-top:1rem;display:flex;flex-direction:column;gap:.7rem;padding:1.1rem;
+  border:1px dashed rgba(142,74,46,.28);
+  background:rgba(255,255,255,.14);
+  border-radius:var(--radius-xl);
+  box-shadow:0 12px 28px var(--shadow);
+}
+.alone-share-form h3{font-family:"IM Fell English",serif;font-size:1.18rem;font-weight:400;color:var(--ink)}
+.alone-share-form p{color:var(--ink-faint);font-size:.86rem}
+
+/* ══════════════════════════════════
+   LETTER TO FUTURE ME
+══════════════════════════════════ */
+.letter-card{
+  border-radius:var(--radius-xl);padding:1.5rem;
+  background:linear-gradient(180deg,rgba(255,249,241,.94),rgba(238,225,208,.96));
+  border:1px solid var(--line);box-shadow:0 16px 34px var(--shadow);
+}
+.letter-card h3{font-family:"IM Fell English",serif;font-size:1.26rem;font-weight:400;color:var(--ink)}
+.letter-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:1.1rem;margin-top:.9rem}
+.letter-textarea{min-height:210px}
+.letter-meta{display:flex;flex-direction:column;gap:.85rem}
+.letter-date-input{
+  width:100%;padding:.65rem .95rem;border-radius:12px;
+  border:1px solid var(--line);background:rgba(255,255,255,.22);
+  color:var(--ink);outline:none;transition:border-color .2s;
+}
+.letter-date-input:focus{border-color:rgba(142,74,46,.38)}
+.letter-saved-list{display:grid;gap:.65rem;max-height:300px;overflow-y:auto;margin-top:1rem}
+.letter-item{
+  padding:.85rem .95rem;border-radius:var(--radius-md);
+  border:1px solid var(--line);background:rgba(255,255,255,.3);
+  cursor:pointer;transition:all .2s;
+}
+.letter-item:hover{background:rgba(255,255,255,.5);transform:translateY(-1px)}
+.letter-item-date{color:var(--accent);font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;margin-bottom:.25rem}
+.letter-item-preview{color:var(--ink-soft);font-size:.9rem;line-height:1.42;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.letter-due{background:rgba(212,146,42,.12);border-color:rgba(212,146,42,.36)}
+.letter-due .letter-item-date{color:#a07a00}
+.due-badge{display:inline-block;padding:.14rem .5rem;border-radius:999px;background:#d4922a;color:#fff;font-size:.72rem;margin-left:.35rem}
+
+/* ══════════════════════════════════
+   DROPOUT SHIELD
+══════════════════════════════════ */
+.signal-card{
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.8rem;
+  padding:.8rem .95rem;border-radius:14px;
+  background:rgba(255,255,255,.2);border:1px solid var(--line);
+}
+.signal-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.signal-label{font-weight:500;color:var(--ink);font-size:.92rem}
+.signal-desc{color:var(--ink-faint);font-size:.8rem;margin-top:.1rem}
+.signal-value{font-family:"IM Fell English",serif;font-size:1.16rem;color:var(--ink-soft)}
+.intervention-card{padding:.88rem 1rem;border-radius:14px;background:rgba(255,255,255,.22);border:1px solid var(--line)}
+.intervention-card strong{display:block;color:var(--ink);margin-bottom:.2rem}
+.intervention-card span{color:var(--ink-soft);font-size:.9rem;line-height:1.45}
+.int-action{
+  display:inline-block;margin-top:.5rem;padding:.32rem .72rem;
+  border-radius:999px;background:rgba(142,74,46,.1);border:1px solid rgba(142,74,46,.2);
+  color:var(--accent);font-size:.8rem;cursor:pointer;transition:all .2s;
+}
+.int-action:hover{background:rgba(142,74,46,.18)}
+.focus-step{padding:.8rem .95rem;border-radius:13px;background:rgba(61,132,148,.08);border:1px solid rgba(61,132,148,.2)}
+.focus-step strong{color:#2a6878;display:block;margin-bottom:.13rem}
+.focus-step span{color:var(--ink-soft);font-size:.88rem}
+[data-theme="dark"] .focus-step strong{color:#7dd0e0}
+.burnout-zone{padding:.7rem .85rem;border-radius:13px;background:rgba(184,64,56,.08);border:1px solid rgba(184,64,56,.18);color:var(--ink-soft);font-size:.88rem;line-height:1.4}
+.burnout-zone strong{color:#a03228;display:block;margin-bottom:.18rem}
+.deadline-item{display:flex;align-items:center;justify-content:space-between;gap:.9rem;padding:.65rem .85rem;border-radius:13px;background:rgba(255,255,255,.2);border:1px solid var(--line)}
+.deadline-item strong{color:var(--ink)}
+.deadline-item span{color:var(--ink-faint);font-size:.82rem}
+.days-left{padding:.22rem .55rem;border-radius:999px;font-size:.76rem;background:rgba(142,74,46,.1);color:var(--accent);border:1px solid rgba(142,74,46,.18)}
+.heatmap-cell{width:27px;height:27px;border-radius:5px;cursor:default;transition:transform .15s}
+.heatmap-cell:hover{transform:scale(1.2)}
+
+/* ══════════════════════════════════
+   QUOTES
+══════════════════════════════════ */
+.quotes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.9rem;margin-top:.9rem}
+.quote-card-mini{
+  position:relative;min-height:160px;padding:1.2rem;
+  font-family:"Cormorant Garamond",serif;font-size:1.14rem;line-height:1.6;
+  color:var(--ink-soft);
+  background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.06)),var(--paper-tint);
+  border:1px solid var(--line);border-radius:22px;
+  box-shadow:0 12px 28px var(--shadow);
+}
+.del-quote{
+  position:absolute;top:.7rem;right:.7rem;
+  width:30px;height:30px;display:grid;place-items:center;
+  border-radius:50%;background:rgba(255,255,255,.32);color:var(--ink-faint);
+  opacity:0;transition:all .2s;cursor:pointer;border:1px solid var(--line);
+}
+.quote-card-mini:hover .del-quote{opacity:1}
+.del-quote:hover{color:#a03228}
+
+/* ══════════════════════════════════
+   ANCHOR MODE
+══════════════════════════════════ */
+.anchor-overlay{
+  position:fixed;inset:0;z-index:200;
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#14192e,#0b0e1c);
+  animation:anchorFade .6s ease;
+}
+.anchor-overlay.open{display:flex}
+@keyframes anchorFade{from{opacity:0}to{opacity:1}}
+.anchor-inner{text-align:center;max-width:480px;padding:2rem}
+.anchor-title{font-family:"IM Fell English",serif;font-size:2.1rem;font-weight:400;color:#c0d2f0;margin-bottom:.55rem}
+.anchor-sub{color:#7a8fb0;line-height:1.62;margin-bottom:1.8rem;font-size:1.06rem}
+.anchor-circle{
+  width:156px;height:156px;border-radius:50%;margin:0 auto 1.8rem;
+  border:3px solid rgba(192,210,240,.28);display:grid;place-items:center;
+  animation:anchorPulse 4.2s ease-in-out infinite;
+  background:radial-gradient(circle,rgba(95,114,160,.2),transparent 68%);
+}
+@keyframes anchorPulse{
+  0%,100%{transform:scale(1);border-color:rgba(192,210,240,.28);box-shadow:0 0 0 0 rgba(95,114,160,.28)}
+  50%{transform:scale(1.08);border-color:rgba(192,210,240,.6);box-shadow:0 0 0 18px rgba(95,114,160,0)}
+}
+.anchor-breath-text{color:#c0d2f0;font-family:"Cormorant Garamond",serif;font-size:1.38rem}
+.anchor-affirmation{
+  font-family:"Cormorant Garamond",serif;font-size:1.3rem;color:#a0b2cc;
+  line-height:1.62;margin-bottom:1.8rem;font-style:italic;
+}
+.anchor-actions{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap}
+.btn-anchor-close{
+  padding:.75rem 1.6rem;border-radius:13px;
+  border:1px solid rgba(192,210,240,.28);background:rgba(192,210,240,.1);
+  color:#c0d2f0;cursor:pointer;transition:all .2s;font-size:.97rem;
+}
+.btn-anchor-close:hover{background:rgba(192,210,240,.2)}
+.anchor-crisis-link{color:#f0aaa0;font-size:.88rem;margin-top:.9rem;text-decoration:underline;cursor:pointer;display:block}
+
+/* ══════════════════════════════════
+   MODALS
+══════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+  padding:1rem;background:rgba(15,8,3,.5);backdrop-filter:blur(10px);z-index:100;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  width:min(560px,100%);padding:1.4rem;border-radius:var(--radius-xl);
+  border:1px solid var(--line);background:var(--paper-strong);
+  box-shadow:0 30px 80px var(--shadow-lg);
+}
+.modal h3{font-family:"IM Fell English",serif;font-size:1.35rem;font-weight:400;margin-bottom:.45rem;color:var(--ink)}
+.modal p{color:var(--ink-soft);margin-bottom:.9rem}
+.modal-actions{display:flex;gap:.65rem;margin-top:.9rem;flex-wrap:wrap}
+.letter-read-modal{width:min(640px,100%)}
+.letter-read-date{color:var(--accent);font-size:.84rem;letter-spacing:.07em;text-transform:uppercase;margin-bottom:.9rem}
+.letter-read-body{font-family:"Cormorant Garamond",serif;font-size:1.24rem;line-height:1.72;color:var(--ink);white-space:pre-wrap}
+
+/* ══════════════════════════════════
+   TOAST
+══════════════════════════════════ */
+.toast{
+  position:fixed;right:1.1rem;bottom:1.1rem;
+  padding:.8rem 1.05rem;border-radius:14px;
+  background:rgba(26,16,8,.94);color:#fff8f2;
+  box-shadow:0 16px 38px rgba(0,0,0,.28);
+  transform:translateY(120%);opacity:0;transition:all .28s ease;z-index:300;
+  font-size:.95rem;
+}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* ══════════════════════════════════
+   MISC
+══════════════════════════════════ */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.empty-state{
+  padding:2rem;border:1px dashed var(--line);border-radius:20px;
+  background:rgba(255,255,255,.16);color:var(--ink-faint);text-align:center;
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════ */
+@media(max-width:1000px){
+  .content-grid{grid-template-columns:1fr}
+  .sidebar{border-right:0;border-bottom:1px solid var(--line)}
+  .tab-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .hero-grid,.home-bottom,.journal-layout,.pressure-grid,.letter-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .app-shell::before,.app-shell::after{display:none}
+  .community-stats-row{grid-template-columns:1fr 1fr}
+  .community-stats-row .csc-creator{grid-column:1/-1}
+}
+@media(max-width:640px){
+  .app-shell{width:calc(100% - .8rem);margin:.4rem auto;border-radius:22px}
+  .topbar{flex-direction:column;align-items:flex-start}
+  main,.topbar,.sidebar{padding:1rem}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .section-header{flex-direction:column;align-items:flex-start}
+  .community-stats-row{grid-template-columns:1fr}
+}
+
+/* ══════════════════════════════════
+   DARK THEME SPECIFIC OVERRIDES
+══════════════════════════════════ */
+[data-theme="dark"] body{
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E"),
+    linear-gradient(160deg,#130e08 0%,#1a1108 100%);
+}
+[data-theme="dark"] .topbar{background:rgba(38,24,14,.65)}
+[data-theme="dark"] .sidebar{background:linear-gradient(180deg,rgba(38,24,14,.5),rgba(38,24,14,.15))}
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .mood-chart-card,
+[data-theme="dark"] .pressure-card,
+[data-theme="dark"] .alone-card,
+[data-theme="dark"] .tonight-card,
+[data-theme="dark"] .vision-card,
+[data-theme="dark"] .entry-composer,
+[data-theme="dark"] .ai-chat-shell,
+[data-theme="dark"] .quote-card-mini,
+[data-theme="dark"] .testimonial-card,
+[data-theme="dark"] .letter-card,
+[data-theme="dark"] .export-section,
+[data-theme="dark"] .entry-card{
+  background:linear-gradient(180deg,rgba(55,35,18,.7),rgba(40,25,12,.5));
+}
+[data-theme="dark"] .chat-bubble.assistant{background:rgba(55,35,18,.7)}
+[data-theme="dark"] .ai-output-card,
+[data-theme="dark"] .quick-ai-btn,
+[data-theme="dark"] .intervention-card,
+[data-theme="dark"] .signal-card,
+[data-theme="dark"] .pressure-log-row,
+[data-theme="dark"] .vision-item,
+[data-theme="dark"] .recent-entry-shell{background:rgba(255,255,255,.06)}
+[data-theme="dark"] .mood-bar-track{background:rgba(255,255,255,.08)}
+[data-theme="dark"] .modal{background:#2c1a0e}
+[data-theme="dark"] .letter-card{background:linear-gradient(180deg,rgba(45,28,14,.96),rgba(38,23,10,.98))}
+[data-theme="dark"] .hero-panel{background:var(--hero-grad)}
+[data-theme="dark"] .quote-card{background:linear-gradient(180deg,rgba(55,35,18,.55),rgba(40,25,12,.35))}
+[data-theme="dark"] .sidebar-quote{background:var(--hero-grad)}
+[data-theme="dark"] .daily-prompt-bar{background:linear-gradient(135deg,rgba(212,145,95,.1),rgba(201,164,126,.05))}
+[data-theme="dark"] .pressure-input,
+[data-theme="dark"] .letter-date-input{background:rgba(255,255,255,.08);color:var(--ink)}
+[data-theme="dark"] .search-bar{background:rgba(55,35,18,.6)}
+[data-theme="dark"] .alone-share-form{background:rgba(255,255,255,.05)}
+[data-theme="dark"] .filter-chip{background:rgba(255,255,255,.08)}
+[data-theme="dark"] .journal-textarea,
+[data-theme="dark"] .modal textarea,
+[data-theme="dark"] .search-bar input{background:rgba(255,255,255,.07);color:var(--ink)}
+[data-theme="dark"] .pill{background:rgba(255,255,255,.1)}
+[data-theme="dark"] .community-stat-card{background:linear-gradient(160deg,rgba(55,35,18,.65),rgba(40,25,12,.45))}
+[data-theme="dark"] .csc-creator{background:linear-gradient(160deg,rgba(212,145,95,.12),rgba(201,164,126,.06))}
+</style>
+</head>
+<body>
+<!-- FIX 3: Apply dark theme BEFORE page renders to prevent flash -->
+<script>
+(function(){
+  try{
+    var s=JSON.parse(localStorage.getItem('last-bookmark-v2')||'{}');
+    if(s.darkMode===true)document.documentElement.setAttribute('data-theme','dark');
+  }catch(e){}
+})();
+</script>
+<div class="app-shell">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">✦</div>
+      <div>
+        <p class="brand-eyebrow">Private Journal Studio</p>
+        <h1 class="brand-name">The Last Bookmark</h1>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="today-badge" id="todayLabel">—</div>
+      <button class="btn btn-anchor" id="anchorBtn" type="button" title="Open Anchor Mode">⚓ Anchor</button>
+      <button id="themeToggle" type="button" aria-label="Toggle dark mode" title="Toggle dark/light mode">🕯️</button>
+      <button class="btn btn-primary" id="quickAddQuoteBtn" type="button">+ Quote</button>
+    </div>
+  </header>
+
+  <div class="announcement">
+    <strong>Private by design.</strong> Your words never leave your browser — no account, no backend, no tracking.
+  </div>
+
+  <div class="content-grid">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <p class="sidebar-section-label">Navigate</p>
+      <nav class="tab-list" aria-label="Primary navigation">
+        <button class="tab active" type="button" data-tab="home"><span class="tab-icon">✦</span><span><strong>Home</strong><em>Overview</em></span></button>
+        <button class="tab" type="button" data-tab="journal"><span class="tab-icon">✍</span><span><strong>Journal</strong><em>Write today</em></span></button>
+        <button class="tab" type="button" data-tab="pages"><span class="tab-icon">📚</span><span><strong>My Pages</strong><em>All entries</em></span></button>
+        <button class="tab" type="button" data-tab="moods"><span class="tab-icon">◐</span><span><strong>Mood Tracker</strong><em>Patterns over time</em></span></button>
+        <button class="tab" type="button" data-tab="pressure"><span class="tab-icon">📊</span><span><strong>Pressure Log</strong><em>Study vs stress</em></span></button>
+        <p class="sidebar-section-label">Community</p>
+        <button class="tab" type="button" data-tab="alone"><span class="tab-icon">🫂</span><span><strong>Not Alone</strong><em>Shared stories</em></span></button>
+        <button class="tab" type="button" data-tab="letter"><span class="tab-icon">✉</span><span><strong>Future Letter</strong><em>Write to yourself</em></span></button>
+        <p class="sidebar-section-label">Intelligence</p>
+        <button class="tab" type="button" data-tab="dropout"><span class="tab-icon">🛡</span><span><strong>Dropout Shield</strong><em>Risk detection</em></span></button>
+        <button class="tab" type="button" data-tab="pressuremap"><span class="tab-icon">🗺</span><span><strong>Pressure Map</strong><em>Burnout zones</em></span></button>
+        <button class="tab" type="button" data-tab="quotes"><span class="tab-icon">❞</span><span><strong>Quotes</strong><em>Kept lines</em></span></button>
+      </nav>
+
+      <div class="sidebar-quote">
+        <div class="sidebar-quote-label">Today's Line</div>
+        <div id="sidebarQuoteText">The fact that you're still here, still trying — that is enough.</div>
+      </div>
+      <div class="sidebar-privacy">
+        <span>🔒 On this device only.</span> No account needed. No data leaves your browser.
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+
+      <!-- ══ HOME ══ -->
+      <section class="page active" id="tab-home">
+
+        <!-- Daily Prompt Bar -->
+        <div class="daily-prompt-bar" id="dailyPromptBar">
+          <span class="dp-label">Today's Prompt</span>
+          <span class="dp-text" id="dailyPromptText">Loading your prompt…</span>
+          <div class="dp-actions">
+            <button class="btn btn-outline" id="refreshPromptBtn" type="button" title="New prompt" style="padding:.38rem .7rem;border-radius:10px;font-size:.85rem">↺ New</button>
+            <button class="btn btn-primary" id="usePromptBtn" type="button" style="padding:.38rem .8rem;border-radius:10px;font-size:.85rem">Write →</button>
+          </div>
+        </div>
+
+        <!-- Hero -->
+        <div class="hero-panel">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <h2>Write what changed you<br>before the day folds shut.</h2>
+              <p>A quiet place for fragments, confessions, weathered thoughts, and lines worth keeping. Built for students who carry more than textbooks.</p>
+              <div class="hero-pills">
+                <span class="pill">Private local archive</span>
+                <span class="pill">Helium AI companion</span>
+                <span class="pill">Dropout Shield</span>
+                <span class="pill">Letters to future self</span>
+              </div>
+            </div>
+            <div class="quote-card card-hover">
+              <p class="quote-text" id="quoteText">Click below to reveal a quote…</p>
+              <div class="quote-actions">
+                <button class="btn btn-primary" id="nextQuoteBtn" type="button">Next Quote</button>
+                <button class="btn btn-outline" id="saveQuoteBtn" type="button">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Community stat cards -->
+        <div class="community-stats-row">
+          <div class="community-stat-card card-hover">
+            <div class="csc-icon">✦</div>
+            <div class="csc-num">20+</div>
+            <div class="csc-label">Classmates actively using<br>The Last Bookmark</div>
+          </div>
+          <div class="community-stat-card card-hover">
+            <div class="csc-icon">📖</div>
+            <div class="csc-num">50+</div>
+            <div class="csc-label">Diary entries registered<br>across the community</div>
+          </div>
+          <div class="community-stat-card csc-creator card-hover">
+            <div class="csc-icon">🌸</div>
+            <div class="csc-label">Crafted with care by</div>
+            <a href="https://ridhima-sharma09.github.io/My-Portfolio-/" target="_blank" rel="noopener" class="csc-creator-link">Ridhima Sharma ↗</a>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <article class="stat-card card-hover">
+            <p>Your Entries</p>
+            <span class="stat-number" id="totalEntries">0</span>
+            <span class="stat-sub">journal pages</span>
+          </article>
+          <article class="stat-card card-hover">
+            <p>Words Written</p>
+            <span class="stat-number" id="totalWords">0</span>
+            <span class="stat-sub">your story so far</span>
+          </article>
+          <article class="stat-card card-hover">
+            <p>Day Streak</p>
+            <span class="stat-number" id="streakDays">0</span>
+            <span class="stat-sub">days in a row</span>
+          </article>
+          <article class="stat-card card-hover">
+            <p>Top Mood</p>
+            <span class="stat-number" id="topMoodStat">—</span>
+            <span class="stat-sub">most frequent</span>
+          </article>
+        </div>
+
+        <!-- Bottom grid -->
+        <div class="home-bottom">
+          <article class="tonight-card card card-hover">
+            <h3>Tonight's Page</h3>
+            <p>Not every diary page needs an event. Sometimes it only needs the light in a room, and the honesty to describe it.</p>
+            <div class="recent-entry-shell">
+              <div class="recent-entry-meta">
+                <h4>Latest Entry</h4>
+                <span class="mood-tag" id="recentEntryMood" style="background:var(--accent)">Quiet</span>
+              </div>
+              <blockquote id="recentEntryPreview">Your most recent entry will appear here once something is written.</blockquote>
+            </div>
+          </article>
+
+          <article class="vision-card card card-hover">
+            <h3>Your Words. Your Device. Always.</h3>
+            <p>The Last Bookmark was built on a simple belief: your inner life deserves privacy. Not because you're hiding something — because some thoughts are sacred until you choose otherwise.</p>
+            <div class="vision-list">
+              <div class="vision-item">
+                <span class="vision-item-icon">🔒</span>
+                <div>
+                  <strong>Zero-server architecture</strong>
+                  <span>Everything is stored in your own browser's localStorage. No cloud, no account, no leak risk.</span>
+                </div>
+              </div>
+              <div class="vision-item">
+                <span class="vision-item-icon">✦</span>
+                <div>
+                  <strong>The vision</strong>
+                  <span>Built for Indian students navigating pressure, identity, and the quiet weight of expectations. You deserve a space that holds all of it.</span>
+                </div>
+              </div>
+              <div class="vision-item">
+                <span class="vision-item-icon">📤</span>
+                <div>
+                  <strong>You own your story</strong>
+                  <span>Export your entire journal as plain text anytime. It's yours — always has been.</span>
+                </div>
+              </div>
+            </div>
+            <a class="vision-link" href="https://ridhima-sharma09.github.io/My-Portfolio-/" target="_blank" rel="noopener">Meet the creator ↗</a>
+          </article>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="testimonials">
+          <div class="testimonials-header">
+            <h3>What Students Are Saying</h3>
+            <div class="testimonials-divider"></div>
+          </div>
+          <div class="testimonial-grid">
+            <div class="testimonial-card card-hover">
+              <div class="testimonial-avatar">EA</div>
+              <p class="testimonial-text">This app feels like a warm reminder of my teacher's inspiration. It lifts my mood and helps melt my stress every time I use it.</p>
+              <p class="testimonial-author"><strong>Ekanshi A.</strong> · Classmate · The Last Bookmark</p>
+            </div>
+            <div class="testimonial-card card-hover">
+              <div class="testimonial-avatar">SJ</div>
+              <p class="testimonial-text">Ridhima's app genuinely helped me during exam time. It felt calming and personal — like a safe space where stress could breathe out.</p>
+              <p class="testimonial-author"><strong>Shivam J.</strong> · Peer · The Last Bookmark</p>
+            </div>
+            <div class="testimonial-card card-hover">
+              <div class="testimonial-avatar">AL</div>
+              <p class="testimonial-text">Those bookmarks are subtle, expressive, and quietly powerful. Each holds a thought that lingers long after you close the app.</p>
+              <p class="testimonial-author"><strong>Anshesh L.</strong> · Classmate · The Last Bookmark</p>
+            </div>
+            <div class="testimonial-card card-hover">
+              <div class="testimonial-avatar">AS</div>
+              <p class="testimonial-text">I never expected a journaling app to actually understand exam pressure. The Dropout Shield noticed patterns I hadn't even said out loud yet.</p>
+              <p class="testimonial-author"><strong>Arnav S.</strong> · Peer · The Last Bookmark</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ JOURNAL ══ -->
+      <section class="page" id="tab-journal">
+        <div class="section-header">
+          <div>
+            <h2>Write Today's Thought</h2>
+            <p>Capture the part of the day that is still echoing.</p>
+          </div>
+        </div>
+        <div class="journal-layout">
+          <div class="entry-composer card card-hover">
+            <h3 id="composerTitle">New Entry</h3>
+            <p class="entry-subtitle" style="margin-bottom:.85rem">Pick a mood, write freely, and save when you're ready.</p>
+            <div class="mood-picker">
+              <button class="mood-btn" type="button" data-mood="Joyful">😊 Joyful</button>
+              <button class="mood-btn" type="button" data-mood="Calm">😌 Calm</button>
+              <button class="mood-btn" type="button" data-mood="Sad">😔 Sad</button>
+              <button class="mood-btn" type="button" data-mood="Angry">😤 Angry</button>
+              <button class="mood-btn" type="button" data-mood="Grateful">🙏 Grateful</button>
+              <button class="mood-btn" type="button" data-mood="Anxious">😰 Anxious</button>
+            </div>
+            <label class="sr-only" for="entryText">Journal entry</label>
+            <textarea class="journal-textarea" id="entryText" placeholder="What's on your mind today?"></textarea>
+            <div class="crisis-panel" id="crisisPanel">
+              <h4>You don't have to carry this alone.</h4>
+              <p>It looks like you might be going through something heavy. These resources are here for you:</p>
+              <div class="crisis-links">
+                <a class="crisis-link-btn" href="tel:9152987821">iCall India: 9152987821</a>
+                <a class="crisis-link-btn" href="tel:18602662345">Vandrevala: 1860-2662-345</a>
+                <a class="crisis-link-btn" href="tel:9820466627">AASRA: 9820466627</a>
+              </div>
+            </div>
+            <div class="entry-footer">
+              <span class="char-count" id="charCount">0 words</span>
+              <div class="entry-actions">
+                <button class="btn btn-outline" id="clearEntryBtn" type="button">Clear</button>
+                <button class="btn btn-primary" id="saveEntryBtn" type="button">Save Entry</button>
+              </div>
+            </div>
+          </div>
+
+          <aside class="ai-chat-shell card-hover">
+            <div class="ai-chat-header">
+              <div>
+                <h3>Helium AI Companion</h3>
+                <p class="entry-subtitle" style="margin-top:.2rem">Reflects patterns, asks deeper questions.</p>
+              </div>
+              <span class="ai-badge">Helium AI</span>
+            </div>
+            <div class="ai-chat-window">
+              <div class="chat-bubble assistant">
+                <span class="chat-label">Companion</span>
+                I am here while you write. Choose a quick action or ask me to read the draft and respond like a journal guide.
+              </div>
+              <div class="chat-bubble user" id="aiUserPreview">
+                <span class="chat-label">You</span>
+                Your current entry preview will appear here as you type.
+              </div>
+            </div>
+            <div class="ai-quick-actions">
+              <button class="quick-ai-btn" type="button" data-ai-action="analyze"><strong>Analyze</strong><span>Read the emotional center</span></button>
+              <button class="quick-ai-btn" type="button" data-ai-action="title"><strong>Title It</strong><span>Generate a title</span></button>
+              <button class="quick-ai-btn" type="button" data-ai-action="prompts"><strong>Ask Deeper</strong><span>Reflective follow-up questions</span></button>
+              <button class="quick-ai-btn" type="button" data-ai-action="rewrite"><strong>Polish</strong><span>More literary passage</span></button>
+            </div>
+            <div class="ai-output-stack">
+              <div class="ai-output-card"><span class="ai-label">Suggested Title</span><div class="ai-value" id="aiTitle">Write a few lines, then use the companion to generate a title.</div></div>
+              <div class="ai-output-card"><span class="ai-label">Companion Reading</span><div class="ai-value" id="aiInsight">The companion will surface the emotional center of your draft here.</div></div>
+              <div class="ai-output-card"><span class="ai-label">Follow-up Prompts</span><div class="ai-list" id="aiPrompts"><div>What part of today still lingers with you?</div><div>What detail would you want to remember a year from now?</div></div></div>
+              <div class="ai-output-card"><span class="ai-label">Polished Passage</span><div class="ai-value" id="aiRewrite">When you use "Polish", the companion will reshape your draft into a more literary journal-style paragraph.</div></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ══ MY PAGES ══ -->
+      <section class="page" id="tab-pages">
+        <div class="section-header"><div><h2>Your Pages</h2><p>Search by text or date, filter by mood.</p></div></div>
+        <div class="search-bar card-hover">
+          <span aria-hidden="true">🔎</span>
+          <label class="sr-only" for="searchInput">Search entries</label>
+          <input type="text" id="searchInput" placeholder="Search your entries…" />
+        </div>
+        <div class="filter-row">
+          <button class="filter-chip active" type="button" data-filter="All">All</button>
+          <button class="filter-chip" type="button" data-filter="Joyful">😊 Joyful</button>
+          <button class="filter-chip" type="button" data-filter="Calm">😌 Calm</button>
+          <button class="filter-chip" type="button" data-filter="Sad">😔 Sad</button>
+          <button class="filter-chip" type="button" data-filter="Angry">😤 Angry</button>
+          <button class="filter-chip" type="button" data-filter="Grateful">🙏 Grateful</button>
+          <button class="filter-chip" type="button" data-filter="Anxious">😰 Anxious</button>
+        </div>
+        <div class="entries-list" id="entriesList"></div>
+        <div class="export-section card-hover">
+          <p>Export every journal entry into a clean text file you can keep forever.</p>
+          <button class="btn btn-primary" id="exportBtn" type="button">Export Journal</button>
+        </div>
+      </section>
+
+      <!-- ══ MOOD TRACKER ══ -->
+      <section class="page" id="tab-moods">
+        <div class="section-header"><div><h2>Mood Tracker</h2><p>A visual rollup of how your entries feel over time.</p></div></div>
+        <div class="mood-page">
+          <div class="mood-chart-card card-hover"><h3>Your Mood Distribution</h3><div class="mood-bars" id="moodBars"></div></div>
+          <div class="mood-chart-card card-hover"><h3>Recent Mood Timeline</h3><div class="timeline" id="moodTimeline"></div></div>
+        </div>
+      </section>
+
+      <!-- ══ PRESSURE LOG ══ -->
+      <section class="page" id="tab-pressure">
+        <div class="section-header"><div><h2>Pressure Log</h2><p>Track your study hours vs stress levels. The app finds patterns so you can see yourself clearly.</p></div></div>
+        <div class="pressure-card card-hover">
+          <h3>Log Today's Session</h3>
+          <div class="pressure-grid">
+            <div class="pressure-input-group">
+              <label for="studyHours">Study Hours Today</label>
+              <input class="pressure-input" type="number" id="studyHours" min="0.5" max="24" step="0.5" placeholder="e.g. 6" />
+            </div>
+            <div class="pressure-input-group">
+              <label for="stressLevel">Stress Level (1–10)</label>
+              <input class="pressure-input" type="number" id="stressLevel" min="1" max="10" placeholder="e.g. 7" />
+            </div>
+          </div>
+          <div class="pressure-input-group" style="margin-top:.7rem">
+            <label for="pressureNote">Quick Note (optional)</label>
+            <input class="pressure-input" type="text" id="pressureNote" placeholder="What made today hard or easy?" />
+          </div>
+          <div style="margin-top:.85rem;display:flex;gap:.65rem;flex-wrap:wrap">
+            <button class="btn btn-primary" id="logPressureBtn" type="button">Log Session</button>
+            <button class="btn btn-outline" id="analyzePressureBtn" type="button">✦ AI Pattern Analysis</button>
+          </div>
+          <div class="pressure-insight" id="pressureInsight">Log a few sessions and use AI Pattern Analysis to see how study hours affect your stress.</div>
+        </div>
+        <div class="pressure-card card-hover" style="margin-top:1rem">
+          <h3>Session Log</h3>
+          <div class="pressure-log" id="pressureLog"><div class="empty-state">No sessions logged yet.</div></div>
+        </div>
+      </section>
+
+      <!-- ══ NOT ALONE ══ -->
+      <section class="page" id="tab-alone">
+        <div class="section-header"><div><h2>You Are Not Alone</h2><p>Anonymous thoughts from students like you. No names, no ranks, no judgment.</p></div></div>
+        <div class="alone-grid" id="aloneGrid"></div>
+        <div class="alone-share-form card card-hover" style="margin-top:1rem">
+          <h3>Share Anonymously</h3>
+          <p>Your name will never appear. Only your words.</p>
+          <label class="sr-only" for="aloneInput">Share your thought</label>
+          <textarea class="journal-textarea" id="aloneInput" style="min-height:80px" placeholder="I feel like I'm the only one who…"></textarea>
+          <div style="display:flex;gap:.65rem;align-items:center;flex-wrap:wrap">
+            <button class="btn btn-primary" id="shareAloneBtn" type="button">Share Anonymously</button>
+            <span style="color:var(--ink-faint);font-size:.84rem">Stored locally · Never sent anywhere</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ FUTURE LETTER ══ -->
+      <section class="page" id="tab-letter">
+        <div class="section-header"><div><h2>Letter to Future Me</h2><p>Write something to yourself — to be read on results day, a birthday, or any day that matters.</p></div></div>
+        <div class="letter-card card-hover">
+          <h3>Write Your Letter</h3>
+          <div class="letter-grid">
+            <div>
+              <label class="sr-only" for="letterText">Letter content</label>
+              <textarea class="journal-textarea letter-textarea" id="letterText" placeholder="Dear future me,&#10;&#10;Right now I am feeling…"></textarea>
+            </div>
+            <div class="letter-meta">
+              <div>
+                <label style="display:block;color:var(--ink-faint);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.35rem">Deliver On</label>
+                <input class="letter-date-input" type="date" id="letterDeliverDate" />
+              </div>
+              <button class="btn btn-primary" id="saveLetterBtn" type="button">Seal &amp; Save Letter</button>
+              <p style="color:var(--ink-faint);font-size:.84rem;line-height:1.5">The letter will be marked as ready to read on the date you choose. Stored privately in your browser.</p>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:1rem">
+          <h3 style="font-family:'IM Fell English',serif;font-weight:400;margin-bottom:.7rem;color:var(--ink)">Your Sealed Letters</h3>
+          <div class="letter-saved-list" id="letterList"><div class="empty-state">No letters saved yet. Write one above.</div></div>
+        </div>
+      </section>
+
+      <!-- ══ DROPOUT SHIELD ══ -->
+      <section class="page" id="tab-dropout">
+        <div class="section-header"><div><h2>Dropout Shield</h2><p>Helium AI monitors behavioral signals — mood decline, reduced activity, rising stress — and flags early dropout risk before it becomes a crisis.</p></div></div>
+        <div id="dropoutRiskBanner" style="display:none;margin-bottom:1rem;padding:1.05rem 1.25rem;border-radius:20px;border:1px solid rgba(184,64,56,.28);background:linear-gradient(135deg,rgba(184,64,56,.07),rgba(140,28,28,.03))"></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-bottom:1.1rem">
+          <div class="stat-card card-hover"><p>Dropout Risk Score</p><span class="stat-number" id="dropoutScore" style="color:var(--mood-angry)">—</span><span class="stat-sub" id="dropoutScoreDesc">Log entries and pressure data to generate your risk profile.</span></div>
+          <div class="stat-card card-hover"><p>Mood Trend (7 days)</p><span class="stat-number" id="moodTrend7" style="font-size:1.6rem">—</span><span class="stat-sub" id="moodTrendDesc">Based on your recent journal entries.</span></div>
+          <div class="stat-card card-hover"><p>Activity Level</p><span class="stat-number" id="activityLevel" style="font-size:1.6rem">—</span><span class="stat-sub" id="activityDesc">Entries written in the past 14 days.</span></div>
+          <div class="stat-card card-hover"><p>Intervention Needed</p><span class="stat-number" id="interventionFlag" style="font-size:1.6rem">—</span><span class="stat-sub" id="interventionDesc">Based on combined risk signals.</span></div>
+        </div>
+        <div class="mood-chart-card card-hover" style="margin-bottom:1.1rem">
+          <h3>Risk Signal Breakdown</h3>
+          <p style="color:var(--ink-soft);margin-bottom:1rem;line-height:1.55;font-size:.95rem">Each signal is derived from your actual journaling and pressure data. Green = healthy. Amber = watch. Red = act now.</p>
+          <div id="signalBreakdown" style="display:grid;gap:.65rem"></div>
+        </div>
+        <div class="mood-chart-card card-hover" style="margin-bottom:1.1rem">
+          <h3>⚡ Micro-Intervention Engine</h3>
+          <p style="color:var(--ink-soft);margin-bottom:.9rem;line-height:1.55;font-size:.95rem">Helium AI detects overwork and disengagement patterns and suggests targeted micro-actions — not generic advice, but specific to your pattern right now.</p>
+          <div id="microInterventions" style="display:grid;gap:.65rem"></div>
+        </div>
+        <div class="mood-chart-card card-hover">
+          <h3>🎯 Focus Recovery Mode</h3>
+          <p style="color:var(--ink-soft);margin-bottom:.9rem;line-height:1.55;font-size:.95rem">When your pattern signals a focus drop, this mode activates a structured recovery sequence — not a timer, but an actual strategy.</p>
+          <div id="focusRecovery" style="display:grid;gap:.65rem"></div>
+          <button class="btn btn-primary" id="activateFocusMode" type="button" style="margin-top:.9rem">Activate Focus Recovery</button>
+        </div>
+      </section>
+
+      <!-- ══ PRESSURE MAP ══ -->
+      <section class="page" id="tab-pressuremap">
+        <div class="section-header"><div><h2>Academic Pressure Map</h2><p>A visual map of your workload, stress zones, and burnout risk across time.</p></div></div>
+        <div style="display:grid;grid-template-columns:minmax(0,1.2fr) 310px;gap:1.1rem">
+          <div>
+            <div class="mood-chart-card card-hover" style="margin-bottom:1.1rem">
+              <h3>Pressure Heatmap — Last 30 Days</h3>
+              <p style="color:var(--ink-soft);margin-bottom:1rem;font-size:.92rem">Each cell = one day. Darker = higher pressure.</p>
+              <div id="pressureHeatmap" style="display:flex;flex-wrap:wrap;gap:4px"></div>
+              <div style="display:flex;gap:.9rem;margin-top:.9rem;flex-wrap:wrap">
+                <span style="display:flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--ink-faint)"><span style="width:13px;height:13px;border-radius:3px;background:#5a9460;display:inline-block"></span>Low</span>
+                <span style="display:flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--ink-faint)"><span style="width:13px;height:13px;border-radius:3px;background:#d4922a;display:inline-block"></span>Moderate</span>
+                <span style="display:flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--ink-faint)"><span style="width:13px;height:13px;border-radius:3px;background:#b84038;display:inline-block"></span>High / Burnout</span>
+                <span style="display:flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--ink-faint)"><span style="width:13px;height:13px;border-radius:3px;background:rgba(0,0,0,.1);display:inline-block"></span>No data</span>
+              </div>
+            </div>
+            <div class="mood-chart-card card-hover">
+              <h3>Add Upcoming Deadline / Exam</h3>
+              <p style="color:var(--ink-soft);margin-bottom:.9rem;font-size:.92rem">Helium AI marks high-risk zones around your exam dates automatically.</p>
+              <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:.65rem;align-items:end">
+                <div>
+                  <label style="display:block;margin-bottom:.3rem;color:var(--ink-faint);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase">Event Name</label>
+                  <input type="text" id="deadlineName" placeholder="e.g. JEE Mains Paper 1" style="width:100%;padding:.6rem .85rem;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.18);color:var(--ink);outline:none;font-size:.92rem" />
+                </div>
+                <div>
+                  <label style="display:block;margin-bottom:.3rem;color:var(--ink-faint);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase">Date</label>
+                  <input type="date" id="deadlineDate" style="width:100%;padding:.6rem .85rem;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.18);color:var(--ink);outline:none;font-size:.92rem" />
+                </div>
+                <button class="btn btn-primary" id="addDeadlineBtn" type="button" style="white-space:nowrap">Add Event</button>
+              </div>
+              <div id="deadlineList" style="margin-top:.9rem;display:grid;gap:.55rem"></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:1rem">
+            <div class="mood-chart-card card-hover">
+              <h3>Burnout Risk Zones</h3>
+              <p style="color:var(--ink-soft);margin-bottom:.9rem;font-size:.88rem;line-height:1.5">Helium AI identifies periods of consecutive high-stress days.</p>
+              <div id="burnoutZones" style="display:grid;gap:.55rem"></div>
+            </div>
+            <div class="mood-chart-card card-hover">
+              <h3>AI Map Insight</h3>
+              <p style="color:var(--ink-soft);margin-bottom:.65rem;font-size:.88rem" id="mapInsightText">Add pressure logs and deadlines to generate your personalized map insight.</p>
+              <button class="btn btn-outline" id="generateMapInsight" type="button" style="width:100%">Generate Insight</button>
+              <div id="mapInsightResult" style="margin-top:.8rem;display:none;padding:.9rem;border-radius:14px;background:rgba(255,255,255,.18);border:1px solid var(--line);color:var(--ink-soft);line-height:1.6;font-style:italic"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ QUOTES ══ -->
+      <section class="page" id="tab-quotes">
+        <div class="section-header">
+          <div><h2>Your Quote Collection</h2><p>Kept lines, stored privately in your browser.</p></div>
+          <button class="btn btn-primary" id="quotesAddBtn" type="button">+ Add Quote</button>
+        </div>
+        <div class="quotes-grid" id="quotesGrid"></div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ══ ANCHOR MODE ══ -->
+<div class="anchor-overlay" id="anchorOverlay">
+  <div class="anchor-inner">
+    <h2 class="anchor-title">You are not falling behind.</h2>
+    <p class="anchor-sub">You are exhausted. That is different. Take a breath with me.</p>
+    <div class="anchor-circle"><span class="anchor-breath-text" id="anchorBreathText">Breathe in…</span></div>
+    <p class="anchor-affirmation" id="anchorAffirmation">"The fact that you're still here, still trying — that is enough."</p>
+    <div class="anchor-actions">
+      <button class="btn-anchor-close" id="anchorClose" type="button">I feel steadier now</button>
+      <button class="btn-anchor-close" id="anchorNewAffirmation" type="button">Another affirmation</button>
+    </div>
+    <span class="anchor-crisis-link" id="anchorCrisisLink">I need to talk to someone right now</span>
+  </div>
+</div>
+
+<!-- ══ CRISIS MODAL ══ -->
+<div class="modal-overlay" id="crisisModal">
+  <div class="modal">
+    <h3>You deserve support right now.</h3>
+    <p>These are free, confidential resources available in India. You don't have to explain everything — just reach out.</p>
+    <div style="display:grid;gap:.65rem">
+      <div style="padding:.75rem .95rem;border-radius:13px;border:1px solid var(--line);background:rgba(255,255,255,.28)">
+        <strong style="color:var(--ink)">iCall (Tata Institute)</strong><br>
+        <span style="color:var(--ink-soft)">Mon–Sat, 8am–10pm · <a href="tel:9152987821">9152987821</a></span>
+      </div>
+      <div style="padding:.75rem .95rem;border-radius:13px;border:1px solid var(--line);background:rgba(255,255,255,.28)">
+        <strong style="color:var(--ink)">Vandrevala Foundation</strong><br>
+        <span style="color:var(--ink-soft)">24/7 · <a href="tel:18602662345">1860-2662-345</a></span>
+      </div>
+      <div style="padding:.75rem .95rem;border-radius:13px;border:1px solid var(--line);background:rgba(255,255,255,.28)">
+        <strong style="color:var(--ink)">AASRA</strong><br>
+        <span style="color:var(--ink-soft)">24/7 · <a href="tel:9820466627">9820466627</a></span>
+      </div>
+    </div>
+    <div class="modal-actions"><button class="btn btn-outline" id="closeCrisisModal" type="button">Close</button></div>
+  </div>
+</div>
+
+<!-- ══ ADD QUOTE MODAL ══ -->
+<div class="modal-overlay" id="addQuoteModal">
+  <div class="modal">
+    <h3>Add Your Own Quote</h3>
+    <p>Paste or write something worth keeping.</p>
+    <label class="sr-only" for="newQuoteText">New quote</label>
+    <textarea id="newQuoteText" placeholder="Write a quote that resonates with you…" style="min-height:120px"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-outline" id="cancelQuoteBtn" type="button">Cancel</button>
+      <button class="btn btn-primary" id="saveQuoteModalBtn" type="button">Save Quote</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LETTER READ MODAL ══ -->
+<div class="modal-overlay" id="letterReadModal">
+  <div class="modal letter-read-modal">
+    <h3>A letter from your past self</h3>
+    <p class="letter-read-date" id="letterReadDate"></p>
+    <div class="letter-read-body" id="letterReadBody"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" id="closeLetterModal" type="button">Close</button>
+      <button class="btn-sm btn-danger" id="deleteLetterBtn" type="button">Delete Letter</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+// ── CONSTANTS ──
+const STORAGE_KEY = "last-bookmark-v2";
+const DRAFT_KEY   = "last-bookmark-draft-v2";
+const MOOD_COLORS = {Joyful:"#d4922a",Calm:"#3d8494",Sad:"#5f72a0",Angry:"#b84038",Grateful:"#5a9460",Anxious:"#7d50a8"};
+
+const CRISIS_WORDS = ["end my life","kill myself","suicide","want to die","can't go on","no reason to live","give up on life","hurt myself","self harm","don't want to exist"];
+
+const ANCHOR_AFFIRMATIONS = [
+  "The fact that you're still here, still trying — that is enough.",
+  "You are not behind. You are human. That is allowed.",
+  "One breath. One moment. You don't have to solve everything tonight.",
+  "Rest is not giving up. Rest is how you come back.",
+  "The pressure you feel is real. But so is your capacity to get through it.",
+  "You are more than your rank, your score, your result. You always were.",
+  "It's okay to not be okay. You don't have to perform strength right now.",
+  "This moment will pass. You have survived hard moments before."
+];
+
+const ALONE_STORIES = [
+  {avatar:"🌙",name:"Anonymous · Kota",text:"I cried after my mock test today. Not because of the score — because I can't remember the last time I felt like myself.",tag:"Academic pressure"},
+  {avatar:"📖",name:"Anonymous · Delhi",text:"I feel like I'm the only one who doesn't understand what's happening in class. Everyone else seems fine.",tag:"Isolation"},
+  {avatar:"🌱",name:"Anonymous · Mumbai",text:"My parents think I'm doing great. I haven't told them I failed three mocks in a row.",tag:"Family pressure"},
+  {avatar:"🕯️",name:"Anonymous · Jaipur",text:"Some days I study for 10 hours and still feel like I've done nothing. The guilt never leaves.",tag:"Burnout"},
+  {avatar:"🌊",name:"Anonymous · Kota",text:"I miss who I was before JEE prep. I don't remember the last time I did something just because I enjoyed it.",tag:"Loss of self"},
+  {avatar:"⭐",name:"Anonymous · Pune",text:"I got into a good college but I still feel empty. I don't know what I was running toward.",tag:"After the exam"}
+];
+
+const DEFAULT_QUOTES = [
+  "What a privilege it is to feel discomfort in the pursuit of a goal I chose to pursue.",
+  "Always the poet, never the poem.",
+  "How lovely is the silence of growing things.",
+  "Everyone you idolize wakes up scared to be themselves sometimes.",
+  "Some people are so poor, all they have is money.",
+  "The greatest misfortune is not to be unloved, but not to love.",
+  "We're all broken; that's how the light gets in.",
+  "When the roots are deep, there is no reason to fear the wind.",
+  "Where did all the years go?",
+  "What a privilege to be tired from the work you once begged the universe for."
+];
+
+const DEFAULT_ENTRIES = [
+  {id:1,date:"2025-09-12",mood:"Grateful",text:"[SAMPLE] Started working on PharmEase today. It's finally coming together.",isSample:true},
+  {id:2,date:"2025-10-01",mood:"Calm",text:"[SAMPLE] Autumn feels different this year. Some days don't need to be productive to be meaningful.",isSample:true},
+  {id:3,date:"2025-10-15",mood:"Anxious",text:"[SAMPLE] Some days you just have to trust the process and keep going.",isSample:true},
+  {id:4,date:"2025-11-03",mood:"Joyful",text:"[SAMPLE] Stayed up late getting the dark mode just right. There's a kind of joy that only comes from making something beautiful.",isSample:true},
+  {id:5,date:"2026-01-07",mood:"Grateful",text:"[SAMPLE] New year. New chapter. Grateful for the hard lessons that didn't break me.",isSample:true},
+  {id:6,date:"2026-02-14",mood:"Calm",text:"[SAMPLE] Read for three hours straight today. No phone, no noise. Just me and a book.",isSample:true}
+];
+
+const DAILY_PROMPTS = [
+  "What is one thing that happened today that you haven't told anyone yet?",
+  "Describe the exact quality of light where you're sitting right now.",
+  "What would you say to yourself one year ago today?",
+  "Name something you did this week that required courage, even if no one noticed.",
+  "What thought keeps returning to you, even when you try to push it away?",
+  "Write about a moment today when time seemed to slow down.",
+  "What are you pretending not to want?",
+  "Describe a conversation you wish you'd had differently.",
+  "What does rest feel like for you right now? When did you last feel it?",
+  "If your body could speak tonight, what would it say?",
+  "What are you grateful for that you've never written down before?",
+  "Write about something that's changing slowly, so slowly you almost miss it.",
+  "What did you study today, and what did it make you feel?",
+  "What part of yourself are you most afraid to show the world?",
+  "Finish this sentence: The last time I truly laughed was…",
+  "What are you learning about yourself this year that surprises you?",
+  "Describe the sound of your thoughts right now.",
+  "What have you been carrying that you haven't named yet?",
+  "Write about a small kindness someone showed you recently.",
+  "What does 'enough' look like for you?"
+];
+
+// ── STATE ──
+let quotes         = [...DEFAULT_QUOTES];
+let entries        = DEFAULT_ENTRIES.map(e=>({...e}));
+let pressureLogs   = [];
+let aloneStories   = [...ALONE_STORIES];
+let letters        = [];
+let deadlines      = [];
+let focusModeActive= false;
+let selectedMood   = "";
+let activeFilter   = "All";
+let currentEditId  = null;
+let darkMode       = false;
+let anchorInterval = null;
+let currentLetterViewId = null;
+let todayPrompt    = "";
+
+// ── DOM ──
+const tabs         = document.querySelectorAll(".tab");
+const pages        = document.querySelectorAll(".page");
+const moodButtons  = document.querySelectorAll(".mood-btn");
+const filterButtons= document.querySelectorAll(".filter-chip");
+const entryText    = document.getElementById("entryText");
+const charCount    = document.getElementById("charCount");
+const composerTitle= document.getElementById("composerTitle");
+const toastEl      = document.getElementById("toast");
+const themeToggle  = document.getElementById("themeToggle");
+const crisisPanel  = document.getElementById("crisisPanel");
+const anchorOverlay= document.getElementById("anchorOverlay");
+
+// ── UTILS ──
+function esc(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
+function normalizeDate(d){const n=new Date(d+"T00:00:00");n.setHours(0,0,0,0);return n}
+function daysBetween(a,b){return Math.round((a-b)/86400000)}
+function formatDate(v){return normalizeDate(v).toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"})}
+function today(){return new Date().toISOString().split("T")[0]}
+
+let toastTimer;
+function toast(msg){clearTimeout(toastTimer);toastEl.textContent=msg;toastEl.classList.add("show");toastTimer=setTimeout(()=>toastEl.classList.remove("show"),2600)}
+
+// ── STORAGE ──
+function persist(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({quotes,entries,pressureLogs,aloneStories,letters,darkMode,deadlines}));
+  }catch(e){
+    // FIX: Warn user when storage is full
+    toast("⚠️ Storage full — try exporting and deleting old entries.");
+  }
+}
+function persistDraft(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify({text:entryText.value,mood:selectedMood}))}catch(e){}}
+function clearDraft(){try{localStorage.removeItem(DRAFT_KEY)}catch(e){}}
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw)return;
+    const s=JSON.parse(raw);
+    if(Array.isArray(s.quotes))quotes=s.quotes;
+    if(Array.isArray(s.entries)&&s.entries.length)entries=s.entries;
+    if(Array.isArray(s.pressureLogs))pressureLogs=s.pressureLogs;
+    else pressureLogs=[];
+    if(Array.isArray(s.aloneStories))aloneStories=s.aloneStories;
+    if(Array.isArray(s.letters))letters=s.letters;
+    if(Array.isArray(s.deadlines))deadlines=s.deadlines;
+    if(typeof s.darkMode==="boolean")darkMode=s.darkMode;
+  }catch(e){}
+}
+function loadDraft(){
+  try{
+    const raw=localStorage.getItem(DRAFT_KEY);
+    if(!raw)return;
+    const d=JSON.parse(raw);
+    if(typeof d.text==="string")entryText.value=d.text;
+    if(d.mood&&MOOD_COLORS[d.mood])selectMood(d.mood);
+  }catch(e){}
+}
+
+// ── TABS ──
+function showTab(name){
+  pages.forEach(p=>p.classList.toggle("active",p.id==="tab-"+name));
+  tabs.forEach(t=>t.classList.toggle("active",t.dataset.tab===name));
+  if(name==="pages")renderEntries();
+  if(name==="moods")renderMoods();
+  if(name==="quotes")renderQuotes();
+  if(name==="home"){updateStats();loadDailyPrompt()}
+  if(name==="pressure")renderPressureLog();
+  if(name==="alone")renderAlone();
+  if(name==="letter")renderLetters();
+  if(name==="dropout")renderDropoutShield();
+  if(name==="pressuremap")renderPressureMap();
+}
+
+// ── THEME ──
+function setTheme(isDark){
+  darkMode=isDark;
+  isDark?document.documentElement.setAttribute("data-theme","dark"):document.documentElement.removeAttribute("data-theme");
+  themeToggle.textContent=isDark?"☀️":"🕯️";
+  persist();
+}
+
+// ── DAILY PROMPT ──
+function loadDailyPrompt(){
+  const d=today();
+  const stored=JSON.parse(localStorage.getItem("tlb-prompt")||"{}");
+  if(stored.date===d&&stored.text){
+    todayPrompt=stored.text;
+    document.getElementById("dailyPromptText").textContent=stored.text;
+    return;
+  }
+  const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
+  const prompt=DAILY_PROMPTS[doy%DAILY_PROMPTS.length];
+  todayPrompt=prompt;
+  localStorage.setItem("tlb-prompt",JSON.stringify({date:d,text:prompt}));
+  document.getElementById("dailyPromptText").textContent=prompt;
+}
+function refreshPrompt(){
+  const idx=Math.floor(Math.random()*DAILY_PROMPTS.length);
+  todayPrompt=DAILY_PROMPTS[idx];
+  localStorage.setItem("tlb-prompt",JSON.stringify({date:today(),text:todayPrompt}));
+  document.getElementById("dailyPromptText").textContent=todayPrompt;
+}
+// FIX: usePrompt warns before overwriting an existing draft
+function usePrompt(){
+  if(entryText.value.trim()&&!confirm("This will replace your current draft. Continue?")){return}
+  entryText.value=todayPrompt+"\n\n";
+  showTab("journal");
+  entryText.focus();
+  entryText.setSelectionRange(entryText.value.length,entryText.value.length);
+  updateWordCount();
+}
+
+// ── QUOTES ──
+function showRandomQuote(){
+  const q=quotes[Math.floor(Math.random()*quotes.length)]||"Keep writing.";
+  const el=document.getElementById("quoteText");
+  el.style.opacity="0";
+  setTimeout(()=>{el.textContent=q;el.style.opacity="1"},180);
+  document.getElementById("sidebarQuoteText").textContent=q;
+}
+function renderQuotes(){
+  const grid=document.getElementById("quotesGrid");
+  if(!quotes.length){grid.innerHTML='<div class="empty-state">No quotes yet. Add your first one above.</div>';return}
+  grid.innerHTML=quotes.map((q,i)=>`<article class="quote-card-mini card-hover"><button class="del-quote" type="button" data-delete-quote="${i}" aria-label="Delete quote">×</button>"${esc(q)}"</article>`).join("");
+}
+function addQuote(){
+  const inp=document.getElementById("newQuoteText");
+  const t=inp.value.trim();
+  if(!t){toast("Write a quote before saving.");return}
+  quotes.unshift(t);inp.value="";
+  closeModal("addQuoteModal");persist();renderQuotes();showRandomQuote();
+  toast("Quote added.");
+}
+function deleteQuote(i){quotes.splice(i,1);persist();renderQuotes();showRandomQuote();toast("Quote removed.")}
+
+// ── MOOD ──
+function selectMood(mood){
+  selectedMood=mood;
+  moodButtons.forEach(b=>b.classList.toggle("selected",b.dataset.mood===mood));
+}
+
+// ── CRISIS DETECTION ──
+function checkCrisis(text){
+  const lower=text.toLowerCase();
+  const detected=CRISIS_WORDS.some(w=>lower.includes(w));
+  crisisPanel.classList.toggle("show",detected);
+}
+
+// ── JOURNAL ──
+function syncAiPreview(){
+  const t=entryText.value.trim();
+  document.getElementById("aiUserPreview").innerHTML=`<span class="chat-label">You</span>${esc(t||"Your current entry preview will appear here as you type.")}`;
+}
+function updateWordCount(){
+  const words=entryText.value.trim().split(/\s+/).filter(Boolean).length;
+  const rt=Math.max(1,Math.ceil(words/180));
+  charCount.textContent=`${words} word${words===1?"":"s"} · ${rt} min read`;
+  persistDraft();syncAiPreview();checkCrisis(entryText.value);
+}
+
+// ── CLAUDE API ──
+// FIX 1: Correct model string with full date suffix
+// FIX: Added x-api-key header — replace YOUR_API_KEY with your actual key
+async function callClaude(systemPrompt, userMessage) {
+  const response = await fetch("https://round-flower-7e19.ridhima7228.workers.dev", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: "gemini-1.5-flash",
+      max_tokens: 1000,
+      system: systemPrompt,
+      messages: [{ role: "user", content: userMessage }]
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `HTTP ${response.status}`);
+  }
+
+  const data = await response.json();
+  if (data.error) throw new Error(data.error.message);
+
+  return (data.content || [])
+    .map(block => (block.type === "text" ? block.text : ""))
+    .filter(Boolean)
+    .join("") || "";
+}
+
+function setAiLoading(el){el.innerHTML=`<span class="ai-spinner"></span><span class="ai-loading">Thinking…</span>`}
+
+async function analyzeEntry(action="analyze"){
+  const text=entryText.value.trim();
+  if(!text){toast("Write a little before using the companion.");return}
+  const mood=selectedMood||"Reflective";
+  syncAiPreview();
+
+  if(action==="title"||action==="analyze"){
+    const el=document.getElementById("aiTitle");setAiLoading(el);
+    try{
+      const r=await callClaude(
+        "You are a literary journal companion. Generate ONLY a short, evocative journal entry title (5-7 words max). No explanation, no punctuation at end, just the title.",
+        `Mood: ${mood}\n\nEntry: ${text}`
+      );
+      el.textContent=r.trim()||"Untitled Reflection";
+    }catch(e){el.textContent="Could not generate title. ("+e.message+")"}
+  }
+
+  if(action==="analyze"){
+    const el=document.getElementById("aiInsight");setAiLoading(el);
+    try{
+      const r=await callClaude(
+        "You are a warm, literary journal companion for Indian students under academic pressure. In 2-3 sentences, identify the emotional center of this journal entry. Be empathetic, specific, and human. Never clinical.",
+        `Mood selected: ${mood}\n\nJournal entry: ${text}`
+      );
+      el.textContent=r.trim();
+    }catch(e){el.textContent="Could not analyze entry. ("+e.message+")"}
+  }
+
+  if(action==="prompts"||action==="analyze"){
+    const el=document.getElementById("aiPrompts");setAiLoading(el);
+    try{
+      const r=await callClaude(
+        "You are a reflective journal guide for students under pressure. Generate exactly 3 short, thoughtful follow-up questions based on the entry. Return ONLY the 3 questions, one per line, no numbering, no extra text.",
+        `Mood: ${mood}\n\nEntry: ${text}`
+      );
+      const qs=r.trim().split("\n").filter(Boolean).slice(0,3);
+      el.innerHTML=qs.map(q=>`<div>${esc(q)}</div>`).join("");
+    }catch(e){el.innerHTML="<div>Could not generate prompts. ("+esc(e.message)+")</div>"}
+  }
+
+  if(action==="rewrite"||action==="analyze"){
+    const el=document.getElementById("aiRewrite");setAiLoading(el);
+    try{
+      const r=await callClaude(
+        "You are a literary editor. Rewrite the following journal entry in a more poetic, literary style — preserve the emotional truth but elevate the language. Keep it to 3-4 sentences.",
+        `Mood: ${mood}\n\nEntry: ${text}`
+      );
+      el.textContent=r.trim();
+    }catch(e){el.textContent="Could not polish entry. ("+e.message+")"}
+  }
+
+  const labels={analyze:"AI companion updated.",title:"Title suggestion ready.",prompts:"Follow-up prompts ready.",rewrite:"Polished passage ready."};
+  toast(labels[action]||"AI companion updated.");
+}
+
+// ── ENTRIES ──
+function resetComposer(){
+  currentEditId=null;selectedMood="";composerTitle.textContent="New Entry";entryText.value="";
+  moodButtons.forEach(b=>b.classList.remove("selected"));
+  clearDraft();updateWordCount();crisisPanel.classList.remove("show");
+}
+function saveEntry(){
+  const text=entryText.value.trim();
+  if(!text){toast("Write something first.");return}
+  const d=today();const mood=selectedMood||"Calm";
+  if(currentEditId!==null){
+    const ex=entries.find(e=>e.id===currentEditId);
+    if(!ex){resetComposer();return}
+    ex.text=text;ex.mood=mood;
+  }else{entries.unshift({id:Date.now(),date:d,mood,text})}
+  resetComposer();persist();renderEntries();renderMoods();updateStats();
+  toast("Entry saved.");
+}
+function editEntry(id){
+  const entry=entries.find(e=>e.id===id);if(!entry)return;
+  currentEditId=id;composerTitle.textContent="Edit Entry";
+  entryText.value=entry.text;selectMood(entry.mood);
+  showTab("journal");updateWordCount();entryText.focus();
+}
+// FIX: deleteEntry now confirms before deleting
+function deleteEntry(id){
+  if(!confirm("Delete this entry? This cannot be undone."))return;
+  entries=entries.filter(e=>e.id!==id);
+  if(currentEditId===id)resetComposer();
+  persist();renderEntries();renderMoods();updateStats();
+  toast("Entry deleted.");
+}
+function setFilter(f){
+  activeFilter=f;
+  filterButtons.forEach(b=>b.classList.toggle("active",b.dataset.filter===f));
+  renderEntries();
+}
+function renderEntries(){
+  const list=document.getElementById("entriesList");
+  const query=document.getElementById("searchInput").value.trim().toLowerCase();
+  const filtered=entries.filter(e=>{
+    const mf=activeFilter==="All"||e.mood===activeFilter;
+    const qf=!query||e.text.toLowerCase().includes(query)||e.date.includes(query)||e.mood.toLowerCase().includes(query);
+    return mf&&qf;
+  });
+  if(!filtered.length){list.innerHTML='<div class="empty-state">No entries found.</div>';return}
+  const hasSamples=filtered.some(e=>e.isSample);
+  const disclaimer=hasSamples?'<div class="sample-disclaimer">✦ Some entries below are <strong>sample data</strong> to demonstrate the app. Delete them and write your own — this is your space.</div>':"";
+  list.innerHTML=disclaimer+filtered.map(e=>`
+    <article class="entry-card card-hover">
+      <div class="entry-card-header">
+        <span class="entry-date">${e.isSample?'<span class="sample-badge">sample</span>':""}${esc(formatDate(e.date))}</span>
+        <span class="mood-tag" style="background:${MOOD_COLORS[e.mood]||"#7f7f7f"}">${esc(e.mood||"-")}</span>
+      </div>
+      <p class="entry-preview">${esc(e.text.replace(/^\[SAMPLE\] /,""))}</p>
+      <div class="entry-card-actions">
+        <button class="btn-sm btn-edit" type="button" data-edit-entry="${e.id}">Edit</button>
+        <button class="btn-sm btn-danger" type="button" data-delete-entry="${e.id}">Delete</button>
+      </div>
+    </article>`).join("");
+}
+// FIX: Export excludes sample entries
+function exportEntries(){
+  const realEntries=entries.filter(e=>!e.isSample);
+  if(!realEntries.length){toast("No personal entries to export yet.");return}
+  const content=realEntries.map(e=>`${formatDate(e.date)} [${e.mood}]\n${e.text}`).join("\n\n---\n\n");
+  const blob=new Blob([content],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");a.href=url;a.download="my_journal.txt";a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),0);
+  toast("Journal exported.");
+}
+
+// ── MOOD CHARTS ──
+// FIX: Mood charts exclude sample entries
+function renderMoods(){
+  const realEntries=entries.filter(e=>!e.isSample);
+  const counts=Object.keys(MOOD_COLORS).reduce((a,m)=>{a[m]=0;return a},{});
+  realEntries.forEach(e=>{if(counts[e.mood]!==undefined)counts[e.mood]++});
+  const max=Math.max(...Object.values(counts),1);
+  document.getElementById("moodBars").innerHTML=Object.entries(counts).map(([m,c])=>`
+    <div class="mood-row">
+      <span class="mood-label">${m}</span>
+      <div class="mood-bar-track"><div class="mood-bar-fill" style="width:${(c/max)*100}%;background:${MOOD_COLORS[m]}"></div></div>
+      <span class="mood-count">${c}</span>
+    </div>`).join("");
+  const tl=[...realEntries].sort((a,b)=>normalizeDate(a.date)-normalizeDate(b.date));
+  document.getElementById("moodTimeline").innerHTML=tl.map(e=>`<div class="timeline-dot" title="${esc(formatDate(e.date))}: ${esc(e.mood)}" style="background:${MOOD_COLORS[e.mood]||"#7f7f7f"}">${esc(e.mood.slice(0,2))}</div>`).join("");
+}
+
+// ── STATS ──
+// FIX: calcStreak excludes sample entries and fixes date math direction
+function calcStreak(){
+  const d=new Date();d.setHours(0,0,0,0);
+  const realEntries=entries.filter(e=>!e.isSample);
+  const ud=[...new Set(realEntries.map(e=>e.date))].map(normalizeDate).filter(x=>x<=d).sort((a,b)=>b-a);
+  if(!ud.length)return 0;
+  // If no entry today or yesterday, streak is 0
+  if(Math.round((d-ud[0])/86400000)>1)return 0;
+  let streak=1,prev=ud[0];
+  for(let i=1;i<ud.length;i++){
+    const cur=ud[i];
+    const diff=Math.round((prev-cur)/86400000);
+    if(diff===1){streak++;prev=cur}
+    else if(diff===0){/* same day, skip */prev=cur}
+    else break;
+  }
+  return streak;
+}
+// FIX: updateStats excludes sample entries for top mood
+function updateStats(){
+  document.getElementById("totalEntries").textContent=entries.filter(e=>!e.isSample).length;
+  const words=entries.filter(e=>!e.isSample).reduce((s,e)=>s+e.text.trim().split(/\s+/).filter(Boolean).length,0);
+  document.getElementById("totalWords").textContent=words;
+  document.getElementById("streakDays").textContent=calcStreak();
+  // FIX: Only count real entries; show full mood name not 3 chars
+  const counts=entries.filter(e=>!e.isSample).reduce((a,e)=>{a[e.mood]=(a[e.mood]||0)+1;return a},{});
+  const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById("topMoodStat").textContent=top?top[0]:"—";
+  const newest=[...entries].filter(e=>!e.isSample).sort((a,b)=>normalizeDate(b.date)-normalizeDate(a.date))[0];
+  const rm=document.getElementById("recentEntryMood");
+  const rp=document.getElementById("recentEntryPreview");
+  if(!newest){rm.textContent="Quiet";rm.style.background="var(--accent)";rp.textContent="Your most recent entry will appear here.";return}
+  rm.textContent=newest.mood;rm.style.background=MOOD_COLORS[newest.mood]||"var(--accent)";
+  rp.textContent=newest.text;
+}
+
+// ── ANCHOR MODE ──
+const breathCycle=["Breathe in…","Hold…","Breathe out…","Rest…"];
+function startBreathCycle(){
+  // FIX: Clear any existing interval before starting a new one
+  clearInterval(anchorInterval);
+  const el=document.getElementById("anchorBreathText");
+  let idx=0;
+  function step(){el.textContent=breathCycle[idx];idx=(idx+1)%breathCycle.length}
+  step();anchorInterval=setInterval(step,3000);
+}
+function openAnchor(){
+  anchorOverlay.classList.add("open");document.body.style.overflow="hidden";
+  const r=Math.floor(Math.random()*ANCHOR_AFFIRMATIONS.length);
+  document.getElementById("anchorAffirmation").textContent=`"${ANCHOR_AFFIRMATIONS[r]}"`;
+  startBreathCycle();
+}
+function closeAnchor(){anchorOverlay.classList.remove("open");document.body.style.overflow="";clearInterval(anchorInterval)}
+
+// ── PRESSURE ──
+// FIX: Validate ranges before logging
+function logPressure(){
+  const hours=parseFloat(document.getElementById("studyHours").value);
+  const stress=parseInt(document.getElementById("stressLevel").value);
+  const note=document.getElementById("pressureNote").value.trim();
+  if(isNaN(hours)||isNaN(stress)){toast("Enter both study hours and stress level.");return}
+  if(hours<=0||hours>24){toast("Study hours must be between 0.5 and 24.");return}
+  if(stress<1||stress>10){toast("Stress level must be between 1 and 10.");return}
+  pressureLogs.unshift({id:Date.now(),date:today(),hours,stress,note});
+  document.getElementById("studyHours").value="";
+  document.getElementById("stressLevel").value="";
+  document.getElementById("pressureNote").value="";
+  persist();renderPressureLog();updatePressureInsight();
+  toast("Session logged.");
+}
+function updatePressureInsight(){
+  const el=document.getElementById("pressureInsight");
+  if(pressureLogs.length<2){el.textContent="Log a few more sessions to see patterns emerge.";return}
+  const highHours=pressureLogs.filter(l=>l.hours>=6);
+  if(highHours.length){
+    const avgStress=highHours.reduce((s,l)=>s+l.stress,0)/highHours.length;
+    el.textContent=`On days with 6+ study hours, your average stress is ${avgStress.toFixed(1)}/10. Consider building in deliberate rest after long sessions.`;
+  }else{el.textContent="Keep logging — patterns will emerge after a few more sessions."}
+}
+async function analyzePressureWithAI(){
+  if(pressureLogs.length<2){toast("Log at least 2 sessions first.");return}
+  const el=document.getElementById("pressureInsight");
+  el.innerHTML=`<span class="ai-spinner"></span><span class="ai-loading">Analyzing your patterns…</span>`;
+  const summary=pressureLogs.slice(0,10).map(l=>`${l.date}: ${l.hours}hrs study, stress ${l.stress}/10${l.note?`, note: "${l.note}"`:""}` ).join("\n");
+  try{
+    const r=await callClaude(
+      "You are a compassionate student wellbeing coach. Analyze the study-hour vs stress-level data for a student preparing for competitive Indian exams. In 2-3 sentences, identify the key pattern and give ONE specific, actionable recommendation. Be warm and direct.",
+      `Here is the student's recent session log:\n${summary}`
+    );
+    el.textContent=r.trim();
+  }catch(e){el.textContent="Could not analyze at this time. ("+e.message+")"}
+}
+function renderPressureLog(){
+  const el=document.getElementById("pressureLog");
+  if(!pressureLogs.length){el.innerHTML='<div class="empty-state">No sessions logged yet.</div>';return}
+  el.innerHTML=pressureLogs.slice(0,20).map(l=>`
+    <div class="pressure-log-row">
+      <span>${formatDate(l.date)}</span>
+      <span>📚 ${l.hours}h</span>
+      <span>🔥 ${l.stress}/10</span>
+      <span style="color:var(--ink-soft)">${esc(l.note||"—")}</span>
+    </div>`).join("");
+}
+
+// ── ALONE ──
+function renderAlone(){
+  document.getElementById("aloneGrid").innerHTML=aloneStories.map(s=>`
+    <article class="alone-card card-hover">
+      <div class="alone-card-meta">
+        <div class="alone-avatar" style="background:rgba(142,74,46,.1)">${s.avatar}</div>
+        <span class="alone-name">${esc(s.name)}</span>
+      </div>
+      <p class="alone-text">${esc(s.text)}</p>
+      <span class="alone-tag">${esc(s.tag)}</span>
+    </article>`).join("");
+}
+function shareAlone(){
+  const text=document.getElementById("aloneInput").value.trim();
+  if(!text){toast("Write something before sharing.");return}
+  aloneStories.unshift({avatar:"✦",name:"Anonymous · Just now",text,tag:"Shared today"});
+  document.getElementById("aloneInput").value="";
+  persist();renderAlone();
+  toast("Shared anonymously. You are not alone.");
+}
+
+// ── LETTERS ──
+// FIX: Set min date on letterDeliverDate to today (done in init)
+function saveLetter(){
+  const text=document.getElementById("letterText").value.trim();
+  const deliverDate=document.getElementById("letterDeliverDate").value;
+  if(!text){toast("Write your letter first.");return}
+  if(!deliverDate){toast("Choose a delivery date.");return}
+  if(deliverDate<today()){toast("Please choose a future date.");return}
+  letters.unshift({id:Date.now(),writtenDate:today(),deliverDate,text});
+  document.getElementById("letterText").value="";
+  document.getElementById("letterDeliverDate").value="";
+  persist();renderLetters();
+  toast("Letter sealed. It will be waiting for you.");
+}
+function renderLetters(){
+  const el=document.getElementById("letterList");
+  if(!letters.length){el.innerHTML='<div class="empty-state">No letters saved yet. Write one above.</div>';return}
+  const td=today();
+  el.innerHTML=letters.map(l=>{
+    const isDue=l.deliverDate<=td;
+    return `<div class="letter-item ${isDue?"letter-due":""}" data-letter-id="${l.id}">
+      <div class="letter-item-date">To be opened ${esc(formatDate(l.deliverDate))}${isDue?'<span class="due-badge">Ready</span>':""}</div>
+      <div class="letter-item-preview">${esc(l.text)}</div>
+    </div>`;
+  }).join("");
+}
+function openLetter(id){
+  const letter=letters.find(l=>l.id===id);if(!letter)return;
+  currentLetterViewId=id;
+  document.getElementById("letterReadDate").textContent=`Written on ${formatDate(letter.writtenDate)} · For ${formatDate(letter.deliverDate)}`;
+  document.getElementById("letterReadBody").textContent=letter.text;
+  openModal("letterReadModal");
+}
+function deleteLetter(){
+  if(!currentLetterViewId)return;
+  if(!confirm("Delete this letter permanently?"))return;
+  letters=letters.filter(l=>l.id!==currentLetterViewId);
+  closeModal("letterReadModal");currentLetterViewId=null;
+  persist();renderLetters();toast("Letter deleted.");
+}
+
+// ── MODALS ──
+function openModal(id){const m=document.getElementById(id);m.classList.add("open")}
+function closeModal(id){const m=document.getElementById(id);m.classList.remove("open")}
+
+// ── DROPOUT SHIELD ──
+function calcDropoutRisk(){
+  const now=new Date();now.setHours(0,0,0,0);
+  const last14=entries.filter(e=>{const d=new Date(e.date+"T00:00:00");d.setHours(0,0,0,0);return(now-d)/86400000<=14});
+  const last7Pressure=pressureLogs.filter(l=>{const d=new Date(l.date+"T00:00:00");d.setHours(0,0,0,0);return(now-d)/86400000<=7});
+  const activityScore=last14.length===0?3:last14.length<=2?2:last14.length<=5?1:0;
+  const negMoods=["Sad","Angry","Anxious"];
+  const negCount=entries.slice(0,10).filter(e=>negMoods.includes(e.mood)).length;
+  const moodScore=negCount>=7?3:negCount>=5?2:negCount>=3?1:0;
+  const highStressDays=last7Pressure.filter(l=>l.stress>=8).length;
+  const stressScore=highStressDays>=5?3:highStressDays>=3?2:highStressDays>=1?1:0;
+  const latestEntry=entries.slice().sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+  const daysSinceLastEntry=latestEntry?Math.floor((now-new Date(latestEntry.date+"T00:00:00"))/86400000):999;
+  const silenceScore=daysSinceLastEntry>=5?1:0;
+  const total=activityScore+moodScore+stressScore+silenceScore;
+  // FIX: Simplified normalisation (max possible is 10)
+  const normalized=Math.min(10,total);
+  return{total:normalized,activityScore,moodScore,stressScore,silenceScore,last14,last7Pressure,daysSinceLastEntry};
+}
+function renderDropoutShield(){
+  const r=calcDropoutRisk();
+  const scoreEl=document.getElementById("dropoutScore");
+  scoreEl.textContent=r.total+"/10";
+  scoreEl.style.color=r.total>=7?"var(--mood-angry)":r.total>=4?"var(--mood-anxious)":"var(--mood-grateful)";
+  document.getElementById("dropoutScoreDesc").textContent=r.total>=7?"High risk. Significant behavioral decline detected. Please reach out to someone.":r.total>=4?"Moderate risk. Some warning signals present — take them seriously.":r.total>=1?"Low risk. A few early signals. Keep journaling and monitoring.":"Healthy pattern. No dropout risk signals detected.";
+  const bannerEl=document.getElementById("dropoutRiskBanner");
+  if(r.total>=7){bannerEl.style.display="block";bannerEl.innerHTML=`<strong style="color:#a03228;display:block;margin-bottom:.35rem">⚠️ High Dropout Risk Detected</strong><p style="color:var(--ink-soft);line-height:1.5;margin:0">Helium AI has detected a significant pattern of behavioral decline. <strong>You are not alone — please talk to someone you trust, or use Anchor Mode right now.</strong></p>`}
+  else{bannerEl.style.display="none"}
+  const negMoods=["Sad","Angry","Anxious"];
+  const recent7Moods=entries.slice(0,7).map(e=>e.mood);
+  const negRatio=recent7Moods.length?recent7Moods.filter(m=>negMoods.includes(m)).length/recent7Moods.length:0;
+  const mt=document.getElementById("moodTrend7");
+  mt.textContent=negRatio>=0.6?"📉 Declining":negRatio>=0.3?"➡️ Mixed":"📈 Stable";
+  mt.style.color=negRatio>=0.6?"var(--mood-angry)":negRatio>=0.3?"var(--mood-anxious)":"var(--mood-grateful)";
+  document.getElementById("moodTrendDesc").textContent=`${Math.round(negRatio*100)}% of your last ${recent7Moods.length} entries show negative mood.`;
+  const al=document.getElementById("activityLevel");
+  al.textContent=r.last14.length+" entries";
+  al.style.color=r.last14.length<=2?"var(--mood-angry)":r.last14.length<=5?"var(--mood-anxious)":"var(--mood-grateful)";
+  document.getElementById("activityDesc").textContent=r.daysSinceLastEntry<999?`Last entry: ${r.daysSinceLastEntry} day(s) ago.`:"No entries found.";
+  const ifl=document.getElementById("interventionFlag");
+  ifl.textContent=r.total>=7?"🚨 Yes":r.total>=4?"⚠️ Watch":"✅ No";
+  ifl.style.color=r.total>=7?"var(--mood-angry)":r.total>=4?"var(--mood-anxious)":"var(--mood-grateful)";
+  document.getElementById("interventionDesc").textContent=r.total>=7?"Immediate support recommended.":r.total>=4?"Monitor closely and self-care.":"You're doing okay.";
+
+  const signals=[
+    {label:"Activity Level",desc:`${r.last14.length} entries in last 14 days`,score:r.activityScore,max:3},
+    {label:"Mood Pattern",desc:"Negative mood ratio in recent entries",score:r.moodScore,max:3},
+    {label:"Stress Load",desc:"High-stress days in past 7 days",score:r.stressScore,max:3},
+    {label:"Silence Signal",desc:`Days since last journal entry: ${r.daysSinceLastEntry===999?"unknown":r.daysSinceLastEntry}`,score:r.silenceScore,max:1},
+  ];
+  document.getElementById("signalBreakdown").innerHTML=signals.map(s=>{
+    const color=s.score===0?"#5a9460":s.score>=s.max?"#b84038":"#d4922a";
+    return `<div class="signal-card"><div class="signal-dot" style="background:${color}"></div><div><div class="signal-label">${esc(s.label)}</div><div class="signal-desc">${esc(s.desc)}</div></div><div class="signal-value" style="color:${color}">${s.score}/${s.max}</div></div>`;
+  }).join("");
+
+  const interventions=[];
+  if(r.activityScore>=2)interventions.push({title:"🖊 Write for 5 minutes — right now",desc:"You haven't journaled much lately. Even one sentence counts.",action:"Journal now"});
+  if(r.stressScore>=2)interventions.push({title:"⚓ Activate Anchor Mode",desc:"Your stress logs show sustained high pressure. Anchor Mode has a guided breathing sequence.",action:"Open Anchor Mode",fn:"anchor"});
+  if(r.moodScore>=2)interventions.push({title:"🫂 Read the 'Not Alone' feed",desc:"Your mood pattern shows significant negativity. Reading peer stories can reduce isolation.",action:"Go to Not Alone"});
+  if(r.silenceScore>=1)interventions.push({title:"📬 Write a letter to future you",desc:`You haven't journaled in ${r.daysSinceLastEntry} days. A Future Letter is low-pressure and powerful.`,action:"Write a letter"});
+  if(r.total<=1)interventions.push({title:"✅ You're doing well",desc:"No major risk signals detected. Keep the consistent journaling going.",action:null});
+  document.getElementById("microInterventions").innerHTML=interventions.map(i=>`<div class="intervention-card"><strong>${esc(i.title)}</strong><span>${esc(i.desc)}</span>${i.action?`<div class="int-action" data-int-action="${esc(i.fn||i.action)}">${esc(i.action)} →</div>`:""}</div>`).join("");
+
+  renderFocusRecovery();
+}
+function renderFocusRecovery(){
+  const steps=focusModeActive?[
+    {title:"🧘 2-min grounding",desc:"Close your eyes. Name 5 things you can feel in your body right now. Just observe, don't judge."},
+    {title:"📝 Write one sentence",desc:"Open your journal and finish this: 'The one thing I actually need to do today is…' Just one."},
+    {title:"⏱ 25-min deep work block",desc:"Put your phone in another room. Work on only one task. No notifications."},
+    {title:"🚶 10-min walk",desc:"Not optional. Your brain needs physical reset. Go outside. No phone. Just walk."},
+    {title:"📊 Log your stress level",desc:"Come back and log how you feel after this recovery sequence."},
+  ]:[];
+  const btn=document.getElementById("activateFocusMode");
+  if(btn)btn.textContent=focusModeActive?"Deactivate Focus Recovery":"Activate Focus Recovery";
+  const container=document.getElementById("focusRecovery");
+  if(!focusModeActive){container.innerHTML=`<div style="color:var(--ink-faint);font-size:.9rem;line-height:1.56">When you notice your focus has dropped — you've been staring at the page for 10 minutes, you keep switching apps — activate this mode. It gives you a reset sequence.</div>`;return}
+  container.innerHTML=steps.map((s,i)=>`<div class="focus-step"><strong>Step ${i+1}: ${esc(s.title)}</strong><span>${esc(s.desc)}</span></div>`).join("");
+}
+
+// ── PRESSURE MAP ──
+function renderPressureMap(){renderHeatmap();renderBurnoutZones();renderDeadlineList()}
+function renderHeatmap(){
+  const container=document.getElementById("pressureHeatmap");
+  const td=new Date();td.setHours(0,0,0,0);
+  const cells=[];
+  for(let i=29;i>=0;i--){
+    const d=new Date(td);d.setDate(d.getDate()-i);
+    const dateStr=d.toISOString().split("T")[0];
+    const log=pressureLogs.find(l=>l.date===dateStr);
+    const entry=entries.find(e=>e.date===dateStr);
+    const deadline=deadlines.find(dl=>Math.abs(new Date(dl.date+"T00:00:00")-d)/86400000<=3);
+    let color="rgba(0,0,0,0.09)";let title=`${dateStr}: No data`;
+    if(log){const p=log.stress/10+(log.hours>=7?0.3:0);color=p>=0.8?"#b84038":p>=0.6?"#d4922a":p>=0.3?"#5a9460":"#3d8494";title=`${dateStr}: Stress ${log.stress}/10, ${log.hours}h study`}
+    else if(entry){color=["Sad","Angry","Anxious"].includes(entry.mood)?"#d4922a":"#3d8494";title=`${dateStr}: Mood — ${entry.mood}`}
+    if(deadline){color="#8e4a2e";title+=" ⚠️ Near deadline: "+deadline.name}
+    cells.push(`<div class="heatmap-cell" style="background:${color}" title="${esc(title)}"></div>`);
+  }
+  container.innerHTML=cells.join("");
+}
+// FIX: Burnout zone detection now correctly tracks end date
+function renderBurnoutZones(){
+  const container=document.getElementById("burnoutZones");
+  if(pressureLogs.length<3){container.innerHTML=`<div style="color:var(--ink-faint);font-size:.88rem">Log at least 3 days of pressure data to detect burnout zones.</div>`;return}
+  const sorted=pressureLogs.slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const zones=[];
+  let zoneStart=null;let zoneEnd=null;let zoneCount=0;
+  sorted.forEach((l,idx)=>{
+    if(l.stress>=7){
+      if(!zoneStart)zoneStart=l.date;
+      zoneEnd=l.date;
+      zoneCount++;
+    }else{
+      if(zoneCount>=3)zones.push({start:zoneStart,end:zoneEnd,days:zoneCount});
+      zoneStart=null;zoneEnd=null;zoneCount=0;
+    }
+  });
+  // catch trailing zone
+  if(zoneCount>=3)zones.push({start:zoneStart,end:zoneEnd,days:zoneCount});
+
+  if(!zones.length){container.innerHTML=`<div style="color:var(--mood-grateful);font-size:.88rem">✅ No burnout zones detected in your logged data.</div>`;return}
+  container.innerHTML=zones.map(z=>`<div class="burnout-zone"><strong>⚠️ ${esc(z.days)}-day burnout zone</strong>${esc(z.start)} → ${esc(z.end)}</div>`).join("");
+}
+function renderDeadlineList(){
+  const container=document.getElementById("deadlineList");
+  if(!deadlines.length){container.innerHTML=`<div style="color:var(--ink-faint);font-size:.85rem">No deadlines added yet.</div>`;return}
+  const td=today();
+  container.innerHTML=deadlines.map((d,i)=>{
+    const daysLeft=Math.ceil((new Date(d.date+"T00:00:00")-new Date(td+"T00:00:00"))/86400000);
+    const label=daysLeft<0?"Past":daysLeft===0?"Today!":daysLeft+"d left";
+    const color=daysLeft<=3&&daysLeft>=0?"var(--mood-angry)":daysLeft<=7?"var(--mood-anxious)":"var(--accent)";
+    return `<div class="deadline-item"><div><strong>${esc(d.name)}</strong><span>${esc(d.date)}</span></div><div style="display:flex;align-items:center;gap:.45rem"><span class="days-left" style="color:${color}">${esc(label)}</span><button class="btn-sm btn-danger" type="button" data-delete-deadline="${i}" style="padding:.28rem .55rem">×</button></div></div>`;
+  }).join("");
+}
+async function generateMapInsight(){
+  const btn=document.getElementById("generateMapInsight");
+  const result=document.getElementById("mapInsightResult");
+  result.style.display="block";result.textContent="Helium AI is reading your pressure map…";
+  btn.textContent="Generating…";btn.disabled=true;
+  const summary={totalLogs:pressureLogs.length,avgStress:pressureLogs.length?(pressureLogs.reduce((s,l)=>s+l.stress,0)/pressureLogs.length).toFixed(1):"N/A",highStressDays:pressureLogs.filter(l=>l.stress>=7).length,deadlines:deadlines.map(d=>d.name).join(", ")||"none",recentMoods:entries.slice(0,5).map(e=>e.mood).join(", "),entriesCount:entries.filter(e=>!e.isSample).length};
+  try{
+    const r=await callClaude(
+      "You are Helium AI, a compassionate academic pressure analyst for Indian students. Give a 3-4 sentence personalized insight about the student's pressure map. Be warm, specific, and end with one actionable suggestion. Never be clinical.",
+      `Student pressure data: ${JSON.stringify(summary)}. Analyze their academic pressure pattern and give a personalized map insight.`
+    );
+    result.textContent=r.trim();
+  }catch(e){result.textContent=`Could not reach Helium AI. (${e.message}) Based on your data: ${pressureLogs.length<3?"Log more days to see a meaningful pattern.":`Your average stress of ${(pressureLogs.reduce((s,l)=>s+l.stress,0)/pressureLogs.length).toFixed(1)}/10 over ${pressureLogs.length} days suggests ${pressureLogs.filter(l=>l.stress>=7).length>=3?"sustained high pressure — consider a reset day.":"manageable load. Keep logging."}`}`}
+  btn.textContent="Regenerate Insight";btn.disabled=false;
+}
+
+// ── SETUP EVENTS ──
+function setupEvents(){
+  tabs.forEach(t=>t.addEventListener("click",()=>showTab(t.dataset.tab)));
+  moodButtons.forEach(b=>b.addEventListener("click",()=>selectMood(b.dataset.mood)));
+  filterButtons.forEach(b=>b.addEventListener("click",()=>setFilter(b.dataset.filter)));
+  themeToggle.addEventListener("click",()=>setTheme(!darkMode));
+  document.getElementById("quickAddQuoteBtn").addEventListener("click",()=>openModal("addQuoteModal"));
+  document.getElementById("quotesAddBtn").addEventListener("click",()=>openModal("addQuoteModal"));
+  document.getElementById("cancelQuoteBtn").addEventListener("click",()=>closeModal("addQuoteModal"));
+  document.getElementById("saveQuoteModalBtn").addEventListener("click",addQuote);
+  document.getElementById("nextQuoteBtn").addEventListener("click",showRandomQuote);
+  document.getElementById("saveQuoteBtn").addEventListener("click",()=>{const t=document.getElementById("quoteText").textContent;if(t&&t!=="Click below to reveal a quote…"){quotes.unshift(t);persist();renderQuotes();toast("Quote saved to your collection!")}});
+  document.getElementById("clearEntryBtn").addEventListener("click",resetComposer);
+  document.getElementById("saveEntryBtn").addEventListener("click",saveEntry);
+  document.getElementById("exportBtn").addEventListener("click",exportEntries);
+  document.getElementById("searchInput").addEventListener("input",renderEntries);
+  entryText.addEventListener("input",updateWordCount);
+  document.getElementById("refreshPromptBtn").addEventListener("click",refreshPrompt);
+  document.getElementById("usePromptBtn").addEventListener("click",usePrompt);
+  document.getElementById("anchorBtn").addEventListener("click",openAnchor);
+  document.getElementById("anchorClose").addEventListener("click",closeAnchor);
+  document.getElementById("anchorNewAffirmation").addEventListener("click",()=>{
+    const r=Math.floor(Math.random()*ANCHOR_AFFIRMATIONS.length);
+    document.getElementById("anchorAffirmation").textContent=`"${ANCHOR_AFFIRMATIONS[r]}"`;
+  });
+  document.getElementById("anchorCrisisLink").addEventListener("click",()=>{closeAnchor();openModal("crisisModal")});
+  document.getElementById("closeCrisisModal").addEventListener("click",()=>closeModal("crisisModal"));
+  document.getElementById("logPressureBtn").addEventListener("click",logPressure);
+  document.getElementById("analyzePressureBtn").addEventListener("click",analyzePressureWithAI);
+  document.getElementById("shareAloneBtn").addEventListener("click",shareAlone);
+  document.getElementById("saveLetterBtn").addEventListener("click",saveLetter);
+  document.getElementById("closeLetterModal").addEventListener("click",()=>closeModal("letterReadModal"));
+  document.getElementById("deleteLetterBtn").addEventListener("click",deleteLetter);
+  document.getElementById("letterList").addEventListener("click",e=>{const item=e.target.closest("[data-letter-id]");if(item)openLetter(Number(item.dataset.letterId))});
+  document.querySelectorAll("[data-ai-action]").forEach(b=>b.addEventListener("click",()=>analyzeEntry(b.dataset.aiAction)));
+  document.getElementById("quotesGrid").addEventListener("click",e=>{const b=e.target.closest("[data-delete-quote]");if(b)deleteQuote(Number(b.dataset.deleteQuote))});
+  document.getElementById("entriesList").addEventListener("click",e=>{
+    const ed=e.target.closest("[data-edit-entry]");if(ed){editEntry(Number(ed.dataset.editEntry));return}
+    const del=e.target.closest("[data-delete-entry]");if(del)deleteEntry(Number(del.dataset.deleteEntry));
+  });
+  ["addQuoteModal","crisisModal","letterReadModal"].forEach(id=>{
+    document.getElementById(id).addEventListener("click",e=>{if(e.target===document.getElementById(id))closeModal(id)});
+  });
+  document.addEventListener("keydown",e=>{
+    if(e.key==="Escape"){closeModal("addQuoteModal");closeModal("crisisModal");closeModal("letterReadModal");closeAnchor()}
+    if((e.ctrlKey||e.metaKey)&&e.key==="Enter"&&document.getElementById("tab-journal").classList.contains("active"))saveEntry();
+  });
+  document.getElementById("activateFocusMode").addEventListener("click",()=>{focusModeActive=!focusModeActive;renderFocusRecovery();toast(focusModeActive?"Focus Recovery Mode activated. Follow the steps.":"Focus Recovery Mode deactivated.")});
+  document.getElementById("microInterventions").addEventListener("click",e=>{
+    const btn=e.target.closest("[data-int-action]");if(!btn)return;
+    const action=btn.dataset.intAction;
+    if(action==="anchor"){openAnchor();return}
+    if(action==="Journal now"){showTab("journal");return}
+    if(action==="Go to Not Alone"){showTab("alone");return}
+    if(action==="Write a letter"){showTab("letter");return}
+  });
+  document.getElementById("addDeadlineBtn").addEventListener("click",()=>{
+    const name=document.getElementById("deadlineName").value.trim();
+    const date=document.getElementById("deadlineDate").value;
+    if(!name||!date){toast("Enter both a name and date.");return}
+    deadlines.push({name,date});
+    document.getElementById("deadlineName").value="";document.getElementById("deadlineDate").value="";
+    persist();renderPressureMap();toast("Deadline added to map.");
+  });
+  document.getElementById("deadlineList").addEventListener("click",e=>{
+    const btn=e.target.closest("[data-delete-deadline]");if(!btn)return;
+    deadlines.splice(Number(btn.dataset.deleteDeadline),1);persist();renderPressureMap();toast("Deadline removed.");
+  });
+  document.getElementById("generateMapInsight").addEventListener("click",generateMapInsight);
+}
+
+// ── INIT ──
+function init(){
+  loadState();
+  document.getElementById("todayLabel").textContent=new Date().toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"});
+  // FIX: Set min date on letter delivery input to today
+  document.getElementById("letterDeliverDate").min=today();
+  setupEvents();
+  setTheme(darkMode);
+  loadDraft();
+  showRandomQuote();
+  loadDailyPrompt();
+  updateWordCount();
+  updateStats();
+  renderEntries();
+  renderMoods();
+  renderQuotes();
+  renderAlone();
+  renderLetters();
+  renderPressureLog();
+  const dueLetter=letters.find(l=>l.deliverDate===today());
+  if(dueLetter)setTimeout(()=>toast("📬 A letter from your past self is ready to read — check Future Letters!"),1800);
+}
+
+init();
+</script>
+</body>
+</html>
