@@ -1830,7 +1830,7 @@ async function callClaude(systemPrompt, userMessage) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      model: "gemini-1.5-flash",
+      model: "meta-llama/llama-3.1-8b-instruct:free",
       max_tokens: 1000,
       system: systemPrompt,
       messages: [{ role: "user", content: userMessage }]
