@@ -1017,6 +1017,15 @@ main{
 </style>
 </head>
 <body>
+<!-- FIX 3: Apply dark theme BEFORE page renders to prevent flash -->
+<script>
+(function(){
+  try{
+    var s=JSON.parse(localStorage.getItem('last-bookmark-v2')||'{}');
+    if(s.darkMode===true)document.documentElement.setAttribute('data-theme','dark');
+  }catch(e){}
+})();
+</script>
 <div class="app-shell">
 
   <!-- TOPBAR -->
@@ -1107,7 +1116,7 @@ main{
           </div>
         </div>
 
-        <!-- Community stat cards (REDESIGNED) -->
+        <!-- Community stat cards -->
         <div class="community-stats-row">
           <div class="community-stat-card card-hover">
             <div class="csc-icon">✦</div>
@@ -1194,7 +1203,7 @@ main{
           </article>
         </div>
 
-        <!-- Testimonials (UPDATED with real ones) -->
+        <!-- Testimonials -->
         <div class="testimonials">
           <div class="testimonials-header">
             <h3>What Students Are Saying</h3>
@@ -1340,7 +1349,7 @@ main{
           <div class="pressure-grid">
             <div class="pressure-input-group">
               <label for="studyHours">Study Hours Today</label>
-              <input class="pressure-input" type="number" id="studyHours" min="0" max="24" step="0.5" placeholder="e.g. 6" />
+              <input class="pressure-input" type="number" id="studyHours" min="0.5" max="24" step="0.5" placeholder="e.g. 6" />
             </div>
             <div class="pressure-input-group">
               <label for="stressLevel">Stress Level (1–10)</label>
@@ -1561,7 +1570,6 @@ main{
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
 <script>
 // ── CONSTANTS ──
 const STORAGE_KEY = "last-bookmark-v2";
@@ -1675,7 +1683,14 @@ let toastTimer;
 function toast(msg){clearTimeout(toastTimer);toastEl.textContent=msg;toastEl.classList.add("show");toastTimer=setTimeout(()=>toastEl.classList.remove("show"),2600)}
 
 // ── STORAGE ──
-function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({quotes,entries,pressureLogs,aloneStories,letters,darkMode,deadlines}))}catch(e){}}
+function persist(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({quotes,entries,pressureLogs,aloneStories,letters,darkMode,deadlines}));
+  }catch(e){
+    // FIX: Warn user when storage is full
+    toast("⚠️ Storage full — try exporting and deleting old entries.");
+  }
+}
 function persistDraft(){try{localStorage.setItem(DRAFT_KEY,JSON.stringify({text:entryText.value,mood:selectedMood}))}catch(e){}}
 function clearDraft(){try{localStorage.removeItem(DRAFT_KEY)}catch(e){}}
 function loadState(){
@@ -1686,6 +1701,7 @@ function loadState(){
     if(Array.isArray(s.quotes))quotes=s.quotes;
     if(Array.isArray(s.entries)&&s.entries.length)entries=s.entries;
     if(Array.isArray(s.pressureLogs))pressureLogs=s.pressureLogs;
+    else pressureLogs=[];
     if(Array.isArray(s.aloneStories))aloneStories=s.aloneStories;
     if(Array.isArray(s.letters))letters=s.letters;
     if(Array.isArray(s.deadlines))deadlines=s.deadlines;
@@ -1746,7 +1762,9 @@ function refreshPrompt(){
   localStorage.setItem("tlb-prompt",JSON.stringify({date:today(),text:todayPrompt}));
   document.getElementById("dailyPromptText").textContent=todayPrompt;
 }
+// FIX: usePrompt warns before overwriting an existing draft
 function usePrompt(){
+  if(entryText.value.trim()&&!confirm("This will replace your current draft. Continue?")){return}
   entryText.value=todayPrompt+"\n\n";
   showTab("journal");
   entryText.focus();
@@ -1802,17 +1820,20 @@ function updateWordCount(){
   persistDraft();syncAiPreview();checkCrisis(entryText.value);
 }
 
-// ── CLAUDE API — FIXED ──
-// Uses anthropic-dangerous-direct-browser-access header so requests work from the browser
+// ── CLAUDE API ──
+// FIX 1: Correct model string with full date suffix
+// FIX: Added x-api-key header — replace YOUR_API_KEY with your actual key
 async function callClaude(systemPrompt, userMessage) {
   const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "x-api-key": "YOUR_API_KEY_HERE",
+      "anthropic-version": "2023-06-01",
       "anthropic-dangerous-direct-browser-access": "true"
     },
     body: JSON.stringify({
-      model: "claude-sonnet-4-6",
+      model: "claude-sonnet-4-6-20250514",
       max_tokens: 1000,
       system: systemPrompt,
       messages: [{ role: "user", content: userMessage }]
@@ -1825,10 +1846,8 @@ async function callClaude(systemPrompt, userMessage) {
   }
 
   const data = await response.json();
-
   if (data.error) throw new Error(data.error.message);
 
-  // Handle both text and tool_use blocks
   return (data.content || [])
     .map(block => (block.type === "text" ? block.text : ""))
     .filter(Boolean)
@@ -1916,7 +1935,9 @@ function editEntry(id){
   entryText.value=entry.text;selectMood(entry.mood);
   showTab("journal");updateWordCount();entryText.focus();
 }
+// FIX: deleteEntry now confirms before deleting
 function deleteEntry(id){
+  if(!confirm("Delete this entry? This cannot be undone."))return;
   entries=entries.filter(e=>e.id!==id);
   if(currentEditId===id)resetComposer();
   persist();renderEntries();renderMoods();updateStats();
@@ -1951,8 +1972,11 @@ function renderEntries(){
       </div>
     </article>`).join("");
 }
+// FIX: Export excludes sample entries
 function exportEntries(){
-  const content=entries.map(e=>`${formatDate(e.date)} [${e.mood}]\n${e.text}`).join("\n\n---\n\n");
+  const realEntries=entries.filter(e=>!e.isSample);
+  if(!realEntries.length){toast("No personal entries to export yet.");return}
+  const content=realEntries.map(e=>`${formatDate(e.date)} [${e.mood}]\n${e.text}`).join("\n\n---\n\n");
   const blob=new Blob([content],{type:"text/plain;charset=utf-8"});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");a.href=url;a.download="my_journal.txt";a.click();
@@ -1961,9 +1985,11 @@ function exportEntries(){
 }
 
 // ── MOOD CHARTS ──
+// FIX: Mood charts exclude sample entries
 function renderMoods(){
+  const realEntries=entries.filter(e=>!e.isSample);
   const counts=Object.keys(MOOD_COLORS).reduce((a,m)=>{a[m]=0;return a},{});
-  entries.forEach(e=>{if(counts[e.mood]!==undefined)counts[e.mood]++});
+  realEntries.forEach(e=>{if(counts[e.mood]!==undefined)counts[e.mood]++});
   const max=Math.max(...Object.values(counts),1);
   document.getElementById("moodBars").innerHTML=Object.entries(counts).map(([m,c])=>`
     <div class="mood-row">
@@ -1971,33 +1997,39 @@ function renderMoods(){
       <div class="mood-bar-track"><div class="mood-bar-fill" style="width:${(c/max)*100}%;background:${MOOD_COLORS[m]}"></div></div>
       <span class="mood-count">${c}</span>
     </div>`).join("");
-  const tl=[...entries].sort((a,b)=>normalizeDate(a.date)-normalizeDate(b.date));
+  const tl=[...realEntries].sort((a,b)=>normalizeDate(a.date)-normalizeDate(b.date));
   document.getElementById("moodTimeline").innerHTML=tl.map(e=>`<div class="timeline-dot" title="${esc(formatDate(e.date))}: ${esc(e.mood)}" style="background:${MOOD_COLORS[e.mood]||"#7f7f7f"}">${esc(e.mood.slice(0,2))}</div>`).join("");
 }
 
 // ── STATS ──
+// FIX: calcStreak excludes sample entries and fixes date math direction
 function calcStreak(){
   const d=new Date();d.setHours(0,0,0,0);
-  const ud=[...new Set(entries.map(e=>e.date))].map(normalizeDate).filter(x=>x<=d).sort((a,b)=>b-a);
+  const realEntries=entries.filter(e=>!e.isSample);
+  const ud=[...new Set(realEntries.map(e=>e.date))].map(normalizeDate).filter(x=>x<=d).sort((a,b)=>b-a);
   if(!ud.length)return 0;
-  if(daysBetween(d,ud[0])>1)return 0;
+  // If no entry today or yesterday, streak is 0
+  if(Math.round((d-ud[0])/86400000)>1)return 0;
   let streak=1,prev=ud[0];
   for(let i=1;i<ud.length;i++){
     const cur=ud[i];
-    if(daysBetween(prev,cur)===1){streak++;prev=cur}
-    else if(daysBetween(prev,cur)===0){prev=cur}
+    const diff=Math.round((prev-cur)/86400000);
+    if(diff===1){streak++;prev=cur}
+    else if(diff===0){/* same day, skip */prev=cur}
     else break;
   }
   return streak;
 }
+// FIX: updateStats excludes sample entries for top mood
 function updateStats(){
   document.getElementById("totalEntries").textContent=entries.filter(e=>!e.isSample).length;
   const words=entries.filter(e=>!e.isSample).reduce((s,e)=>s+e.text.trim().split(/\s+/).filter(Boolean).length,0);
   document.getElementById("totalWords").textContent=words;
   document.getElementById("streakDays").textContent=calcStreak();
-  const counts=entries.reduce((a,e)=>{a[e.mood]=(a[e.mood]||0)+1;return a},{});
+  // FIX: Only count real entries; show full mood name not 3 chars
+  const counts=entries.filter(e=>!e.isSample).reduce((a,e)=>{a[e.mood]=(a[e.mood]||0)+1;return a},{});
   const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById("topMoodStat").textContent=top?top[0].slice(0,3):"—";
+  document.getElementById("topMoodStat").textContent=top?top[0]:"—";
   const newest=[...entries].filter(e=>!e.isSample).sort((a,b)=>normalizeDate(b.date)-normalizeDate(a.date))[0];
   const rm=document.getElementById("recentEntryMood");
   const rp=document.getElementById("recentEntryPreview");
@@ -2009,6 +2041,8 @@ function updateStats(){
 // ── ANCHOR MODE ──
 const breathCycle=["Breathe in…","Hold…","Breathe out…","Rest…"];
 function startBreathCycle(){
+  // FIX: Clear any existing interval before starting a new one
+  clearInterval(anchorInterval);
   const el=document.getElementById("anchorBreathText");
   let idx=0;
   function step(){el.textContent=breathCycle[idx];idx=(idx+1)%breathCycle.length}
@@ -2023,11 +2057,14 @@ function openAnchor(){
 function closeAnchor(){anchorOverlay.classList.remove("open");document.body.style.overflow="";clearInterval(anchorInterval)}
 
 // ── PRESSURE ──
+// FIX: Validate ranges before logging
 function logPressure(){
   const hours=parseFloat(document.getElementById("studyHours").value);
   const stress=parseInt(document.getElementById("stressLevel").value);
   const note=document.getElementById("pressureNote").value.trim();
   if(isNaN(hours)||isNaN(stress)){toast("Enter both study hours and stress level.");return}
+  if(hours<=0||hours>24){toast("Study hours must be between 0.5 and 24.");return}
+  if(stress<1||stress>10){toast("Stress level must be between 1 and 10.");return}
   pressureLogs.unshift({id:Date.now(),date:today(),hours,stress,note});
   document.getElementById("studyHours").value="";
   document.getElementById("stressLevel").value="";
@@ -2091,11 +2128,13 @@ function shareAlone(){
 }
 
 // ── LETTERS ──
+// FIX: Set min date on letterDeliverDate to today (done in init)
 function saveLetter(){
   const text=document.getElementById("letterText").value.trim();
   const deliverDate=document.getElementById("letterDeliverDate").value;
   if(!text){toast("Write your letter first.");return}
   if(!deliverDate){toast("Choose a delivery date.");return}
+  if(deliverDate<today()){toast("Please choose a future date.");return}
   letters.unshift({id:Date.now(),writtenDate:today(),deliverDate,text});
   document.getElementById("letterText").value="";
   document.getElementById("letterDeliverDate").value="";
@@ -2123,6 +2162,7 @@ function openLetter(id){
 }
 function deleteLetter(){
   if(!currentLetterViewId)return;
+  if(!confirm("Delete this letter permanently?"))return;
   letters=letters.filter(l=>l.id!==currentLetterViewId);
   closeModal("letterReadModal");currentLetterViewId=null;
   persist();renderLetters();toast("Letter deleted.");
@@ -2147,7 +2187,8 @@ function calcDropoutRisk(){
   const daysSinceLastEntry=latestEntry?Math.floor((now-new Date(latestEntry.date+"T00:00:00"))/86400000):999;
   const silenceScore=daysSinceLastEntry>=5?1:0;
   const total=activityScore+moodScore+stressScore+silenceScore;
-  const normalized=Math.min(10,Math.round((total/10)*10));
+  // FIX: Simplified normalisation (max possible is 10)
+  const normalized=Math.min(10,total);
   return{total:normalized,activityScore,moodScore,stressScore,silenceScore,last14,last7Pressure,daysSinceLastEntry};
 }
 function renderDropoutShield(){
@@ -2231,15 +2272,26 @@ function renderHeatmap(){
   }
   container.innerHTML=cells.join("");
 }
+// FIX: Burnout zone detection now correctly tracks end date
 function renderBurnoutZones(){
   const container=document.getElementById("burnoutZones");
   if(pressureLogs.length<3){container.innerHTML=`<div style="color:var(--ink-faint);font-size:.88rem">Log at least 3 days of pressure data to detect burnout zones.</div>`;return}
   const sorted=pressureLogs.slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
-  const zones=[];let zoneStart=null;let zoneCount=0;
-  sorted.forEach(l=>{
-    if(l.stress>=7){if(!zoneStart)zoneStart=l.date;zoneCount++;if(zoneCount>=3&&!zones.find(z=>z.start===zoneStart))zones.push({start:zoneStart,end:l.date,days:zoneCount})}
-    else{zoneStart=null;zoneCount=0}
+  const zones=[];
+  let zoneStart=null;let zoneEnd=null;let zoneCount=0;
+  sorted.forEach((l,idx)=>{
+    if(l.stress>=7){
+      if(!zoneStart)zoneStart=l.date;
+      zoneEnd=l.date;
+      zoneCount++;
+    }else{
+      if(zoneCount>=3)zones.push({start:zoneStart,end:zoneEnd,days:zoneCount});
+      zoneStart=null;zoneEnd=null;zoneCount=0;
+    }
   });
+  // catch trailing zone
+  if(zoneCount>=3)zones.push({start:zoneStart,end:zoneEnd,days:zoneCount});
+
   if(!zones.length){container.innerHTML=`<div style="color:var(--mood-grateful);font-size:.88rem">✅ No burnout zones detected in your logged data.</div>`;return}
   container.innerHTML=zones.map(z=>`<div class="burnout-zone"><strong>⚠️ ${esc(z.days)}-day burnout zone</strong>${esc(z.start)} → ${esc(z.end)}</div>`).join("");
 }
@@ -2345,6 +2397,8 @@ function setupEvents(){
 function init(){
   loadState();
   document.getElementById("todayLabel").textContent=new Date().toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"});
+  // FIX: Set min date on letter delivery input to today
+  document.getElementById("letterDeliverDate").min=today();
   setupEvents();
   setTheme(darkMode);
   loadDraft();
